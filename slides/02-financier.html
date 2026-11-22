@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>簡報 02：費南雪 (Financier) 與焦化奶油專題 — LLM Wiki 教學簡報</title>
+  <style>
+    :root {
+      --bg-cream: #fdf8f2; --bg-card: #ffffff; --bg-warm: #f5ebe0;
+      --caramel-dark: #4a2c18; --caramel-mid: #8b5a2b; --caramel-gold: #c87d32;
+      --amber-accent: #d97706; --berry-red: #9e2a2b; --pistachio-green: #2d6a4f;
+      --pistachio-bg: #e8f5e9; --berry-bg: #fde8e8; --amber-bg: #fef3c7;
+      --text-main: #2c1e16; --text-muted: #6e5a4f; --border-soft: #e6d5c3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      background: var(--bg-cream); color: var(--text-main);
+      height: 100vh; overflow: hidden; display: flex; flex-direction: column;
+    }
+    header.topbar {
+      background: var(--caramel-dark); color: #fff; padding: 0.65rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;
+    }
+    .nav-links { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+    .nav-links a {
+      color: #fff; text-decoration: none; font-size: 0.82rem; font-weight: 600;
+      background: rgba(255,255,255,0.15); padding: 0.3rem 0.7rem; border-radius: 6px; transition: 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.current { background: var(--amber-accent); }
+    .progress-track { height: 5px; background: var(--border-soft); width: 100%; }
+    .progress-fill { height: 100%; background: var(--caramel-gold); width: 20%; transition: width 0.3s; }
+    main.stage {
+      flex: 1; overflow-y: auto; padding: 1.8rem 2.5rem;
+      display: flex; justify-content: center; align-items: flex-start;
+    }
+    .slide {
+      display: none; width: 100%; max-width: 1080px; background: var(--bg-card);
+      border: 1px solid var(--border-soft); border-radius: 18px; padding: 2.2rem 2.6rem;
+      box-shadow: 0 10px 30px rgba(74,44,24,0.08); animation: fadeIn 0.3s ease;
+    }
+    .slide.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .slide-tag {
+      display: inline-block; background: var(--bg-warm); color: var(--caramel-mid);
+      font-weight: 700; font-size: 0.85rem; padding: 0.25rem 0.8rem; border-radius: 999px; margin-bottom: 0.8rem;
+    }
+    h1 { font-size: 2.1rem; color: var(--caramel-dark); margin-bottom: 0.9rem; line-height: 1.3; }
+    h2 { font-size: 1.65rem; color: var(--caramel-dark); margin-bottom: 0.7rem; border-bottom: 2px solid var(--bg-warm); padding-bottom: 0.5rem; }
+    p.lead { font-size: 1.05rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 1.2rem; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.3rem; margin-top: 1rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; margin-top: 1rem; }
+    .card { background: var(--bg-cream); border: 1px solid var(--border-soft); border-radius: 12px; padding: 1.2rem; }
+    .card h3 { font-size: 1.1rem; color: var(--caramel-dark); margin-bottom: 0.5rem; }
+    .card p, .card li { font-size: 0.95rem; line-height: 1.6; }
+    .card ul { padding-left: 1.2rem; margin-top: 0.4rem; }
+    .analogy-box {
+      background: var(--amber-bg); border-left: 5px solid var(--amber-accent);
+      padding: 1rem 1.3rem; border-radius: 0 10px 10px 0; margin: 1rem 0; line-height: 1.6;
+    }
+    .gate-box {
+      background: var(--pistachio-bg); border-left: 5px solid var(--pistachio-green);
+      padding: 1rem 1.3rem; border-radius: 0 10px 10px 0; margin: 1rem 0; line-height: 1.6;
+    }
+    .warn-box {
+      background: var(--berry-bg); border-left: 5px solid var(--berry-red);
+      padding: 1rem 1.3rem; border-radius: 0 10px 10px 0; margin: 1rem 0; line-height: 1.6;
+    }
+    table.wiki-table { width: 100%; border-collapse: collapse; margin-top: 0.8rem; font-size: 0.92rem; }
+    table.wiki-table th { background: var(--caramel-dark); color: #fff; text-align: left; padding: 0.7rem 0.9rem; }
+    table.wiki-table td { padding: 0.65rem 0.9rem; border-bottom: 1px solid var(--border-soft); }
+    table.wiki-table tr:nth-child(even) { background: var(--bg-cream); }
+    .badge-pct { background: var(--amber-bg); color: var(--caramel-dark); font-weight: 700; padding: 0.1rem 0.45rem; border-radius: 5px; font-family: monospace; }
+    footer.controls {
+      background: #fff; border-top: 1px solid var(--border-soft); padding: 0.7rem 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .nav-btn {
+      background: var(--caramel-dark); color: #fff; border: none; padding: 0.5rem 1.2rem;
+      border-radius: 8px; font-weight: 700; cursor: pointer;
+    }
+    .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div style="font-weight:700;">🧱 單元簡報 02：費南雪 (Financier) 與焦化奶油科學專題</div>
+    <nav class="nav-links">
+      <a href="../index.html">🏠 返回 Wiki 總入口</a>
+      <a href="01-madeleine.html">01 瑪德蓮</a>
+      <a href="02-financier.html" class="current">02 費南雪</a>
+      <a href="03-canele.html">03 可麗露</a>
+      <a href="04-macaron.html">04 馬卡龍</a>
+      <a href="05-creams-and-ganache.html">05 卡士達&amp;甘納許</a>
+      <a href="index.html">📊 綜合總論</a>
+    </nav>
+  </header>
+  <div class="progress-track"><div class="progress-fill" id="progressBar"></div></div>
+
+  <main class="stage">
+    <!-- Slide 1 -->
+    <section class="slide active">
+      <span class="slide-tag">費南雪專題 1 / 5 ・ 知識來源：raw/02 → wiki/recipes/financier.md</span>
+      <h1>🧱 費南雪金磚蛋糕 (Financier)<br/>145°C 焦化奶油 (Beurre Noisette) 的梅納反應科學</h1>
+      <p class="lead">
+        為什麼費南雪跟瑪德蓮長得像，咬下去的香氣與口感卻完全不同？本簡報萃取自 <code>wiki/recipes/financier.md</code> 與 <code>wiki/techniques/maillard-and-beurre-noisette.md</code>，帶你掌握費南雪的三大靈魂：<strong>焦化奶油、純蛋白、高比例杏仁粉</strong>！
+      </p>
+      <div class="gate-box">
+        <strong>🛡️ Gate 1 單位標準化與基準攔截紀錄（Shift-Left Validation）：</strong><br/>
+        1. <strong>雙粉基準統一</strong>：費南雪含有低筋麵粉（50~60g）與杏仁粉（60~70g），經 Gate 1 統一以 <strong>總粉量（低粉＋杏仁粉＝120g＝100%）</strong> 為烘焙百分比基準。<br/>
+        2. <strong>焦化蒸發補償</strong>：原始文獻中流派 A 寫「焦化前生奶油重 180g」，流派 B 寫「焦化過濾後淨重 140g」。Gate 1 自動扣除 16% 水分蒸發與鍋壁損耗，將 180g 生重標準化對齊為 <code>焦化後淨重約 148g (123.3%)</code>！
+      </div>
+      <div class="grid-3">
+        <div class="card"><h3>🔥 1. 焦化奶油 (145°C)</h3><p>將奶油煮至水分蒸發、底部 2% 乳固形物發生梅納反應轉為深琥珀色，釋放濃烈烤榛果香氣。</p></div>
+        <div class="card"><h3>🌰 2. 50%+ 杏仁粉骨架</h3><p>高達一半以上是零麵筋、富含 50% 天然堅果油的美國/西班牙杏仁粉，切斷麵筋並鎖住濕潤度。</p></div>
+        <div class="card"><h3>🥚 3. 純蛋白無打發體系</h3><p>只用純蛋白（不用蛋黃）、不打發、傳統派甚至不加泡打粉，追求四邊酥脆、內裡Q彈黏牙的質地。</p></div>
+      </div>
+    </section>
+
+    <!-- Slide 2 -->
+    <section class="slide">
+      <span class="slide-tag">費南雪專題 2 / 5 ・ 跨流派烘焙百分比矩陣</span>
+      <h2>📊 巴黎百年老店脆邊派 vs 現代精品主廚保濕派</h2>
+      <p class="lead">以 <strong>總粉量（低筋麵粉 + 杏仁粉 = 120g = 100%）</strong> 為基準之跨流派對照表：</p>
+      <table class="wiki-table">
+        <thead>
+          <tr>
+            <th>原料項目 / 參數</th>
+            <th>流派 A：巴黎百年老店經典派 (克數 / %)</th>
+            <th>流派 B：現代精品主廚保濕派 (克數 / %)</th>
+            <th>跨流派科學差異解析</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>低筋麵粉 (T45/T55)</strong></td>
+            <td>60g (<span class="badge-pct">50.0%</span>)</td>
+            <td>50g (<span class="badge-pct">41.7%</span>)</td>
+            <td>提供基礎結構支撐，比例不及瑪德蓮的一半</td>
+          </tr>
+          <tr>
+            <td><strong>杏仁粉 (Almond Powder)</strong></td>
+            <td>60g (<span class="badge-pct">50.0%</span>) <em>*去皮細粉</em></td>
+            <td>70g (<span class="badge-pct">58.3%</span>) <em>*西班牙帶皮</em></td>
+            <td>現代派拉高帶皮杏仁粉至近 60%，杏仁油脂與木質堅果香極濃</td>
+          </tr>
+          <tr>
+            <td><strong>純糖粉 / 細砂糖</strong></td>
+            <td>純糖粉 150g (<span class="badge-pct">125.0%</span>)</td>
+            <td>細砂糖 110g (<span class="badge-pct">91.7%</span>)</td>
+            <td>傳統派用高比例純糖粉（含微量玉米澱粉），幫助表層結出薄脆糖殼</td>
+          </tr>
+          <tr>
+            <td><strong>轉化糖漿 (Trimoline)</strong></td>
+            <td>0g (<span class="badge-pct">0.0%</span>)</td>
+            <td><strong>20g (<span class="badge-pct">16.7%</span>)</strong></td>
+            <td><strong>關鍵差異</strong>：現代派加入 16.7% 轉化單醣強力抓水，常溫放 3 天依然濕潤</td>
+          </tr>
+          <tr>
+            <td><strong>純蛋白 (Egg Whites)</strong></td>
+            <td>150g (<span class="badge-pct">125.0%</span>)</td>
+            <td>130g (<span class="badge-pct">108.3%</span>)</td>
+            <td>純蛋白不打發，靠高黏度糖粉漿物理性包覆焦化奶油</td>
+          </tr>
+          <tr>
+            <td><strong>焦化奶油 (Beurre Noisette)</strong></td>
+            <td>淨重 ~148g (<span class="badge-pct">123.3%</span>) <em>*原重180g</em></td>
+            <td>淨重 140g (<span class="badge-pct">116.7%</span>)</td>
+            <td>高達 ~120% 的重焦化油脂比，構成金磚蛋糕的濃郁靈魂</td>
+          </tr>
+          <tr>
+            <td><strong>泡打粉 &amp; 烤溫</strong></td>
+            <td>泡打粉 <span class="badge-pct">0%</span> / <strong>210°C 快烤 12m</strong></td>
+            <td>泡打粉 2g (<span class="badge-pct">1.7%</span>) / <strong>200°C 烤 14m</strong></td>
+            <td>210°C 高溫快烤讓金磚四個直角迅速焦糖化酥脆，中心保持濕潤</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Slide 3 -->
+    <section class="slide">
+      <span class="slide-tag">費南雪專題 3 / 5 ・ 焦化奶油三階段熱力學</span>
+      <h2>🔥 焦化奶油 (Beurre Noisette) 的三階段梅納反應曲線</h2>
+      <div class="analogy-box">
+        <strong>💡 給初學者的原理白話文：「水是 100°C 的守門員！聽聲音就能抓準關火時機！」</strong>
+        發酵奶油由 <strong>82% 乳脂 + 16% 水分 + 2% 乳固形物（酪蛋白＋乳糖）</strong> 組成。梅納反應（蛋白質＋還原糖產生榛果香）必須在 <strong>120°C 以上</strong> 才會啟動！只要那 16% 的水還在沸騰，鍋內溫度就被鎖死在 100°C。所以：<strong>剛開始霹哩啪啦超大聲是在排水（只有 100°C，千萬別關火）→ 當聲音突然變安靜時代表水乾了，油溫一分鐘內飆上 145°C 變出琥珀色榛果香，這時要立刻泡冰水剎車！</strong>
+      </div>
+      <table class="wiki-table">
+        <thead>
+          <tr>
+            <th>階段</th>
+            <th>溫度區間</th>
+            <th>聽覺與視覺訊號</th>
+            <th>底層化學機制與操作指令</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Stage 1：排水咆哮期</strong></td>
+            <td><span class="badge-pct">60°C ~ 100°C</span></td>
+            <td>大氣泡劇烈翻滾、發出<strong>霹哩啪啦大聲響</strong></td>
+            <td>16% 水分沸騰蒸發吸熱，溫度鎖在 100°C（<strong>此時關火＝完全沒有榛果香！</strong>）</td>
+          </tr>
+          <tr>
+            <td><strong>Stage 2：寂靜梅納期</strong></td>
+            <td><span class="badge-pct">120°C ~ 148°C</span></td>
+            <td>劈啪聲突然<strong>轉為安靜</strong>，表面冒細密白泡，底部現<strong>琥珀色焦粒與烤榛果香</strong></td>
+            <td>水分蒸發殆盡，2% 酪蛋白與乳糖發生劇烈<strong>梅納反應</strong>！一達深琥珀色<strong>立刻將鍋底泡冰水止熱</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Stage 3：碳化危險期</strong></td>
+            <td><span class="badge-pct">&gt; 160°C</span></td>
+            <td>冒青煙、泡沫變黑褐、琥珀焦粒變黑炭</td>
+            <td>乳固形物徹底碳化變苦並產生有害物質，失敗品不可使用</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Slide 4 -->
+    <section class="slide">
+      <span class="slide-tag">費南雪專題 4 / 5 ・ 原料科學與物理懸浮乳化</span>
+      <h2>🌰 為什麼沒有蛋黃卵磷脂，費南雪還能鎖住 120% 的焦化奶油？</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>🥣 1. 高黏度蛋白粉漿的「物理懸浮乳化」</h3>
+          <ul>
+            <li>瑪德蓮有蛋黃卵磷脂當化學媒人；但費南雪<strong>只有純蛋白</strong>！</li>
+            <li>因此費南雪必須先把<strong>蛋白＋高比例砂糖拌勻，再加入低粉＋杏仁粉</strong>，形成極為濃稠的高黏度粉漿。</li>
+            <li>接著將<strong>降溫至 50°C~60°C 的焦化奶油分 3 次沖入並強力攪拌</strong>，用濃稠的澱粉蛋白網把微小油滴「物理性鎖死」在裡面！</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>✂️ 2. 杏仁粉：自帶香油的「麵筋剪刀」</h3>
+          <ul>
+            <li>烘焙用杏仁粉是<strong>美國/西班牙扁桃仁粉 (Almond Powder)</strong>，含有高達 <strong>50% 以上的天然杏仁油脂</strong>，且<strong>完全不含麩質麵筋</strong>。</li>
+            <li>在粉類中佔比達 50%~58%，能有效阻斷小麥麵粉的麵筋連通，讓費南雪即使大力攪拌乳化也不會變硬，並賦予微Q黏牙的保濕口感。</li>
+          </ul>
+        </div>
+      </div>
+      <div class="warn-box" style="margin-top:1rem;">
+        <strong>⚠️ 學員最常犯的致命失誤：把剛煮好 145°C 的滾燙焦化奶油直接倒進麵糊！</strong><br/>
+        超過 75°C 的高溫會瞬間把純蛋白燙熟變成「蛋花湯結塊」，完全喪失包覆油脂的能力，烤出來整顆費南雪底部會嚴重滲油、像泡在油池裡一樣！
+      </div>
+    </section>
+
+    <!-- Slide 5 -->
+    <section class="slide">
+      <span class="slide-tag">費南雪專題 5 / 5 ・ 課堂翻車排錯總結</span>
+      <h2>🔍 費南雪三大翻車診斷表 &amp; 跨頁知識連結</h2>
+      <table class="wiki-table">
+        <thead>
+          <tr>
+            <th>翻車徵兆</th>
+            <th>底層科學真兇</th>
+            <th>Wiki 標準修正處方箋</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. 吃起來毫無榛果香、像普通雞蛋糕</strong></td>
+            <td>煮奶油時在 100°C 大聲冒泡排水期就怕燒焦關火，未進入 130°C+ 梅納反應區；或把琥珀色焦香乳固形物全部濾掉了</td>
+            <td>煮至<strong>劈啪聲變安靜、達 140~148°C 現深琥珀色與濃香</strong>再泡冰水；攪勻琥珀色焦粒一起入麵糊（或僅濾除過大黑粒）</td>
+          </tr>
+          <tr>
+            <td><strong>2. 表面與底部嚴重滲油、組織濕軟油膩</strong></td>
+            <td>焦化奶油溫度過高（&gt;75°C）燙熟蛋白，或一口氣全倒且攪拌不足，油脂未被粉漿包覆</td>
+            <td>焦化奶油必<strong>降溫至 50°C~60°C</strong>，分 3 次沖入濃稠蛋白粉漿中，每次皆攪拌至油光完全吸收</td>
+          </tr>
+          <tr>
+            <td><strong>3. 入爐過度膨脹、出爐後劇烈塌陷皺縮</strong></td>
+            <td>攪拌蛋白與糖時不小心把蛋白打發了（混入過多空氣）</td>
+            <td>費南雪蛋白<strong>嚴禁打發</strong>！用打蛋器貼盆底慢速畫圈將糖壓勻即可</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="analogy-box" style="margin-top:1.2rem;">
+        <strong>🔗 下一站學習建議：</strong> 看完了低液粉比（100~125%）的瑪德蓮與費南雪，如果把液體拉高到粉量的 **6.8 倍（680%）**，會變成什麼傳奇甜點？請點右上角進入 <strong><a href="03-canele.html" style="color:var(--caramel-dark);">【03 波爾多可麗露專題簡報】</a></strong>！
+      </div>
+    </section>
+  </main>
+
+  <footer class="controls">
+    <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← 上一頁</button>
+    <span id="pageIndicator" style="font-weight:700; color:var(--caramel-mid);">第 1 / 5 頁</span>
+    <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">下一頁 →</button>
+  </footer>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    let idx = 0;
+    function show(n) {
+      if (n < 0 || n >= slides.length) return;
+      slides[idx].classList.remove('active');
+      idx = n;
+      slides[idx].classList.add('active');
+      document.getElementById('progressBar').style.width = ((idx + 1) / slides.length * 100) + '%';
+      document.getElementById('pageIndicator').textContent = `第 ${idx + 1} / ${slides.length} 頁`;
+      document.getElementById('prevBtn').disabled = idx === 0;
+      document.getElementById('nextBtn').disabled = idx === slides.length - 1;
+    }
+    function changeSlide(d) { show(idx + d); }
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight' || e.key === ' ') changeSlide(1);
+      if (e.key === 'ArrowLeft') changeSlide(-1);
+    });
+    show(0);
+  </script>
+</body>
+</html>

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>簡報 05：卡士達醬與甘納許內餡專題 — LLM Wiki 教學簡報</title>
+  <style>
+    :root {
+      --bg-cream: #fdf8f2; --bg-card: #ffffff; --bg-warm: #f5ebe0;
+      --caramel-dark: #4a2c18; --caramel-mid: #8b5a2b; --caramel-gold: #c87d32;
+      --amber-accent: #d97706; --berry-red: #9e2a2b; --pistachio-green: #2d6a4f;
+      --pistachio-bg: #e8f5e9; --berry-bg: #fde8e8; --amber-bg: #fef3c7;
+      --text-main: #2c1e16; --text-muted: #6e5a4f; --border-soft: #e6d5c3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      background: var(--bg-cream); color: var(--text-main);
+      height: 100vh; overflow: hidden; display: flex; flex-direction: column;
+    }
+    header.topbar {
+      background: var(--caramel-dark); color: #fff; padding: 0.65rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;
+    }
+    .nav-links { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+    .nav-links a {
+      color: #fff; text-decoration: none; font-size: 0.82rem; font-weight: 600;
+      background: rgba(255,255,255,0.15); padding: 0.3rem 0.7rem; border-radius: 6px; transition: 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.current { background: var(--amber-accent); }
+    .progress-track { height: 5px; background: var(--border-soft); width: 100%; }
+    .progress-fill { height: 100%; background: var(--caramel-gold); width: 20%; transition: width 0.3s; }
+    main.stage {
+      flex: 1; overflow-y: auto; padding: 1.8rem 2.5rem;
+      display: flex; justify-content: center; align-items: flex-start;
+    }
+    .slide {
+      display: none; width: 100%; max-width: 1080px; background: var(--bg-card);
+      border: 1px solid var(--border-soft); border-radius: 18px; padding: 2.2rem 2.6rem;
+      box-shadow: 0 10px 30px rgba(74,44,24,0.08); animation: fadeIn 0.3s ease;
+    }
+    .slide.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .slide-tag {
+      display: inline-block; background: var(--bg-warm); color: var(--caramel-mid);
+      font-weight: 700; font-size: 0.85rem; padding: 0.25rem 0.8rem; border-radius: 999px; margin-bottom: 0.8rem;
+    }
+    h1 { font-size: 2.1rem; color: var(--caramel-dark); margin-bottom: 0.9rem; line-height: 1.3; }
+    h2 { font-size: 1.65rem; color: var(--caramel-dark); margin-bottom: 0.7rem; border-bottom: 2px solid var(--bg-warm); padding-bottom: 0.5rem; }
+    p.lead { font-size: 1.05rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 1.2rem; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.3rem; margin-top: 1rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; margin-top: 1rem; }
+    .card { background: var(--bg-cream); border: 1px solid var(--border-soft); border-radius: 12px; padding: 1.2rem; }
+    .card h3 { font-size: 1.1rem; color: var(--caramel-dark); margin-bottom: 0.5rem; }
+    .card p, .card li { font-size: 0.95rem; line-height: 1.6; }
+    .card ul { padding-left: 1.2rem; margin-top: 0.4rem; }
+    .analogy-box {
+      background: var(--amber-bg); border-left: 5px solid var(--amber-accent);
+      padding: 1rem 1.3rem; border-radius: 0 10px 10px 0; margin: 1rem 0; line-height: 1.6;
+    }
+    .gate-box {
+      background: var(--pistachio-bg); border-left: 5px solid var(--pistachio-green);
+      padding: 1rem 1.3rem; border-radius: 0 10px 10px 0; margin: 1rem 0; line-height: 1.6;
+    }
+    .warn-box {
+      background: var(--berry-bg); border-left: 5px solid var(--berry-red);
+      padding: 1rem 1.3rem; border-radius: 0 10px 10px 0; margin: 1rem 0; line-height: 1.6;
+    }
+    table.wiki-table { width: 100%; border-collapse: collapse; margin-top: 0.8rem; font-size: 0.92rem; }
+    table.wiki-table th { background: var(--caramel-dark); color: #fff; text-align: left; padding: 0.7rem 0.9rem; }
+    table.wiki-table td { padding: 0.65rem 0.9rem; border-bottom: 1px solid var(--border-soft); }
+    table.wiki-table tr:nth-child(even) { background: var(--bg-cream); }
+    .badge-pct { background: var(--amber-bg); color: var(--caramel-dark); font-weight: 700; padding: 0.1rem 0.45rem; border-radius: 5px; font-family: monospace; }
+    footer.controls {
+      background: #fff; border-top: 1px solid var(--border-soft); padding: 0.7rem 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .nav-btn {
+      background: var(--caramel-dark); color: #fff; border: none; padding: 0.5rem 1.2rem;
+      border-radius: 8px; font-weight: 700; cursor: pointer;
+    }
+    .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div style="font-weight:700;">🍮 單元簡報 05：卡士達醬 (Crème Pâtissière) 與甘納許 (Ganache) 專題</div>
+    <nav class="nav-links">
+      <a href="../index.html">🏠 返回 Wiki 總入口</a>
+      <a href="01-madeleine.html">01 瑪德蓮</a>
+      <a href="02-financier.html">02 費南雪</a>
+      <a href="03-canele.html">03 可麗露</a>
+      <a href="04-macaron.html">04 馬卡龍</a>
+      <a href="05-creams-and-ganache.html" class="current">05 卡士達&amp;甘納許</a>
+      <a href="index.html">📊 綜合總論</a>
+    </nav>
+  </header>
+  <div class="progress-track"><div class="progress-fill" id="progressBar"></div></div>
+
+  <main class="stage">
+    <!-- Slide 1 -->
+    <section class="slide active">
+      <span class="slide-tag">靈魂內餡專題 1 / 5 ・ 知識來源：raw/05 → wiki/recipes/creme-patissiere-and-ganache.md</span>
+      <h1>🍮 法式甜點兩大靈魂內餡<br/>卡士達醬 95°C 澱粉酶滅活與甘納許中心同心圓乳化科學</h1>
+      <p class="lead">
+        泡芙、水果塔、千層派與馬卡龍夾餡，全靠 <strong>卡士達醬（Crème Pâtissière）</strong> 與 <strong>巧克力甘納許（Ganache）</strong> 撐起靈魂。為什麼你煮的卡士達放進冰箱隔天會「出水變稀」？為什麼甘納許隨便攪一攪就會「浮油結粒」？本簡報萃取自 <code>wiki/recipes/creme-patissiere-and-ganache.md</code>，帶你破解酵素與乳化的秘密！
+      </p>
+      <div class="gate-box">
+        <strong>🛡️ Gate 1 單位標準化與無粉類基準攔截紀錄（Shift-Left Validation）：</strong><br/>
+        1. <strong>蛋黃顆數換算</strong>：原始文獻中 Ferrandi 卡士達配方寫「蛋黃 5 顆」，經 Gate 1 自動換算為 <code>蛋黃 100g</code>（20g/顆）。<br/>
+        2. <strong>無粉類總重百分比防呆</strong>：由於卡士達澱粉僅佔 5.7%、而甘納許完全無粉（總粉量=0g），若套用「總粉量=100%」會除以零錯誤！Gate 1 自動切換為 <strong>「總重百分比（Total Weight = 100%）」</strong> 並列「對牛奶比 / 巧鮮比」！
+      </div>
+      <div class="grid-2">
+        <div class="card"><h3>✂️ 1. 卡士達的隱藏殺手：α-澱粉酶</h3><p>生蛋黃自帶耐熱的「α-澱粉酶」，在 80°C 最活躍！若只煮到變稠就關火，隔天澱粉網會被剪斷變成一灘水，必煮至 <strong>≥95°C 冒泡沸騰</strong> 才能燙死酵素！</p></div>
+        <div class="card"><h3>🌀 2. 甘納許的水包油 (O/W) 摩擦乳化</h3><p>可可脂（油）與鮮奶油（60%水）天生互斥！必須在 35~45°C 採用法芙娜<strong>「中心同心圓快速摩擦法」</strong>建立烏黑發亮的彈性乳化核。</p></div>
+      </div>
+    </section>
+
+    <!-- Slide 2 -->
+    <section class="slide">
+      <span class="slide-tag">靈魂內餡專題 2 / 5 ・ 卡士達醬跨流派配方矩陣</span>
+      <h2>📊 卡士達醬 (Crème Pâtissière)：Ferrandi 醇厚派 vs 現代輕盈塔餡派</h2>
+      <p class="lead">以 <strong>總重百分比 (Total Weight = 100%)</strong> 並列 <strong>對牛奶百分比 (Milk = 100%)</strong> 之精準對照：</p>
+      <table class="wiki-table">
+        <thead>
+          <tr>
+            <th>原料項目 / 參數</th>
+            <th>流派 A：Ferrandi 傳統醇厚派</th>
+            <th>流派 B：現代輕盈塔餡/泡芙派</th>
+            <th>跨流派科學差異解析</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>全脂牛奶</strong></td>
+            <td>500g (總重 <span class="badge-pct">62.9%</span> / 牛奶基準 100%)</td>
+            <td>500g (總重 <span class="badge-pct">64.9%</span> / 牛奶基準 100%)</td>
+            <td>提供澱粉糊化所需水分，並萃取香草莢脂溶性香氣</td>
+          </tr>
+          <tr>
+            <td><strong>純蛋黃 (Egg Yolks)</strong></td>
+            <td>100g (<span class="badge-pct">12.6%</span> / 對牛奶 <strong>20%</strong>) <em>*原5顆</em></td>
+            <td>80g (<span class="badge-pct">10.4%</span> / 對牛奶 <strong>16%</strong>) <em>*4顆</em></td>
+            <td>傳統派蛋黃高達牛奶的 20%，蛋香極濃，但帶入更多 <strong>α-澱粉酶</strong>！</td>
+          </tr>
+          <tr>
+            <td><strong>細砂糖</strong></td>
+            <td>100g (<span class="badge-pct">12.6%</span> / 對牛奶 20%)</td>
+            <td>90g (<span class="badge-pct">11.7%</span> / 對牛奶 18%)</td>
+            <td><strong>警告</strong>：糖倒入蛋黃後須在 3 秒內立刻攪散，否則糖會吸乾蛋黃表皮結成硬粒！</td>
+          </tr>
+          <tr>
+            <td><strong>玉米澱粉 + 低筋麵粉</strong></td>
+            <td>純玉米澱粉 45g (<span class="badge-pct">5.7%</span> / 對牛奶 9%)<br/>低筋麵粉 0g</td>
+            <td>玉米澱粉 25g + <strong>低筋麵粉 20g</strong><br/>(總粉 45g = 對牛奶 9%)</td>
+            <td><strong>關鍵差異</strong>：純玉米粉凝膠滑順透明但易脆裂；現代派混搭 45% 低粉增加延展性</td>
+          </tr>
+          <tr>
+            <td><strong>無鹽發酵奶油 (50°C拌入)</strong></td>
+            <td>50g (<span class="badge-pct">6.3%</span> / 對牛奶 10%)</td>
+            <td>35g (<span class="badge-pct">4.5%</span> / 對牛奶 7%)</td>
+            <td>離火降溫至 50°C 後乳化拌入，賦予絲滑光澤與化口性</td>
+          </tr>
+          <tr>
+            <td><strong>酵素滅活關鍵溫度</strong></td>
+            <td><strong>沸騰冒大泡 ≥ 95°C 持續攪拌 90 秒</strong></td>
+            <td><strong>沸騰冒大泡 ≥ 95°C 持續攪拌 90 秒</strong></td>
+            <td>未達 95°C 沸騰，冷藏後 100% 出水化為稀湯！</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Slide 3 -->
+    <section class="slide">
+      <span class="slide-tag">靈魂內餡專題 3 / 5 ・ 卡士達化水危機與澱粉酶科學</span>
+      <h2>✂️ 為什麼卡士達醬在 80°C 已經很濃稠了，卻絕對不能關火？</h2>
+      <div class="analogy-box">
+        <strong>💡 給初學者的原理白話文：「蛋黃裡住著一隻叫『澱粉酶』的剪刀手小怪獸！」</strong>
+        當你把卡士達煮到 <strong>78°C~82°C</strong> 時，玉米澱粉已經吸水膨脹（糊化），整鍋看起來已經像布丁一樣濃稠。很多新手怕燒焦就急著關火——結果隔天從冰箱拿出來，整鍋卡士達變成一灘水！因為生蛋黃裡天然含有一把叫 <strong>「α-澱粉酶 (Alpha-Amylase)」</strong> 的剪刀，它在 80°C 時精神最好，會在冰箱裡把澱粉網全部剪斷！你必須繼續刷鍋底加熱到 <strong>噗通噗通冒大泡泡（95°C 以上）再多煮 1~2 分鐘</strong>，才能把這隻剪刀手怪獸徹底燙死！
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h3>🌡️ 卡士達鍋內的三個溫度里程碑</h3>
+          <ul>
+            <li><strong>65°C ~ 78°C（糊化啟動期）</strong>：澱粉顆粒吸水膨脹數十倍，液體迅速變稠，呈現「厚重無光澤的塊狀稠」。</li>
+            <li><strong>75°C ~ 85°C（⚠️ 澱粉酶最活躍危險區）</strong>：此時關火＝明天必化水！</li>
+            <li><strong>92°C ~ 96°C（✅ 冒泡沸騰滅活區）</strong>：冒出大氣泡後持續快速刷鍋底 90 秒，你會發現卡士達反而變得<strong>「稍微變軟、極度有鏡面光澤且絲滑」</strong>——這就是澱粉完全糊化且酵素死透的成功訊號！</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>❄️ 出鍋後的「貼面急冷」食品安全鐵律</h3>
+          <ul>
+            <li>卡士達富含牛奶與蛋黃，停留在 20°C~50°C 是細菌滋生的溫床。</li>
+            <li>煮好拌入奶油後，必須立刻倒在已消毒的平盤上攤平。</li>
+            <li><strong>保鮮膜直接緊貼卡士達表面（Contact Wrapping）</strong>，防止冷卻時水氣凝結滴落或表面結硬皮，並上下敷冰袋在 30 分鐘內急冷至 4°C！</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 4 -->
+    <section class="slide">
+      <span class="slide-tag">靈魂內餡專題 4 / 5 ・ 巧克力甘納許中心乳化法</span>
+      <h2>🍫 巧克力甘納許 (Ganache)：法芙娜「中心同心圓摩擦乳化法」</h2>
+      <p class="lead">70% 黑巧克力（富含疏水可可脂）與 35% 動物性鮮奶油（含 60% 水分）如何變成如黑曜石鏡面般絲滑的水包油（O/W）乳化醬？</p>
+      <table class="wiki-table">
+        <thead>
+          <tr>
+            <th>甘納許用途分類</th>
+            <th>70% 黑巧克力</th>
+            <th>35% 動物性鮮奶油</th>
+            <th>發酵奶油 / 轉化糖漿</th>
+            <th>巧鮮比與物理質地</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>A. 馬卡龍夾餡 / 松露硬挺派</strong></td>
+            <td>200g (<span class="badge-pct">46.5%</span>)</td>
+            <td>200g (<span class="badge-pct">46.5%</span>)</td>
+            <td>奶油 30g (<span class="badge-pct">7.0%</span>) <em>*40°C拌入</em></td>
+            <td><strong>巧 : 鮮 = 1 : 1</strong>（冷卻後硬挺可擠花，入口即化）</td>
+          </tr>
+          <tr>
+            <td><strong>B. 鏡面淋面 / 慕斯流體派</strong></td>
+            <td>200g (<span class="badge-pct">38.1%</span>)</td>
+            <td>300g (<span class="badge-pct">57.1%</span>)</td>
+            <td>轉化糖漿 25g (<span class="badge-pct">4.8%</span>)</td>
+            <td><strong>巧 : 鮮 = 1 : 1.5</strong>（高水分流體，具黑曜石鏡面光澤）</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="analogy-box" style="margin-top:1rem;">
+        <strong>🌀 必勝手法「中心同心圓摩擦四部曲（35°C~45°C）」：</strong><br/>
+        1. <strong>分 3 次給水</strong>：將 80°C 鮮奶油分三次倒入半融巧克力中（切忌一次全倒！）。<br/>
+        2. <strong>中心畫小圈</strong>：用軟刮刀在<strong>盆底正中央直徑 5cm 處快速畫小圈摩擦</strong>（先讓舞池中央三個人手牽手站穩！）。<br/>
+        3. <strong>跨越假性分離期</strong>：中心會先像粗糙泥巴，繼續快速摩擦 15 秒，中心會突然變成<strong>「烏黑發亮有彈性的乳化核心」</strong>！<br/>
+        4. <strong>同心圓擴大</strong>：慢慢把畫圈半徑往外擴大，將周圍鮮奶油捲入核心，即獲完美鏡面甘納許！
+      </div>
+    </section>
+
+    <!-- Slide 5 -->
+    <section class="slide">
+      <span class="slide-tag">靈魂內餡專題 5 / 5 ・ 課堂翻車搶救總結</span>
+      <h2>🔍 卡士達與甘納許四大翻車診斷 &amp; 起死回生搶救法</h2>
+      <table class="wiki-table">
+        <thead>
+          <tr>
+            <th>翻車徵兆</th>
+            <th>底層科學真兇</th>
+            <th>Wiki 標準修正與課堂當場搶救法</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. 卡士達冷藏隔天化成一灘稀水</strong></td>
+            <td>80°C 變稠就關火，生蛋黃中的 <strong>α-澱粉酶</strong> 未被滅活，把澱粉凝膠網剪斷</td>
+            <td>預防：必煮至 <strong>≥95°C 冒大泡沸騰並持續刷鍋底 90 秒</strong>！</td>
+          </tr>
+          <tr>
+            <td><strong>2. 卡士達裡面有攪不散的深黃色硬粒</strong></td>
+            <td>把砂糖倒在蛋黃上放置超過 1 分鐘沒攪拌，糖瞬間吸乾蛋黃表皮水分（「糖煎蛋黃」）</td>
+            <td>糖一倒入蛋黃必須在 <strong>3 秒內立刻攪拌均勻</strong>；若已結粒需在入爐前用細篩網強力壓濾</td>
+          </tr>
+          <tr>
+            <td><strong>3. 甘納許粗糙暗沉、表面浮一層油（油水分離）</strong></td>
+            <td>鮮奶油太燙（&gt;60°C）且一次全倒大範圍亂攪；或溫度過低（&lt;30°C）可可脂凝結分離</td>
+            <td><strong>🚑 當場起死回生法</strong>：隔溫水回溫至 <strong>38°C</strong>，加入 <strong>15~30g 溫熱全脂牛奶</strong>補充水相，從中心重新畫小圈或用均質機貼底低速乳化 10 秒即恢復鏡面！</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="gate-box" style="margin-top:1.2rem;">
+        <strong>🎉 5 大單元簡報全部學習完畢！</strong> 你可以點右上角前往 <strong><a href="index.html" style="color:var(--caramel-dark);">【📊 綜合總論簡報（含互動診斷室、Loop/Graph 架構圖與隨堂測驗）】</a></strong> 或返回 <strong><a href="../index.html" style="color:var(--caramel-dark);">【🏠 最外層 Wiki 總入口】</a></strong>！
+      </div>
+    </section>
+  </main>
+
+  <footer class="controls">
+    <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← 上一頁</button>
+    <span id="pageIndicator" style="font-weight:700; color:var(--caramel-mid);">第 1 / 5 頁</span>
+    <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">下一頁 →</button>
+  </footer>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    let idx = 0;
+    function show(n) {
+      if (n < 0 || n >= slides.length) return;
+      slides[idx].classList.remove('active');
+      idx = n;
+      slides[idx].classList.add('active');
+      document.getElementById('progressBar').style.width = ((idx + 1) / slides.length * 100) + '%';
+      document.getElementById('pageIndicator').textContent = `第 ${idx + 1} / ${slides.length} 頁`;
+      document.getElementById('prevBtn').disabled = idx === 0;
+      document.getElementById('nextBtn').disabled = idx === slides.length - 1;
+    }
+    function changeSlide(d) { show(idx + d); }
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight' || e.key === ' ') changeSlide(1);
+      if (e.key === 'ArrowLeft') changeSlide(-1);
+    });
+    show(0);
+  </script>
+</body>
+</html>

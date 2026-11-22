@@ -43,9 +43,15 @@
 - **🔍 排錯總表、主廚流派與沉澱教案 (`wiki/troubleshooting/`, `chefs/`, `courses/`)**：
   - [`common-baking-failures.md`](wiki/troubleshooting/common-baking-failures.md) ｜ [`pierre-herme-and-schools.md`](wiki/chefs/pierre-herme-and-schools.md) ｜ [`french-pastry-science-101.md`](wiki/courses/french-pastry-science-101.md)
 
-### 3. 輸出層：互動式教學 HTML 簡報 (`slides/`)
-- **簡報檔案位置**：[`slides/index.html`](slides/index.html)
-- **教學互動特色**：包含 10 頁結構化投影片、初學者白話比喻區塊（擠牙膏肚臍、100°C 水分守門員、生肥皂泡 vs 118°C 防彈糖泡、澱粉酶剪刀手）、**瑪德蓮 vs 費南雪跨流派矩陣互動切換分頁**、**五大經典翻車現場互動診斷室**，以及 **3 題即時批改隨堂小測驗**。
+### 3. 輸出層：最外層總入口 (`index.html`) 與 5+1 份互動式教學 HTML 簡報 (`slides/`)
+- **🌟 最外層 Wiki 教學簡報中心總入口 (`index.html`)**：https://iris040407.github.io/Dessert-LLM-Wiki/
+- **📊 跨品項綜合總論簡報 (`slides/index.html` — 共 10 頁)**：https://iris040407.github.io/Dessert-LLM-Wiki/slides/index.html
+- **5 篇 Ingest 主題各自生成之 5 份獨立單元教學 HTML 簡報（各 5 頁，共 25 頁）**：
+  1. 🐚 **簡報 01（瑪德蓮專題）**：https://iris040407.github.io/Dessert-LLM-Wiki/slides/01-madeleine.html
+  2. 🧱 **簡報 02（費南雪與焦化奶油專題）**：https://iris040407.github.io/Dessert-LLM-Wiki/slides/02-financier.html
+  3. 🔔 **簡報 03（波爾多可麗露糊化與白頭專題）**：https://iris040407.github.io/Dessert-LLM-Wiki/slides/03-canele.html
+  4. 🍬 **簡報 04（法式馬卡龍蛋白霜物理專題）**：https://iris040407.github.io/Dessert-LLM-Wiki/slides/04-macaron.html
+  5. 🍮 **簡報 05（卡士達醬澱粉酶與甘納許乳化專題）**：https://iris040407.github.io/Dessert-LLM-Wiki/slides/05-creams-and-ganache.html
 
 ---
 

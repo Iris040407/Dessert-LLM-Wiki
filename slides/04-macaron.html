@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>簡報 04：法式馬卡龍 (Macaron) 專題 — LLM Wiki 教學簡報</title>
+  <style>
+    :root {
+      --bg-cream: #fdf8f2; --bg-card: #ffffff; --bg-warm: #f5ebe0;
+      --caramel-dark: #4a2c18; --caramel-mid: #8b5a2b; --caramel-gold: #c87d32;
+      --amber-accent: #d97706; --berry-red: #9e2a2b; --pistachio-green: #2d6a4f;
+      --pistachio-bg: #e8f5e9; --berry-bg: #fde8e8; --amber-bg: #fef3c7;
+      --text-main: #2c1e16; --text-muted: #6e5a4f; --border-soft: #e6d5c3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      background: var(--bg-cream); color: var(--text-main);
+      height: 100vh; overflow: hidden; display: flex; flex-direction: column;
+    }
+    header.topbar {
+      background: var(--caramel-dark); color: #fff; padding: 0.65rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;
+    }
+    .nav-links { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+    .nav-links a {
+      color: #fff; text-decoration: none; font-size: 0.82rem; font-weight: 600;
+      background: rgba(255,255,255,0.15); padding: 0.3rem 0.7rem; border-radius: 6px; transition: 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.current { background: var(--amber-accent); }
+    .progress-track { height: 5px; background: var(--border-soft); width: 100%; }
+    .progress-fill { height: 100%; background: var(--caramel-gold); width: 20%; transition: width 0.3s; }
+    main.stage {
+      flex: 1; overflow-y: auto; padding: 1.8rem 2.5rem;
+      display: flex; justify-content: center; align-items: flex-start;
+    }
+    .slide {
+      display: none; width: 100%; max-width: 1080px; background: var(--bg-card);
+      border: 1px solid var(--border-soft); border-radius: 18px; padding: 2.2rem 2.6rem;
+      box-shadow: 0 10px 30px rgba(74,44,24,0.08); animation: fadeIn 0.3s ease;
+    }
+    .slide.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .slide-tag {
+      display: inline-block; background: var(--bg-warm); color: var(--caramel-mid);
+      font-weight: 700; font-size: 0.85rem; padding: 0.25rem 0.8rem; border-radius: 999px; margin-bottom: 0.8rem;
+    }
+    h1 { font-size: 2.1rem; color: var(--caramel-dark); margin-bottom: 0.9rem; line-height: 1.3; }
+    h2 { font-size: 1.65rem; color: var(--caramel-dark); margin-bottom: 0.7rem; border-bottom: 2px solid var(--bg-warm); padding-bottom: 0.5rem; }
+    p.lead { font-size: 1.05rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 1.2rem; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.3rem; margin-top: 1rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; margin-top: 1rem; }
+    .card { background: var(--bg-cream); border: 1px solid var(--border-soft); border-radius: 12px; padding: 1.2rem; }
+    .card h3 { font-size: 1.1rem; color: var(--caramel-dark); margin-bottom: 0.5rem; }
+    .card p, .card li { font-size: 0.95rem; line-height: 1.6; }
+    .card ul { padding-left: 1.2rem; margin-top: 0.4rem; }
+    .analogy-box {
+      background: var(--amber-bg); border-left: 5px solid var(--amber-accent);
+      padding: 1rem 1.3rem; border-radius: 0 10px 10px 0; margin: 1rem 0; line-height: 1.6;
+    }
+    .gate-box {
+      background: var(--pistachio-bg); border-left: 5px solid var(--pistachio-green);
+      padding: 1rem 1.3rem; border-radius: 0 10px 10px 0; margin: 1rem 0; line-height: 1.6;
+    }
+    .warn-box {
+      background: var(--berry-bg); border-left: 5px solid var(--berry-red);
+      padding: 1rem 1.3rem; border-radius: 0 10px 10px 0; margin: 1rem 0; line-height: 1.6;
+    }
+    table.wiki-table { width: 100%; border-collapse: collapse; margin-top: 0.8rem; font-size: 0.92rem; }
+    table.wiki-table th { background: var(--caramel-dark); color: #fff; text-align: left; padding: 0.7rem 0.9rem; }
+    table.wiki-table td { padding: 0.65rem 0.9rem; border-bottom: 1px solid var(--border-soft); }
+    table.wiki-table tr:nth-child(even) { background: var(--bg-cream); }
+    .badge-pct { background: var(--amber-bg); color: var(--caramel-dark); font-weight: 700; padding: 0.1rem 0.45rem; border-radius: 5px; font-family: monospace; }
+    footer.controls {
+      background: #fff; border-top: 1px solid var(--border-soft); padding: 0.7rem 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .nav-btn {
+      background: var(--caramel-dark); color: #fff; border: none; padding: 0.5rem 1.2rem;
+      border-radius: 8px; font-weight: 700; cursor: pointer;
+    }
+    .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div style="font-weight:700;">🍬 單元簡報 04：法式馬卡龍 (Macaron) 與蛋白霜物理學專題</div>
+    <nav class="nav-links">
+      <a href="../index.html">🏠 返回 Wiki 總入口</a>
+      <a href="01-madeleine.html">01 瑪德蓮</a>
+      <a href="02-financier.html">02 費南雪</a>
+      <a href="03-canele.html">03 可麗露</a>
+      <a href="04-macaron.html" class="current">04 馬卡龍</a>
+      <a href="05-creams-and-ganache.html">05 卡士達&amp;甘納許</a>
+      <a href="index.html">📊 綜合總論</a>
+    </nav>
+  </header>
+  <div class="progress-track"><div class="progress-fill" id="progressBar"></div></div>
+
+  <main class="stage">
+    <!-- Slide 1 -->
+    <section class="slide active">
+      <span class="slide-tag">馬卡龍專題 1 / 5 ・ 知識來源：raw/04 → wiki/recipes/macaron.md</span>
+      <h1>🍬 法式馬卡龍 (Macaron Parisien)<br/>法式 vs 118°C 義式蛋白霜流派對決與「空心/無裙邊」排錯</h1>
+      <p class="lead">
+        馬卡龍完全不含小麥麵粉，僅由「杏仁粉、糖粉、蛋白、細砂糖」四種材料構成，卻是烘焙新手的頭號惡夢（空心、炸裂、沒有蕾絲裙邊）。本簡報萃取自 <code>wiki/recipes/macaron.md</code> 與 <code>wiki/techniques/meringue-aerating-systems.md</code>，帶你用泡沫物理學一次征服馬卡龍！
+      </p>
+      <div class="gate-box">
+        <strong>🛡️ Gate 1 烘焙百分比基準攔截紀錄（Shift-Left Validation）：</strong><br/>
+        1. <strong>無麵粉 TPT 基準</strong>：馬卡龍不含小麥麵粉，經 Gate 1 定義以唯一堅果粉骨架 <strong>細杏仁粉 100g = 100%</strong> 為基準（<strong>TPT</strong> = 杏仁粉 100% + 純糖粉 100%）。<br/>
+        2. <strong>兩段式蛋白合併核算</strong>：Pierre Hermé 義式流派將蛋白拆為兩半（37g 生蛋白拌粉 + 37g 打發蛋白霜），Gate 1 自動合併核算總蛋白比為 <code>74% (37%+37%)</code>，以精準對照 Ladurée 法式流派的 <code>80%</code>！
+      </div>
+      <div class="grid-3">
+        <div class="card"><h3>🫧 1. 蛋白霜泡沫骨架</h3><p>生蛋白冷打（法式）vs 118°C 滾燙糖漿沖入燙熟加固（義式），決定了壓拌容錯率與抗潮度。</p></div>
+        <div class="card"><h3>🎀 2. 壓拌 (Macaronage)</h3><p>貼盆壁刮壓破除大氣泡，直至麵糊如火山熔岩緞帶般寫「8」字於 10~15 秒融入。</p></div>
+        <div class="card"><h3>👗 3. 結皮與蕾絲裙邊</h3><p>表面風乾結皮鎖死頂部，逼迫內部受熱水蒸氣從底部邊緣擠出，烤乾定型為蕾絲裙邊（Pied）。</p></div>
+      </div>
+    </section>
+
+    <!-- Slide 2 -->
+    <section class="slide">
+      <span class="slide-tag">馬卡龍專題 2 / 5 ・ 跨流派烘焙百分比矩陣</span>
+      <h2>📊 Ladurée 法式蛋白霜派 vs Pierre Hermé 義式蛋白霜派</h2>
+      <p class="lead">以 <strong>細杏仁粉 = 100g = 100%</strong> 為基準，看懂巴黎兩大傳奇名店的配方與工序差異：</p>
+      <table class="wiki-table">
+        <thead>
+          <tr>
+            <th>原料項目 / 參數</th>
+            <th>流派 A：Ladurée 法式蛋白霜派</th>
+            <th>流派 B：Pierre Hermé 義式蛋白霜派</th>
+            <th>跨流派科學差異解析</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>細杏仁粉 (基準=100%)</strong></td>
+            <td>100g (<span class="badge-pct">100.0%</span>)</td>
+            <td>100g (<span class="badge-pct">100.0%</span>)</td>
+            <td>100% 無麩質堅果粉骨架，提供天然杏仁油與香氣</td>
+          </tr>
+          <tr>
+            <td><strong>純糖粉 (Icing Sugar)</strong></td>
+            <td>100g (<span class="badge-pct">100.0%</span>)</td>
+            <td>100g (<span class="badge-pct">100.0%</span>)</td>
+            <td>與杏仁粉構成 1:1 的 <strong>TPT (Tant Pour Tant)</strong>，幫助表面結出光滑硬殼</td>
+          </tr>
+          <tr>
+            <td><strong>老化蛋白 (Aged Whites)</strong></td>
+            <td>80g (<span class="badge-pct">80.0%</span>) <em>*全數冷打</em></td>
+            <td><strong>共 74g (<span class="badge-pct">74.0%</span>)</strong><br/><em>*37g 拌 TPT 成杏仁膏 + 37g 打蛋白霜</em></td>
+            <td><strong>關鍵差異</strong>：義式先用一半生蛋白把 TPT 拌成濃稠杏仁膏，大幅降低後續混拌消泡風險</td>
+          </tr>
+          <tr>
+            <td><strong>細砂糖 + 煮糖水用水</strong></td>
+            <td>細砂糖 80g (<span class="badge-pct">80%</span>) <em>*分3次乾打</em><br/>水 0g</td>
+            <td>細砂糖 100g (<span class="badge-pct">100%</span>) + 水 25g (<span class="badge-pct">25%</span>)<br/><em>*煮至 118°C 軟球階段沖入蛋白</em></td>
+            <td>義式用 118°C 熱糖漿把蛋白氣泡壁「半燙熟凝固」，氣泡極度細密堅挺</td>
+          </tr>
+          <tr>
+            <td><strong>結皮需求 &amp; 烤溫</strong></td>
+            <td><strong>需除濕結皮 30~60m</strong> / 150°C 烤 14m</td>
+            <td><strong>極耐潮，僅需結皮 10~15m</strong> / 155°C 烤 13m</td>
+            <td>台灣潮濕氣候下，義式蛋白霜成功率遠高於法式！</td>
+          </tr>
+          <tr>
+            <td><strong>成品口感與外觀</strong></td>
+            <td>外殼極薄酥脆、入口即化、裙邊略外展</td>
+            <td>外殼平滑飽滿如陶瓷、裙邊垂直挺立、內裡微Q</td>
+            <td>兩派皆須冷藏夾餡<strong>「回潮熟成 24 小時」</strong>才算真正完成！</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Slide 3 -->
+    <section class="slide">
+      <span class="slide-tag">馬卡龍專題 3 / 5 ・ 泡沫物理學與壓拌科學</span>
+      <h2>🫧 泡沫物理學：為什麼蛋白能抓住空氣？法式 vs 義式差在哪？</h2>
+      <div class="analogy-box">
+        <strong>💡 給初學者的原理白話文：「生肥皂泡 vs 118°C 燙熟的防彈糖泡泡！」</strong>
+        蛋白裡有 11% 的球狀蛋白質。打蛋器把空氣打進去時，蛋白質分子被拉開手牽手包住空氣。<strong>法式蛋白霜</strong>是用冷蛋白加糖直接打，就像脆弱的「生肥皂泡」，拌杏仁粉時用刮刀多壓兩下就破光化水；而<strong>義式蛋白霜</strong>是把糖水煮到 <strong>118°C</strong> 像滾燙麥芽糖一樣沖進蛋白裡，直接把泡泡壁上的蛋白質「燙熟加固」！每顆小氣泡都穿上防彈衣，怎麼拌都不容易垮！
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h3>🎀 壓拌 (Macaronage) 的物理目的</h3>
+          <ul>
+            <li>剛把堅挺的蛋白霜與杏仁粉拌合時，裡面充滿粗糙的大氣泡。</li>
+            <li>必須用刮刀將麵糊<strong>貼著盆壁擠壓抹開（壓破過大的不穩定氣泡）</strong>，再從底部翻起。</li>
+            <li><strong>🎯 黃金終點檢核（Ribbon Stage）</strong>：刮刀提起麵糊能像絲綢緞帶般連續滑落寫出「8」字，且折痕在 <strong>10~15 秒內緩慢融入盆內</strong>！</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>👗 結皮 (Croûtage) 與裙邊壓力鍋力學</h3>
+          <ul>
+            <li>為什麼要晾乾結皮到「指腹輕摸完全不黏手」？</li>
+            <li>因為那層乾掉的表皮就像<strong>把壓力鍋的屋頂鎖死</strong>！</li>
+            <li>進烤箱受熱時，內部水蒸氣往外衝，但屋頂（頂部表皮）已經乾硬鎖死衝不破，蒸氣只好從<strong>最底下沒鎖死的牆角縫隙</strong>往外擠出並瞬間烤乾，抬起屋頂形成漂亮的<strong>蕾絲裙邊 (Pied)</strong>！</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 4 -->
+    <section class="slide">
+      <span class="slide-tag">馬卡龍專題 4 / 5 ・ 頭號惡夢「馬卡龍空心」深度解剖</span>
+      <h2>🕳️ 為什麼我的馬卡龍外面很美，咬開裡面卻是「大空心 (Hollow)」？</h2>
+      <p class="lead">空心（餅殼與底部之間有一個大空洞）是學員最常遇到的挫折，背後有三大科學成因：</p>
+      <div class="grid-3">
+        <div class="warn-box">
+          <strong>❌ 空心真兇 1：蛋白霜打發過度 (Over-whipped)</strong><br/>
+          新手怕失敗把蛋白霜打到「乾硬失去光澤、呈棉花結塊狀」。此時蛋白質過度交聯失去彈性，進烤箱時大氣泡把殼頂高，冷卻後內部蛋白網支撐不住而塌陷回底部，只留下一層空殼！
+        </div>
+        <div class="warn-box">
+          <strong>❌ 空心真兇 2：壓拌不足 (Under-macaronaged)</strong><br/>
+          因為怕消泡而不敢貼盆壁擠壓，麵糊提起時像斷掉的積木一樣塊狀掉落（30 秒還不消失）。裡面殘留太多死空氣，烤出來 100% 大空心！
+        </div>
+        <div class="warn-box">
+          <strong>❌ 空心真兇 3：底火不足或未回潮熟成</strong><br/>
+          烤盤導熱太慢導致內部水氣沒有足夠動能把杏仁糊推滿外殼；此外，微小的空隙在夾入<strong>甘納許冷藏熟成 24 小時（Maturation）</strong>吸水軟化後會自然填滿融合！
+        </div>
+      </div>
+      <div class="gate-box" style="margin-top:1rem;">
+        <strong>🎯 出爐前「輕推搖晃檢核」：</strong> 烘烤至第 12 分鐘時，打開烤箱門用手指輕推馬卡龍頂蓋，若頂蓋與裙邊還會像果凍一樣左右搖晃，代表內部還沒熟（現在出爐必塌陷黏底），請再續烤 1~2 分鐘至輕推穩固不動！
+      </div>
+    </section>
+
+    <!-- Slide 5 -->
+    <section class="slide">
+      <span class="slide-tag">馬卡龍專題 5 / 5 ・ 課堂翻車排錯總結</span>
+      <h2>🔍 馬卡龍三大翻車診斷表 &amp; 跨頁知識連結</h2>
+      <table class="wiki-table">
+        <thead>
+          <tr>
+            <th>翻車徵兆</th>
+            <th>底層科學真兇</th>
+            <th>Wiki 標準修正處方箋</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. 內部大空心 (Hollow Shells)</strong></td>
+            <td>蛋白霜打太乾硬失去延展性＋壓拌不足殘留大氣泡；或底火過低</td>
+            <td>蛋白霜打至<strong>有鏡面光澤的挺立彎鉤狀</strong>即停；壓拌至<strong>緞帶寫 8 字於 10~15 秒融入</strong>；夾甘納許冷藏熟成 24h</td>
+          </tr>
+          <tr>
+            <td><strong>2. 表面如火山炸裂、完全沒有裙邊</strong></td>
+            <td>結皮不足！表皮還沒乾透就入爐，水蒸氣直接從頂部最薄處衝破炸開</td>
+            <td>開冷氣或除濕機風乾，必須確認<strong>指腹輕觸表面最高點完全不黏手且有軟殼感</strong>才可入爐（或改用義式蛋白霜）</td>
+          </tr>
+          <tr>
+            <td><strong>3. 裙邊往外橫向流散成大荷包蛋、餅殼扁塌</strong></td>
+            <td>壓拌過度（Over-macaronaged，多刮了 3 刀蛋白霜化水）或烤溫過高</td>
+            <td>在麵糊剛達到 15 秒緞帶滑落時立刻停止壓拌裝袋</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="analogy-box" style="margin-top:1.2rem;">
+        <strong>🔗 下一站學習建議：</strong> 剛烤好的馬卡龍餅殼其實又乾又脆，必須夾入帶有水分與油脂的 <strong>巧克力甘納許 (Ganache)</strong> 冷藏熟成 24 小時才會變得外脆內軟！那甘納許與卡士達醬該怎麼做才不會油水分離或化水？請點右上角進入 <strong><a href="05-creams-and-ganache.html" style="color:var(--caramel-dark);">【05 卡士達與甘納許內餡專題簡報】</a></strong>！
+      </div>
+    </section>
+  </main>
+
+  <footer class="controls">
+    <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← 上一頁</button>
+    <span id="pageIndicator" style="font-weight:700; color:var(--caramel-mid);">第 1 / 5 頁</span>
+    <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">下一頁 →</button>
+  </footer>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    let idx = 0;
+    function show(n) {
+      if (n < 0 || n >= slides.length) return;
+      slides[idx].classList.remove('active');
+      idx = n;
+      slides[idx].classList.add('active');
+      document.getElementById('progressBar').style.width = ((idx + 1) / slides.length * 100) + '%';
+      document.getElementById('pageIndicator').textContent = `第 ${idx + 1} / ${slides.length} 頁`;
+      document.getElementById('prevBtn').disabled = idx === 0;
+      document.getElementById('nextBtn').disabled = idx === slides.length - 1;
+    }
+    function changeSlide(d) { show(idx + d); }
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight' || e.key === ' ') changeSlide(1);
+      if (e.key === 'ArrowLeft') changeSlide(-1);
+    });
+    show(0);
+  </script>
+</body>
+</html>

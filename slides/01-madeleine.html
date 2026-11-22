@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>簡報 01：瑪德蓮 (Madeleine) 專題 — LLM Wiki 教學簡報</title>
+  <style>
+    :root {
+      --bg-cream: #fdf8f2; --bg-card: #ffffff; --bg-warm: #f5ebe0;
+      --caramel-dark: #4a2c18; --caramel-mid: #8b5a2b; --caramel-gold: #c87d32;
+      --amber-accent: #d97706; --berry-red: #9e2a2b; --pistachio-green: #2d6a4f;
+      --pistachio-bg: #e8f5e9; --berry-bg: #fde8e8; --amber-bg: #fef3c7;
+      --text-main: #2c1e16; --text-muted: #6e5a4f; --border-soft: #e6d5c3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      background: var(--bg-cream); color: var(--text-main);
+      height: 100vh; overflow: hidden; display: flex; flex-direction: column;
+    }
+    header.topbar {
+      background: var(--caramel-dark); color: #fff; padding: 0.65rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;
+    }
+    .nav-links { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+    .nav-links a {
+      color: #fff; text-decoration: none; font-size: 0.82rem; font-weight: 600;
+      background: rgba(255,255,255,0.15); padding: 0.3rem 0.7rem; border-radius: 6px; transition: 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.current { background: var(--amber-accent); }
+    .progress-track { height: 5px; background: var(--border-soft); width: 100%; }
+    .progress-fill { height: 100%; background: var(--caramel-gold); width: 20%; transition: width 0.3s; }
+    main.stage {
+      flex: 1; overflow-y: auto; padding: 1.8rem 2.5rem;
+      display: flex; justify-content: center; align-items: flex-start;
+    }
+    .slide {
+      display: none; width: 100%; max-width: 1080px; background: var(--bg-card);
+      border: 1px solid var(--border-soft); border-radius: 18px; padding: 2.2rem 2.6rem;
+      box-shadow: 0 10px 30px rgba(74,44,24,0.08); animation: fadeIn 0.3s ease;
+    }
+    .slide.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .slide-tag {
+      display: inline-block; background: var(--bg-warm); color: var(--caramel-mid);
+      font-weight: 700; font-size: 0.85rem; padding: 0.25rem 0.8rem; border-radius: 999px; margin-bottom: 0.8rem;
+    }
+    h1 { font-size: 2.1rem; color: var(--caramel-dark); margin-bottom: 0.9rem; line-height: 1.3; }
+    h2 { font-size: 1.65rem; color: var(--caramel-dark); margin-bottom: 0.7rem; border-bottom: 2px solid var(--bg-warm); padding-bottom: 0.5rem; }
+    p.lead { font-size: 1.05rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 1.2rem; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.3rem; margin-top: 1rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; margin-top: 1rem; }
+    .card { background: var(--bg-cream); border: 1px solid var(--border-soft); border-radius: 12px; padding: 1.2rem; }
+    .card h3 { font-size: 1.1rem; color: var(--caramel-dark); margin-bottom: 0.5rem; }
+    .card p, .card li { font-size: 0.95rem; line-height: 1.6; }
+    .card ul { padding-left: 1.2rem; margin-top: 0.4rem; }
+    .analogy-box {
+      background: var(--amber-bg); border-left: 5px solid var(--amber-accent);
+      padding: 1rem 1.3rem; border-radius: 0 10px 10px 0; margin: 1rem 0; line-height: 1.6;
+    }
+    .gate-box {
+      background: var(--pistachio-bg); border-left: 5px solid var(--pistachio-green);
+      padding: 1rem 1.3rem; border-radius: 0 10px 10px 0; margin: 1rem 0; line-height: 1.6;
+    }
+    .warn-box {
+      background: var(--berry-bg); border-left: 5px solid var(--berry-red);
+      padding: 1rem 1.3rem; border-radius: 0 10px 10px 0; margin: 1rem 0; line-height: 1.6;
+    }
+    table.wiki-table { width: 100%; border-collapse: collapse; margin-top: 0.8rem; font-size: 0.92rem; }
+    table.wiki-table th { background: var(--caramel-dark); color: #fff; text-align: left; padding: 0.7rem 0.9rem; }
+    table.wiki-table td { padding: 0.65rem 0.9rem; border-bottom: 1px solid var(--border-soft); }
+    table.wiki-table tr:nth-child(even) { background: var(--bg-cream); }
+    .badge-pct { background: var(--amber-bg); color: var(--caramel-dark); font-weight: 700; padding: 0.1rem 0.45rem; border-radius: 5px; font-family: monospace; }
+    footer.controls {
+      background: #fff; border-top: 1px solid var(--border-soft); padding: 0.7rem 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .nav-btn {
+      background: var(--caramel-dark); color: #fff; border: none; padding: 0.5rem 1.2rem;
+      border-radius: 8px; font-weight: 700; cursor: pointer;
+    }
+    .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div style="font-weight:700;">🐚 單元簡報 01：瑪德蓮 (Madeleine) 烘焙科學專題</div>
+    <nav class="nav-links">
+      <a href="../index.html">🏠 返回 Wiki 總入口</a>
+      <a href="01-madeleine.html" class="current">01 瑪德蓮</a>
+      <a href="02-financier.html">02 費南雪</a>
+      <a href="03-canele.html">03 可麗露</a>
+      <a href="04-macaron.html">04 馬卡龍</a>
+      <a href="05-creams-and-ganache.html">05 卡士達&amp;甘納許</a>
+      <a href="index.html">📊 綜合總論</a>
+    </nav>
+  </header>
+  <div class="progress-track"><div class="progress-fill" id="progressBar"></div></div>
+
+  <main class="stage">
+    <!-- Slide 1 -->
+    <section class="slide active">
+      <span class="slide-tag">瑪德蓮專題 1 / 5 ・ 知識來源：raw/01 → wiki/recipes/madeleine.md</span>
+      <h1>🐚 瑪德蓮貝殼蛋糕 (Madeleine)<br/>兩大名廚流派對比與「凸肚臍 (Bosse)」熱力學</h1>
+      <p class="lead">
+        瑪德蓮是法國洛林地區最具代表性的常溫貝殼蛋糕。本簡報由 LLM Wiki 萃取自 <code>wiki/recipes/madeleine.md</code> 與 <code>wiki/techniques/starch-gelatinization-and-resting.md</code>，帶初學者徹底搞懂為什麼瑪德蓮一定要「冰過夜」才會長出高聳飽滿的凸肚臍！
+      </p>
+      <div class="gate-box">
+        <strong>🛡️ Gate 1 單位標準化攔截紀錄（Shift-Left Validation）：</strong><br/>
+        原始文獻 <code>raw/01-madeleine-ph-vs-classic.md</code> 中，Pierre Hermé 配方記載為「全蛋 4 顆」與「泡打粉 1.5 小匙 (tsp)」。在進入 Wiki 前已被 <strong>Gate 1</strong> 攔截並自動換算為公制克數：<code>全蛋 200g (100%)</code> 與 <code>泡打粉 6g (3%)</code>，實現與日系流派的 100% 精準對齊！
+      </div>
+      <div class="grid-3">
+        <div class="card"><h3>🥣 1. 全蛋無打發乳化</h3><p>絕對不打發全蛋！靠蛋黃卵磷脂與 45°C~50°C 溫熱融化奶油形成絲滑美乃滋狀乳化麵糊。</p></div>
+        <div class="card"><h3>❄️ 2. 12~24h 冷藏水合</h3><p>讓小麥澱粉充分吸飽水分提高黏稠度，同時鬆弛攪拌產生的麵筋，避免口感像發糕。</p></div>
+        <div class="card"><h3>🌋 3. 冰火溫差頂出肚臍</h3><p>8°C 冰麵糊直入 220°C 高溫爐，四周先結殼鎖死，中心泡打粉最後受熱向上火山爆發！</p></div>
+      </div>
+    </section>
+
+    <!-- Slide 2 -->
+    <section class="slide">
+      <span class="slide-tag">瑪德蓮專題 2 / 5 ・ 跨流派烘焙百分比矩陣</span>
+      <h2>📊 Pierre Hermé 濃郁牛奶派 vs 日本菓子學校經典蜂蜜派</h2>
+      <p class="lead">以 <strong>低筋麵粉 = 100%</strong> 為烘焙百分比基準，一眼看穿兩大名廚流派的配方設計哲學：</p>
+      <table class="wiki-table">
+        <thead>
+          <tr>
+            <th>原料項目 / 參數</th>
+            <th>流派 A：Pierre Hermé 派 (克數 / %)</th>
+            <th>流派 B：日本菓子學校派 (克數 / %)</th>
+            <th>跨流派科學差異解析</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>低筋麵粉 (T55)</strong></td>
+            <td>200g (<span class="badge-pct">100.0%</span>)</td>
+            <td>150g (<span class="badge-pct">100.0%</span>)</td>
+            <td>100% 純小麥麵粉骨架（不含杏仁粉）</td>
+          </tr>
+          <tr>
+            <td><strong>泡打粉 (Baking Powder)</strong></td>
+            <td>6g (<span class="badge-pct">3.0%</span>) <em>*原 1.5 tsp</em></td>
+            <td>6g (<span class="badge-pct">4.0%</span>)</td>
+            <td>日系泡打粉略高 (4%)，追求更輕盈蓬鬆的氣孔</td>
+          </tr>
+          <tr>
+            <td><strong>細砂糖 + 蜂蜜</strong></td>
+            <td>砂糖 200g (<span class="badge-pct">100.0%</span>) / 無蜂蜜</td>
+            <td>砂糖 120g (<span class="badge-pct">80%</span>) + <strong>蜂蜜 30g (<span class="badge-pct">20%</span>)</strong></td>
+            <td>日系以 20% 蜂蜜（轉化單醣）鎖水保濕並加速金黃上色</td>
+          </tr>
+          <tr>
+            <td><strong>全蛋液 + 全脂牛奶</strong></td>
+            <td>全蛋 200g (<span class="badge-pct">100%</span>) + <strong>牛奶 50g (<span class="badge-pct">25%</span>)</strong></td>
+            <td>全蛋 150g (<span class="badge-pct">100.0%</span>) / 無牛奶</td>
+            <td><strong>關鍵差異</strong>：PH 總液粉比高達 <strong>125%</strong>，組織極致濕潤綿密</td>
+          </tr>
+          <tr>
+            <td><strong>無鹽發酵奶油</strong></td>
+            <td>200g (<span class="badge-pct">100%</span>) <em>*45°C 融化</em></td>
+            <td>150g (<span class="badge-pct">100%</span>) <em>*50°C 微焦化</em></td>
+            <td>PH 不煮焦奶油以襯托新鮮黃檸檬皮清香；日系煮至微焦化增香</td>
+          </tr>
+          <tr>
+            <td><strong>烤溫曲線</strong></td>
+            <td><strong>220°C 烤 4m → 降溫 180°C 烤 7m</strong></td>
+            <td><strong>190°C 全程均溫烤 12~14m</strong></td>
+            <td>PH 採高溫熱衝擊逼出最高聳肚臍；日系均溫烘烤教學容錯率高</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Slide 3 -->
+    <section class="slide">
+      <span class="slide-tag">瑪德蓮專題 3 / 5 ・ 物理化學機制拆解</span>
+      <h2>🌋 為什麼瑪德蓮會有「凸肚臍 (Bosse)」？擠牙膏熱力學！</h2>
+      <div class="analogy-box">
+        <strong>💡 給初學者的原理白話文：「想像你在擠一條冰凍濃稠的牙膏！」</strong>
+        剛拌好的常溫麵糊像稀稀的水，進烤箱受熱時，氣體從整個表面平均冒出來就跑光了，所以烤出來平平的；但<strong>冷藏靜置 12~24 小時的冰麵糊就像濃稠的牙膏</strong>！進 220°C 高溫烤箱時，接觸金屬模的四周在 3 分鐘內瞬間被烤硬變成「牙膏管壁」，正中央最後受熱膨脹的泡打粉氣體沒地方逃，只能往背面正中央最脆弱的表皮「噗！」地一聲往上頂破，形成高聳的凸肚臍！
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h3>❄️ 步驟一：冷藏靜置 (4°C, 12~24h) 的三大任務</h3>
+          <ul>
+            <li><strong>澱粉完全吸水膨潤 (Hydration)</strong>：大幅拉高麵糊黏稠度，烘烤時才包得住氣體。</li>
+            <li><strong>麵筋徹底鬆弛 (Gluten Relaxation)</strong>：消除攪拌筋性，口感柔嫩不硬。</li>
+            <li><strong>儲備極端溫差潛能</strong>：讓入爐麵糊保持在 8°C~10°C。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>🔥 步驟二：入爐 3~5 分鐘的雙效泡打粉噴發</h3>
+          <ul>
+            <li><strong>外圍鎖死</strong>：金屬模導熱極快，底部與四周率先凝固結殼；背面表層也被熱風吹出薄皮。</li>
+            <li><strong>中心跨過 60°C 臨界點</strong>：雙效泡打粉（Double-acting）啟動第二階段熱產氣，集中從中央火山口向上推升！</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 4 -->
+    <section class="slide">
+      <span class="slide-tag">瑪德蓮專題 4 / 5 ・ 烘焙乳化科學</span>
+      <h2>🥣 45°C~50°C 的乳化魔法：為什麼奶油太冷或太燙都會毀了瑪德蓮？</h2>
+      <p class="lead">瑪德蓮含有高達 100% 的奶油與 100%~125% 的水相（蛋液＋牛奶），讓油與水緊密擁抱的關鍵是蛋黃裡的<strong>卵磷脂（Lecithin）</strong>與<strong>投料溫度</strong>！</p>
+      <div class="grid-2">
+        <div class="warn-box">
+          <strong>❌ 錯誤一：融化奶油太冷（&lt; 35°C）就倒進去</strong><br/>
+          乳脂在 32~35°C 已開始重新結晶變稠，一碰到微涼的蛋糊會瞬間凝結成微小油脂碎塊，無法被打散乳化。烤出來蛋糕<strong>邊緣會出現隧道般的大氣孔（Tunneling）且口感油膩</strong>！
+        </div>
+        <div class="warn-box">
+          <strong>❌ 錯誤二：把全蛋跟糖打發到泛白膨脹</strong><br/>
+          把瑪德蓮當成海綿蛋糕來打發，打入過多死空氣，會導致烘烤時氣孔粗糙如發糕，且出爐冷卻後肚臍劇烈塌陷皺縮！<strong>只需貼底畫圈拌至糖融化即可</strong>。
+        </div>
+      </div>
+      <div class="gate-box">
+        <strong>🎯 課堂示範黃金檢核點 (Checkpoints)：</strong><br/>
+        1. <strong>乳化光澤檢核</strong>：分次沖入 45°C~50°C 融化奶油拌勻後，麵糊必須呈現<strong>有光澤、滑順如美乃滋般的緞帶狀</strong>，表面絕對不可浮一層游離油。<br/>
+        2. <strong>八分滿檢核</strong>：冰麵糊擠入模具 <strong>8 分滿</strong>即可（擠全滿會導致肚臍往四面溢流成飛碟邊）。
+      </div>
+    </section>
+
+    <!-- Slide 5 -->
+    <section class="slide">
+      <span class="slide-tag">瑪德蓮專題 5 / 5 ・ 課堂翻車排錯總結</span>
+      <h2>🔍 瑪德蓮三大翻車診斷表 &amp; 跨頁知識連結</h2>
+      <table class="wiki-table">
+        <thead>
+          <tr>
+            <th>翻車徵兆</th>
+            <th>底層科學真兇</th>
+            <th>Wiki 標準修正處方箋</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. 背面平坦、完全沒有凸肚臍</strong></td>
+            <td>麵糊未冷藏靜置（太稀且無溫差），或烤箱預熱不足（&lt;180°C），四周結殼太慢導致氣體平均散逸</td>
+            <td>強制 <strong>4°C 冷藏靜置 12~24h</strong>；以 <strong>8~10°C 冰麵糊直入 210~220°C 高溫爐</strong>衝擊 4 分鐘再降溫至 180°C</td>
+          </tr>
+          <tr>
+            <td><strong>2. 內部有大隧道孔洞、邊緣泛油</strong></td>
+            <td>拌粉後過度攪拌打出麵筋，或融化奶油溫度過低（&lt;35°C）導致油水分離</td>
+            <td>拌粉至無乾粉即停；確認融化奶油在 <strong>45°C~50°C</strong> 時分次加入完成乳化</td>
+          </tr>
+          <tr>
+            <td><strong>3. 口感乾硬像發糕、放隔天老化快</strong></td>
+            <td>烘烤過度（出爐未立刻脫模被餘溫烤乾），或純砂糖配方缺乏保水單醣</td>
+            <td>肚臍裂口無生麵糊光澤即出爐脫模；可參考日系流派將 <strong>20% 砂糖替換為百花蜂蜜或轉化糖漿</strong></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="analogy-box" style="margin-top:1.2rem;">
+        <strong>🔗 下一站學習建議：</strong> 瑪德蓮用「全蛋＋100%低粉＋45°C融化奶油」，那它的雙胞胎兄弟 <strong>費南雪（Financier）</strong> 為什麼改用「純蛋白＋50%杏仁粉＋145°C焦化奶油」？請點右上角進入 <strong><a href="02-financier.html" style="color:var(--caramel-dark);">【02 費南雪專題簡報】</a></strong>！
+      </div>
+    </section>
+  </main>
+
+  <footer class="controls">
+    <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← 上一頁</button>
+    <span id="pageIndicator" style="font-weight:700; color:var(--caramel-mid);">第 1 / 5 頁</span>
+    <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">下一頁 →</button>
+  </footer>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    let idx = 0;
+    function show(n) {
+      if (n < 0 || n >= slides.length) return;
+      slides[idx].classList.remove('active');
+      idx = n;
+      slides[idx].classList.add('active');
+      document.getElementById('progressBar').style.width = ((idx + 1) / slides.length * 100) + '%';
+      document.getElementById('pageIndicator').textContent = `第 ${idx + 1} / ${slides.length} 頁`;
+      document.getElementById('prevBtn').disabled = idx === 0;
+      document.getElementById('nextBtn').disabled = idx === slides.length - 1;
+    }
+    function changeSlide(d) { show(idx + d); }
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight' || e.key === ' ') changeSlide(1);
+      if (e.key === 'ArrowLeft') changeSlide(-1);
+    });
+    show(0);
+  </script>
+</body>
+</html>
