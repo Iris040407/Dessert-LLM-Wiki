@@ -1,10 +1,10 @@
 # 作業繳交報告：用 LLM Wiki 做一份教學 HTML 簡報
 
 - **繳交標題格式**：`[學校簡稱] [學號] [系級簡稱] [姓名] 法式甜點科學與跨流派教學 LLM Wiki`
-- **專案根目錄**：[`d:\Antigravity\Dessert`](.)
-- **核心 Schema 規範**：[`AGENTS.md`](AGENTS.md)
-- **Wiki 全局索引與日誌**：[`wiki/index.md`](wiki/index.md) ｜ [`wiki/log.md`](wiki/log.md)
-- **互動式教學 HTML 簡報**：[`slides/index.html`](slides/index.html)
+- **🔗 LLM Wiki GitHub 成果連結**：https://github.com/Iris040407/Dessert-LLM-Wiki
+- **🖥️ 教學 HTML 簡報線上瀏覽連結 (GitHub Pages)**：https://iris040407.github.io/Dessert-LLM-Wiki/slides/
+- **核心 Schema 規範**：[`AGENTS.md`](https://github.com/Iris040407/Dessert-LLM-Wiki/blob/main/AGENTS.md)
+- **Wiki 全局索引與日誌**：[`wiki/index.md`](https://github.com/Iris040407/Dessert-LLM-Wiki/blob/main/wiki/index.md) ｜ [`wiki/log.md`](https://github.com/Iris040407/Dessert-LLM-Wiki/blob/main/wiki/log.md)
 
 ---
 

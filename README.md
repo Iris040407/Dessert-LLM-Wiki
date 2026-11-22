@@ -1,9 +1,10 @@
 # 🍰 法式甜點科學與跨流派教學知識庫 (French Pastry Science & Teaching LLM Wiki)
 
 > **作業主題**：用 LLM Wiki 做一份教學 HTML 簡報  
-> **GitHub 帳號**：`Iris040407`  
+> **GitHub 儲存庫連結**：https://github.com/Iris040407/Dessert-LLM-Wiki  
+> **🖥️ 教學 HTML 簡報線上瀏覽連結 (GitHub Pages)**：**https://iris040407.github.io/Dessert-LLM-Wiki/slides/**  
 > **核心檔案快速導覽**：
-> - 🖥️ **[互動式教學 HTML 簡報 (`slides/index.html`)](slides/index.html)** *(若已開啟 GitHub Pages，可直接點此線上瀏覽)*
+> - 🖥️ **[點此直接開啟互動式教學 HTML 簡報](https://iris040407.github.io/Dessert-LLM-Wiki/slides/)**
 > - 📜 **[完整作業繳交報告 (`HOMEWORK_REPORT.md`)](HOMEWORK_REPORT.md)** *(含 Loop/Graph 設計、執行紀錄與 Shift-Left 反思)*
 > - ⚙️ **[LLM Wiki 核心規範 (`AGENTS.md`)](AGENTS.md)** *(定義三層架構、Dual-Loop Graph 與 Gate 1~3 檢查點)*
 > - 🗂️ **[Wiki 全局內容索引 (`wiki/index.md`)](wiki/index.md)** ｜ 🕒 **[時間軸操作與檢查日誌 (`wiki/log.md`)](wiki/log.md)**
