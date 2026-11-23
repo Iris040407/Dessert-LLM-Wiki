@@ -3,14 +3,16 @@
 > **作業主題**：用 LLM Wiki 做一份教學 HTML 簡報  
 > **GitHub 儲存庫連結**：https://github.com/Iris040407/Dessert-LLM-Wiki  
 > **🌟 最外層 LLM Wiki 教學簡報總入口 (`index.html`)**：**https://iris040407.github.io/Dessert-LLM-Wiki/**  
-> **🖥️ 5 份獨立單元簡報 ＋ 1 份綜合總論簡報線上直達連結**：
+> **🔄 獨立 Loop / Graph 流程設計與實作反思專頁 (`workflow.html`)**：**https://iris040407.github.io/Dessert-LLM-Wiki/workflow.html**  
+> **🖥️ 互動式教學 HTML 簡報線上直達連結**：
 > - 🏠 **[最外層 Wiki 簡報總中心 (`index.html`)](https://iris040407.github.io/Dessert-LLM-Wiki/)** ｜ 🗂️ **[最外層全局索引 (`index.md`)](index.md)**
+> - 📊 **[綜合總論教學簡報：法式甜點科學 101 (`slides/index.html` — 共 8 頁)](https://iris040407.github.io/Dessert-LLM-Wiki/slides/index.html)** *(經由「大綱 → 逐頁腳本 → HTML」三階段 Graph 生成)*
+> - 🔄 **[Loop / Graph 流程設計與 Shift-Left 反思專頁 (`workflow.html`)](https://iris040407.github.io/Dessert-LLM-Wiki/workflow.html)** *(可由首頁頂部按鈕點擊查看)*
 > - 🐚 **[簡報 01：瑪德蓮專題 (`slides/01-madeleine.html`)](https://iris040407.github.io/Dessert-LLM-Wiki/slides/01-madeleine.html)**
 > - 🧱 **[簡報 02：費南雪與焦化奶油專題 (`slides/02-financier.html`)](https://iris040407.github.io/Dessert-LLM-Wiki/slides/02-financier.html)**
 > - 🔔 **[簡報 03：波爾多可麗露糊化與白頭專題 (`slides/03-canele.html`)](https://iris040407.github.io/Dessert-LLM-Wiki/slides/03-canele.html)**
 > - 🍬 **[簡報 04：法式馬卡龍蛋白霜物理專題 (`slides/04-macaron.html`)](https://iris040407.github.io/Dessert-LLM-Wiki/slides/04-macaron.html)**
 > - 🍮 **[簡報 05：卡士達醬澱粉酶與甘納許乳化專題 (`slides/05-creams-and-ganache.html`)](https://iris040407.github.io/Dessert-LLM-Wiki/slides/05-creams-and-ganache.html)**
-> - 📊 **[綜合總論簡報：法式甜點科學 101 (`slides/index.html`)](https://iris040407.github.io/Dessert-LLM-Wiki/slides/index.html)** *(含互動診斷室與隨堂測驗)*
 > - 📜 **[完整作業繳交報告 (`HOMEWORK_REPORT.md`)](HOMEWORK_REPORT.md)** ｜ ⚙️ **[核心規範 (`AGENTS.md`)](AGENTS.md)** ｜ 🕒 **[檢查日誌 (`wiki/log.md`)](wiki/log.md)**
 
 ---

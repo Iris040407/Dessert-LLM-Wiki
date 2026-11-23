@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>法式甜點科學 101 — 基於 LLM Wiki 的互動教學簡報</title>
+  <title>法式甜點科學 101（8 頁綜合教學簡報）— 基於 LLM Wiki 生成</title>
   <style>
     :root {
       --bg-cream: #fdf8f2;
@@ -24,11 +24,7 @@
       --shadow-card: 0 10px 30px rgba(74, 44, 24, 0.08);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", -apple-system, BlinkMacSystemFont, sans-serif;
@@ -40,7 +36,6 @@
       flex-direction: column;
     }
 
-    /* Top Navigation Bar */
     header.topbar {
       background: var(--caramel-dark);
       color: #fff;
@@ -48,6 +43,8 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
       box-shadow: 0 2px 10px rgba(0,0,0,0.15);
       z-index: 20;
     }
@@ -55,10 +52,9 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 0.65rem;
       font-weight: 700;
-      font-size: 1.05rem;
-      letter-spacing: 0.5px;
+      font-size: 1.02rem;
     }
 
     .brand-badge {
@@ -66,14 +62,14 @@
       color: #fff;
       padding: 0.2rem 0.6rem;
       border-radius: 999px;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 600;
     }
 
     .slide-Jump {
       display: flex;
       align-items: center;
-      gap: 0.4rem;
+      gap: 0.35rem;
       flex-wrap: wrap;
     }
 
@@ -90,17 +86,13 @@
       transition: all 0.2s;
     }
 
-    .dot-btn:hover {
-      background: rgba(255,255,255,0.35);
-    }
-
+    .dot-btn:hover { background: rgba(255,255,255,0.35); }
     .dot-btn.active {
       background: var(--amber-accent);
       color: #fff;
       transform: scale(1.08);
     }
 
-    /* Progress Bar */
     .progress-track {
       height: 5px;
       background: var(--border-soft);
@@ -110,16 +102,15 @@
     .progress-fill {
       height: 100%;
       background: linear-gradient(90deg, var(--caramel-gold), var(--berry-red));
-      width: 10%;
+      width: 12.5%;
       transition: width 0.35s ease;
     }
 
-    /* Main Slide Stage */
     main.stage {
       flex: 1;
       position: relative;
       overflow-y: auto;
-      padding: 1.8rem 2.5rem;
+      padding: 1.6rem 2.2rem;
       display: flex;
       justify-content: center;
       align-items: flex-start;
@@ -132,142 +123,108 @@
       background: var(--bg-card);
       border: 1px solid var(--border-soft);
       border-radius: 20px;
-      padding: 2.4rem 2.8rem;
+      padding: 2.2rem 2.6rem;
       box-shadow: var(--shadow-card);
-      animation: fadeIn 0.35s ease;
+      animation: fadeIn 0.32s ease;
     }
 
-    .slide.active {
-      display: block;
-    }
+    .slide.active { display: block; }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
+      from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Typography */
     .slide-tag {
       display: inline-block;
       background: var(--bg-warm);
       color: var(--caramel-mid);
       font-weight: 700;
-      font-size: 0.85rem;
-      padding: 0.3rem 0.85rem;
+      font-size: 0.84rem;
+      padding: 0.28rem 0.85rem;
       border-radius: 999px;
-      margin-bottom: 0.8rem;
+      margin-bottom: 0.75rem;
       border: 1px solid var(--border-soft);
     }
 
     h1.hero-title {
-      font-size: 2.35rem;
+      font-size: 2.25rem;
       color: var(--caramel-dark);
       line-height: 1.3;
-      margin-bottom: 1rem;
+      margin-bottom: 0.9rem;
     }
 
     h2.slide-title {
-      font-size: 1.75rem;
+      font-size: 1.7rem;
       color: var(--caramel-dark);
       margin-bottom: 0.6rem;
       border-bottom: 2px solid var(--bg-warm);
-      padding-bottom: 0.6rem;
+      padding-bottom: 0.55rem;
     }
 
     p.lead {
-      font-size: 1.1rem;
+      font-size: 1.06rem;
       color: var(--text-muted);
       line-height: 1.65;
-      margin-bottom: 1.4rem;
+      margin-bottom: 1.2rem;
     }
 
-    /* Grid Layouts */
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.4rem;
-      margin-top: 1rem;
-    }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.3rem; margin-top: 0.9rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.15rem; margin-top: 0.9rem; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 0.9rem; }
 
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.2rem;
-      margin-top: 1rem;
-    }
-
-    .grid-4 {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-
-    /* Cards & Callouts */
     .card {
       background: var(--bg-cream);
       border: 1px solid var(--border-soft);
       border-radius: 14px;
-      padding: 1.25rem 1.4rem;
+      padding: 1.2rem 1.35rem;
     }
 
     .card h3 {
-      font-size: 1.15rem;
+      font-size: 1.12rem;
       color: var(--caramel-dark);
-      margin-bottom: 0.55rem;
+      margin-bottom: 0.5rem;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.45rem;
     }
 
     .card p, .card li {
-      font-size: 0.96rem;
+      font-size: 0.95rem;
       line-height: 1.6;
       color: var(--text-main);
     }
 
-    .card ul {
-      padding-left: 1.2rem;
-      margin-top: 0.4rem;
-    }
+    .card ul { padding-left: 1.2rem; margin-top: 0.35rem; }
 
     .analogy-box {
       background: var(--amber-bg);
       border-left: 5px solid var(--amber-accent);
-      padding: 1.1rem 1.4rem;
+      padding: 1rem 1.35rem;
       border-radius: 0 12px 12px 0;
-      margin: 1.2rem 0;
+      margin: 1rem 0;
     }
 
     .analogy-box strong {
       color: var(--caramel-dark);
       display: block;
-      margin-bottom: 0.35rem;
-      font-size: 1.02rem;
+      margin-bottom: 0.3rem;
+      font-size: 1rem;
     }
 
     .gate-box {
       background: var(--pistachio-bg);
       border-left: 5px solid var(--pistachio-green);
-      padding: 1rem 1.3rem;
+      padding: 0.95rem 1.3rem;
       border-radius: 0 12px 12px 0;
-      margin: 1rem 0;
+      margin: 0.95rem 0;
     }
 
-    .warn-box {
-      background: var(--berry-bg);
-      border-left: 5px solid var(--berry-red);
-      padding: 1rem 1.3rem;
-      border-radius: 0 12px 12px 0;
-      margin: 1rem 0;
-    }
-
-    /* Tables */
     table.wiki-table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 0.8rem;
-      font-size: 0.93rem;
+      margin-top: 0.75rem;
+      font-size: 0.92rem;
       background: #fff;
       border-radius: 10px;
       overflow: hidden;
@@ -278,35 +235,32 @@
       background: var(--caramel-dark);
       color: #fff;
       text-align: left;
-      padding: 0.75rem 1rem;
+      padding: 0.7rem 0.95rem;
       font-weight: 600;
     }
 
     table.wiki-table td {
-      padding: 0.7rem 1rem;
+      padding: 0.65rem 0.95rem;
       border-bottom: 1px solid var(--border-soft);
       line-height: 1.5;
     }
 
-    table.wiki-table tr:nth-child(even) {
-      background: var(--bg-cream);
-    }
+    table.wiki-table tr:nth-child(even) { background: var(--bg-cream); }
 
     .badge-pct {
       background: var(--amber-bg);
       color: var(--caramel-dark);
       font-weight: 700;
-      padding: 0.15rem 0.5rem;
+      padding: 0.12rem 0.48rem;
       border-radius: 6px;
       font-family: monospace;
-      font-size: 0.92rem;
+      font-size: 0.9rem;
     }
 
-    /* Interactive Tabs */
     .tab-bar {
       display: flex;
-      gap: 0.6rem;
-      margin-bottom: 1rem;
+      gap: 0.55rem;
+      margin-bottom: 0.9rem;
       flex-wrap: wrap;
     }
 
@@ -314,7 +268,7 @@
       background: var(--bg-warm);
       border: 1px solid var(--border-soft);
       color: var(--caramel-dark);
-      padding: 0.55rem 1.1rem;
+      padding: 0.5rem 1.05rem;
       border-radius: 10px;
       font-weight: 700;
       cursor: pointer;
@@ -326,31 +280,27 @@
       color: #fff;
     }
 
-    /* Interactive Troubleshooting Cards */
     .trouble-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 0.75rem;
-      margin-bottom: 1.2rem;
+      gap: 0.7rem;
+      margin-bottom: 1rem;
     }
 
     .trouble-btn {
       background: var(--bg-cream);
       border: 2px solid var(--border-soft);
       border-radius: 12px;
-      padding: 0.9rem 0.7rem;
+      padding: 0.75rem 0.6rem;
       text-align: center;
       cursor: pointer;
       transition: all 0.2s;
       font-weight: 700;
       color: var(--caramel-dark);
+      font-size: 0.9rem;
     }
 
-    .trouble-btn:hover {
-      border-color: var(--caramel-gold);
-      transform: translateY(-2px);
-    }
-
+    .trouble-btn:hover { border-color: var(--caramel-gold); transform: translateY(-2px); }
     .trouble-btn.active {
       background: var(--caramel-dark);
       color: #fff;
@@ -361,100 +311,51 @@
       background: var(--bg-cream);
       border: 2px solid var(--caramel-gold);
       border-radius: 14px;
-      padding: 1.4rem;
+      padding: 1.2rem 1.35rem;
     }
 
-    /* Flow Diagram Boxes */
-    .flow-container {
-      display: flex;
-      flex-direction: column;
-      gap: 0.9rem;
-      margin-top: 0.8rem;
-    }
-
-    .flow-row {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      flex-wrap: wrap;
-      background: var(--bg-cream);
-      padding: 0.9rem 1.1rem;
-      border-radius: 12px;
-      border: 1px solid var(--border-soft);
-    }
-
-    .flow-node {
-      background: #fff;
-      border: 2px solid var(--caramel-mid);
-      padding: 0.5rem 0.9rem;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 0.9rem;
-    }
-
-    .flow-node.gate {
-      background: var(--amber-bg);
-      border-color: var(--amber-accent);
-      color: var(--caramel-dark);
-    }
-
-    .flow-node.shift-left {
-      background: var(--berry-bg);
-      border-color: var(--berry-red);
-      color: var(--berry-red);
-    }
-
-    .flow-arrow {
-      font-weight: 900;
-      color: var(--caramel-gold);
-      font-size: 1.1rem;
-    }
-
-    /* Quiz Styling */
     .quiz-item {
       background: var(--bg-cream);
       border: 1px solid var(--border-soft);
       border-radius: 12px;
-      padding: 1rem 1.3rem;
-      margin-bottom: 0.9rem;
+      padding: 0.9rem 1.2rem;
+      margin-bottom: 0.75rem;
     }
 
     .quiz-options {
       display: flex;
-      gap: 0.7rem;
-      margin-top: 0.6rem;
+      gap: 0.6rem;
+      margin-top: 0.5rem;
       flex-wrap: wrap;
     }
 
     .quiz-opt {
       background: #fff;
       border: 1px solid var(--caramel-mid);
-      padding: 0.45rem 0.95rem;
+      padding: 0.4rem 0.9rem;
       border-radius: 8px;
       cursor: pointer;
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       transition: all 0.2s;
+      text-align: left;
     }
 
-    .quiz-opt:hover {
-      background: var(--bg-warm);
-    }
+    .quiz-opt:hover { background: var(--bg-warm); }
 
     .quiz-feedback {
-      margin-top: 0.6rem;
-      font-size: 0.92rem;
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
       font-weight: 600;
       display: none;
-      padding: 0.5rem 0.8rem;
+      padding: 0.45rem 0.75rem;
       border-radius: 8px;
     }
 
-    /* Footer Controls */
     footer.controls {
       background: #fff;
       border-top: 1px solid var(--border-soft);
-      padding: 0.75rem 2rem;
+      padding: 0.7rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -465,57 +366,45 @@
       background: var(--caramel-dark);
       color: #fff;
       border: none;
-      padding: 0.55rem 1.3rem;
+      padding: 0.5rem 1.25rem;
       border-radius: 10px;
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 0.93rem;
       cursor: pointer;
       transition: background 0.2s;
     }
 
-    .nav-btn:hover:not(:disabled) {
-      background: var(--caramel-gold);
-    }
-
-    .nav-btn:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
+    .nav-btn:hover:not(:disabled) { background: var(--caramel-gold); }
+    .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
     .page-indicator {
       font-weight: 700;
       color: var(--caramel-mid);
-      font-size: 0.95rem;
+      font-size: 0.93rem;
     }
 
     @media (max-width: 900px) {
-      .grid-2, .grid-3, .grid-4, .trouble-grid {
-        grid-template-columns: 1fr;
-      }
-      main.stage {
-        padding: 1rem;
-      }
-      .slide {
-        padding: 1.5rem;
-      }
+      .grid-2, .grid-3, .grid-4, .trouble-grid { grid-template-columns: 1fr; }
+      main.stage { padding: 1rem; }
+      .slide { padding: 1.4rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Top Bar -->
   <header class="topbar">
     <div class="brand">
-      <span>🍰 法式甜點科學 101（綜合總論）</span>
-      <span class="brand-badge">Compiled from LLM Wiki (16 Pages / 5 Sources)</span>
+      <span>🍰 法式甜點科學 101（綜合教學簡報）</span>
+      <span class="brand-badge">Staged Graph: Outline → Script → HTML</span>
     </div>
     <div style="display:flex; align-items:center; gap:0.4rem; flex-wrap:wrap;">
       <a href="../index.html" style="color:#fff; text-decoration:none; font-size:0.8rem; font-weight:700; background:var(--caramel-gold); padding:0.28rem 0.65rem; border-radius:6px;">🏠 Wiki 總入口</a>
-      <a href="01-madeleine.html" style="color:#fff; text-decoration:none; font-size:0.78rem; background:rgba(255,255,255,0.18); padding:0.25rem 0.55rem; border-radius:6px;">01 瑪德蓮</a>
-      <a href="02-financier.html" style="color:#fff; text-decoration:none; font-size:0.78rem; background:rgba(255,255,255,0.18); padding:0.25rem 0.55rem; border-radius:6px;">02 費南雪</a>
-      <a href="03-canele.html" style="color:#fff; text-decoration:none; font-size:0.78rem; background:rgba(255,255,255,0.18); padding:0.25rem 0.55rem; border-radius:6px;">03 可麗露</a>
-      <a href="04-macaron.html" style="color:#fff; text-decoration:none; font-size:0.78rem; background:rgba(255,255,255,0.18); padding:0.25rem 0.55rem; border-radius:6px;">04 馬卡龍</a>
-      <a href="05-creams-and-ganache.html" style="color:#fff; text-decoration:none; font-size:0.78rem; background:rgba(255,255,255,0.18); padding:0.25rem 0.55rem; border-radius:6px;">05 內餡</a>
+      <a href="../workflow.html" style="color:#fff; text-decoration:none; font-size:0.8rem; font-weight:700; background:var(--pistachio-green); padding:0.28rem 0.65rem; border-radius:6px;">🔄 Loop/Graph 專頁</a>
+      <a href="01-madeleine.html" style="color:#fff; text-decoration:none; font-size:0.76rem; background:rgba(255,255,255,0.18); padding:0.24rem 0.5rem; border-radius:6px;">01 瑪德蓮</a>
+      <a href="02-financier.html" style="color:#fff; text-decoration:none; font-size:0.76rem; background:rgba(255,255,255,0.18); padding:0.24rem 0.5rem; border-radius:6px;">02 費南雪</a>
+      <a href="03-canele.html" style="color:#fff; text-decoration:none; font-size:0.76rem; background:rgba(255,255,255,0.18); padding:0.24rem 0.5rem; border-radius:6px;">03 可麗露</a>
+      <a href="04-macaron.html" style="color:#fff; text-decoration:none; font-size:0.76rem; background:rgba(255,255,255,0.18); padding:0.24rem 0.5rem; border-radius:6px;">04 馬卡龍</a>
+      <a href="05-creams-and-ganache.html" style="color:#fff; text-decoration:none; font-size:0.76rem; background:rgba(255,255,255,0.18); padding:0.24rem 0.5rem; border-radius:6px;">05 內餡</a>
     </div>
     <div class="slide-Jump" id="dotContainer"></div>
   </header>
@@ -524,53 +413,51 @@
     <div class="progress-fill" id="progressBar"></div>
   </div>
 
-  <!-- Slide Stage -->
   <main class="stage">
 
-    <!-- SLIDE 1: 封面與課程引言 -->
+    <!-- SLIDE 1: 封面與痛點 -->
     <section class="slide active" data-title="1. 為什麼食譜會失敗？">
-      <span class="slide-tag">Slide 01 / 10 ・ 初學者零基礎入門導論</span>
+      <span class="slide-tag">Slide 01 / 08 ・ 初學者零基礎入門導論</span>
       <h1 class="hero-title">為什麼照著食譜做，甜點還是會失敗？<br/>從 4 大烘焙科學看懂法式名廚配方</h1>
       <p class="lead">
-        大多數新手把食譜當成「魔法咒語」——少 5 克糖不敢動、烤溫差 10 度不知道為什麼。本簡報由 <strong>甜點教學 LLM Wiki 知識庫</strong> 自動編譯生成，帶你用最白話的生活比喻，一次搞懂瑪德蓮、費南雪、可麗露、馬卡龍與卡士達背後的物理化學！
+        大多數新手把食譜當成「魔法咒語」——少 5g 糖不敢動、烤溫差 10°C、少冰 12 小時結果就完全不同。法式甜點其實是 <strong>「比例（烘焙百分比）、溫度（化學反應門檻）、時間（水合與脫氣）」</strong> 的科學實驗！本簡報萃取自 <strong>LLM Wiki 知識庫（16 個知識頁 / 5 篇文獻）</strong>，帶你用最白話的生活比喻一次搞懂：
       </p>
 
       <div class="grid-4">
         <div class="card">
-          <h3>🔥 1. 梅納與焦화</h3>
-          <p>為什麼煮焦化奶油要「聽聲音」？揭開 <strong>100°C 水分守門員</strong> 與 <strong>145°C 榛果香</strong> 的秘密。</p>
+          <h3>🔥 科學一：梅納與焦化</h3>
+          <p>為什麼煮焦化奶油要「聽聲音」？揭開 <strong>100°C 水分守門員</strong> 與 <strong>145°C 費南雪榛果香</strong> 的秘密。</p>
         </div>
         <div class="card">
-          <h3>❄️ 2. 水合與溫差</h3>
+          <h3>❄️ 科學二：水合與溫差</h3>
           <p>為什麼瑪德蓮要 <strong>8°C 冰麵糊入爐</strong> 求肚臍，可麗露卻要 <strong>18°C 常溫入爐</strong> 防白頭？</p>
         </div>
         <div class="card">
-          <h3>🫧 3. 泡沫物理學</h3>
-          <p>馬卡龍的 <strong>法式生蛋白泡 vs 118°C 義式防彈泡泡</strong>，以及「結皮壓力鍋」如何擠出裙邊。</p>
+          <h3>🫧 科學三：泡沫物理學</h3>
+          <p>馬卡龍的 <strong>法式生蛋白泡 vs 118°C 義式防彈糖泡</strong>，以及「結皮壓力鍋」如何擠出裙邊。</p>
         </div>
         <div class="card">
-          <h3>🥣 4. 乳化與酵素</h3>
-          <p>為什麼卡士達變稠還不能關火？認識蛋黃裡的 <strong>α-澱粉酶剪刀手</strong> 與甘納許中心乳化法。</p>
+          <h3>🥣 科學四：酵素與乳化</h3>
+          <p>為什麼卡士達變稠還不能關火？認識蛋黃裡的 <strong>α-澱粉酶剪刀手</strong> 與甘納許中心同心圓乳化法。</p>
         </div>
       </div>
 
-      <div class="gate-box" style="margin-top: 1.5rem;">
-        <strong>📚 本簡報知識來源（100% 萃取自本地 LLM Wiki 知識庫）：</strong>
-        涵蓋 <code>wiki/recipes/</code>（5 大跨流派矩陣）、<code>wiki/techniques/</code>（4 大物理化學專頁）、<code>wiki/ingredients/</code>（3 大原料科學）與 <code>wiki/troubleshooting/</code>（五大翻車排錯總表）。可使用鍵盤 <strong>← / → 方向鍵</strong> 或下方按鈕翻頁！
+      <div class="gate-box" style="margin-top: 1.3rem;">
+        <strong>🧭 導覽提示：</strong> 可使用鍵盤 <strong>← / → 方向鍵</strong> 或下方按鈕翻頁。若想查看本簡報背後的 <strong>「三階段 Graph 生成流程與 Shift-Left 檢查前移反思」</strong>，可隨時點擊上方綠色的 <strong><a href="../workflow.html" style="color:var(--pistachio-green);">🔄 Loop/Graph 專頁</a></strong>！
       </div>
     </section>
 
-    <!-- SLIDE 2: 基礎語言：烘焙百分比與三大流派 -->
-    <section class="slide" data-title="2. 烘焙百分比與流派">
-      <span class="slide-tag">Slide 02 / 10 ・ 看懂配方的世界共通語言</span>
-      <h2 class="slide-title">認識「烘焙百分比」與法式甜點三大流派</h2>
+    <!-- SLIDE 2: 基礎概念：烘焙百分比與三大流派 -->
+    <section class="slide" data-title="2. 烘焙百分比與三大流派">
+      <span class="slide-tag">Slide 02 / 08 ・ 看懂配方的世界共通語言</span>
+      <h2 class="slide-title">如何一眼看穿名廚食譜？認識「烘焙百分比」與三大流派</h2>
       <p class="lead">
-        不同食譜有的做 6 顆、有的做 20 顆，有的寫「全蛋 4 顆」、有的寫「150g」，怎麼比？專業甜點師都用 <strong>烘焙百分比（Baker's Percentage）</strong>！
+        A 食譜做 6 顆寫「全蛋 4 顆」，B 食譜做 10 顆寫「全蛋 150g」，怎麼比誰比較濕潤？專業甜點師都用 <strong>烘焙百分比（Baker's Percentage）</strong>！
       </p>
 
       <div class="analogy-box">
-        <strong>💡 一秒看懂「烘焙百分比」：把「總粉量」當作 100% 的宇宙中心！</strong>
-        不管食譜做多少份量，我們一律把 <strong>「總粉量（麵粉＋杏仁粉）設為 100%」</strong>，其他材料都除以總粉量！例如：麵粉 200g (100%)、糖 200g (100%)、奶油 200g (100%)、全蛋 200g (100%) + 牛奶 50g (25%) → 一眼就能看出這個配方的 <strong>總液粉比是 125%</strong>！
+        <strong>💡 初學者白話比喻：「把『總粉量』當成 100% 的宇宙中心！」</strong>
+        不管食譜做多少份量，我們先統一換成克數（<code>1顆全蛋=50g</code>、<code>蛋黃=20g</code>、<code>蛋白=30g</code>），再把 <strong>「總粉量（麵粉＋杏仁粉）設為 100%」</strong>，其他材料重量都除以總粉量！如果是完全沒麵粉的液態內餡（如卡士達、甘納許），就改用 <strong>「總重量 = 100%」</strong> 來算。
       </div>
 
       <div class="grid-3">
@@ -578,7 +465,7 @@
           <h3>🏛️ 1. 法國百年傳統工藝派</h3>
           <p><strong>代表：Ladurée、波爾多公會、Ferrandi</strong></p>
           <ul>
-            <li>追求古法器具（紅銅模＋蜂蠟）與高糖焦脆外殼（可麗露糖粉比高達 <span class="badge-pct">220%</span>）。</li>
+            <li>遵循古法材質（紅銅模＋蜂蠟）與高糖焦脆外殼（可麗露糖粉比高達 <span class="badge-pct">220%</span>）。</li>
             <li>馬卡龍採用<strong>法式冷打蛋白霜</strong>，外殼極致薄脆、入口即化。</li>
           </ul>
         </div>
@@ -587,31 +474,31 @@
           <p><strong>代表：Pierre Hermé、法芙娜學院</strong></p>
           <ul>
             <li>大量運用 <strong>118°C 義式蛋白霜</strong> 與 <strong>轉化糖漿 (Trimoline)</strong>，結構超穩、極致保濕耐放。</li>
-            <li>瑪德蓮額外加入 <span class="badge-pct">25% 牛奶</span>，搭配 220°C→180°C 變溫衝擊頂出高聳肚臍。</li>
+            <li>瑪德蓮額外加入 <span class="badge-pct">25% 牛奶</span>（總液粉比 <span class="badge-pct">125%</span>），搭配 220°C→180°C 變溫衝擊頂出肚臍。</li>
           </ul>
         </div>
         <div class="card">
           <h3>🔬 3. 日本菓子學校精準派</h3>
           <p><strong>代表：辻調理師專門學校</strong></p>
           <ul>
-            <li>強調數據化溫控（如全蛋隔水加熱至 36°C 融糖）與高教學容錯率。</li>
+            <li>強調數據化溫控（全蛋隔水加熱至 36°C 融糖）與 <span class="badge-pct">20% 蜂蜜</span> 保濕上色。</li>
             <li>可麗露以 <span class="badge-pct">85% 低粉 + 15% 高粉</span> 補強家用不沾鋁模的支撐力。</li>
           </ul>
         </div>
       </div>
     </section>
 
-    <!-- SLIDE 3: 科學一：梅納反應與焦化奶油 -->
+    <!-- SLIDE 3: 原理一：梅納反應與焦化奶油 -->
     <section class="slide" data-title="3. 梅納反應與焦化奶油">
-      <span class="slide-tag">Slide 03 / 10 ・ 核心烘焙科學（一）：溫度與香氣魔術</span>
-      <h2 class="slide-title">梅納反應 (Maillard Reaction) 與 145°C 焦化奶油三部曲</h2>
+      <span class="slide-tag">Slide 03 / 08 ・ 核心烘焙科學（一）：溫度與香氣魔術</span>
+      <h2 class="slide-title">原理一【梅納反應】：費南雪的靈魂——145°C 焦化奶油三部曲</h2>
       <p class="lead">
         費南雪（金磚蛋糕）迷人的烤榛果香氣，來自法式經典技法 <strong>焦化奶油（Beurre Noisette）</strong>。但為什麼新手煮的奶油總是不香，或是下一秒就燒成黑炭？
       </p>
 
       <div class="analogy-box">
-        <strong>💡 給初學者的原理白話文：「水是 100°C 的守門員！聽聲音就能知道溫度！」</strong>
-        天然奶油裡有 <strong>82% 脂肪 + 16% 水分 + 2% 牛奶蛋白與乳糖</strong>。梅納反應這位「香氣魔術師」只在 <strong>120°C 以上</strong> 工作。只要那 16% 的水還沒蒸發完，水沸騰最高就只有 100°C！所以：<strong>大聲霹哩啪啦冒泡時是在排水（只有 100°C，千萬別關火）→ 當聲音突然變安靜時，代表水乾了，油溫一分鐘內飆破 140°C 變出榛果香！</strong>
+        <strong>💡 初學者白話比喻：「水是 100°C 的守門員！煮焦化奶油要『聽聲音』才知道水乾了沒！」</strong>
+        天然發酵奶油裡有 <strong>82% 乳脂 + 16% 水分 + 2% 牛奶蛋白與乳糖</strong>。製造榛果香氣的「梅納反應（蛋白質＋糖的高溫褐變）」只願意在 <strong>120°C 以上</strong> 工作！只要那 16% 的水還沒蒸發完，沸水就會把溫度死死鎖在 100°C。所以：<strong>剛開始霹哩啪啦超大聲是在排水（只有 100°C，千萬別關火）→ 當聲音突然變安靜時，代表水乾了，油溫一分鐘內飆破 145°C 變出琥珀色榛果香，這時要立刻泡冰水剎車！</strong>
       </div>
 
       <table class="wiki-table">
@@ -635,33 +522,33 @@
           <tr>
             <td><strong>Stage 2：寂靜梅納期</strong></td>
             <td><span class="badge-pct">120°C ~ 148°C</span></td>
-            <td>聲音突然<strong>轉為安靜</strong>、冒細密白泡、底部現<strong>琥珀色焦粒與榛果香</strong></td>
+            <td>聲音突然<strong>轉為安靜</strong>、冒細密白泡、底部現<strong>深琥珀色焦粒與榛果香</strong></td>
             <td>水分蒸發完畢，底部 <strong>2% 酪蛋白＋乳糖發生劇烈梅納反應</strong></td>
-            <td>不斷刮鍋底，一聞到濃香見琥珀色，<strong>立刻將鍋底泡冰水剎車！</strong></td>
+            <td>不斷刮鍋底，一達深琥珀色<strong>立刻將鍋底泡冰水剎車，降溫至 55°C 使用！</strong></td>
           </tr>
           <tr>
             <td><strong>Stage 3：碳化危險期</strong></td>
             <td><span class="badge-pct">&gt; 160°C</span></td>
             <td>冒青煙、泡沫轉黑褐色、琥珀粒變黑炭</td>
             <td>蛋白質與糖徹底碳化裂解，產生強烈苦味</td>
-            <td>不可使用！並注意焦化後蒸發了 16% 水分，需補足生奶油重</td>
+            <td>不可使用！（注意焦化後蒸發了 16% 水分，需補足生奶油重）</td>
           </tr>
         </tbody>
       </table>
     </section>
 
-    <!-- SLIDE 4: 雙胞胎對決：瑪德蓮 vs 費南雪 (互動切換) -->
+    <!-- SLIDE 4: 實例對決：瑪德蓮 vs 費南雪 (3 Tabs) -->
     <section class="slide" data-title="4. 瑪德蓮 vs 費南雪">
-      <span class="slide-tag">Slide 04 / 10 ・ 常溫甜點雙璧對決（點擊按鈕切換 Wiki 矩陣）</span>
-      <h2 class="slide-title">瑪德蓮 (Madeleine) vs 費南雪 (Financier) 到底差在哪？</h2>
+      <span class="slide-tag">Slide 04 / 08 ・ 常溫甜點雙璧實例對決（點擊分頁切換 Wiki 矩陣）</span>
+      <h2 class="slide-title">實例對決：常溫甜點雙胞胎「瑪德蓮 vs 費南雪」到底差在哪？</h2>
       <p class="lead">
-        新手常以為它們只是「貝殼模」跟「金磚模」的差別，其實從 <strong>蛋的部位、粉類骨架到奶油溫度</strong> 完全是兩個世界！
+        新手常以為它們只是「貝殼模」跟「金磚模」的差別，其實從 <strong>粉類骨架、蛋的部位到奶油溫度</strong> 完全相反！
       </p>
 
       <div class="tab-bar">
-        <button class="tab-btn active" onclick="switchCompareTab('vs')">🔍 雙品項結構正面對決</button>
-        <button class="tab-btn" onclick="switchCompareTab('madeleine')">🐚 瑪德蓮：PH 流派 vs 日系流派矩陣</button>
-        <button class="tab-btn" onclick="switchCompareTab('financier')">🧱 費南雪：巴黎傳統派 vs 現代保濕派矩陣</button>
+        <button class="tab-btn active" onclick="switchCompareTab('vs')">🔍 Tab 1：雙品項結構正面對決</button>
+        <button class="tab-btn" onclick="switchCompareTab('madeleine')">🐚 Tab 2：瑪德蓮跨流派百分比矩陣</button>
+        <button class="tab-btn" onclick="switchCompareTab('financier')">🧱 Tab 3：費南雪跨流派百分比矩陣</button>
       </div>
 
       <div id="tab-vs">
@@ -671,7 +558,7 @@
               <th>結構維度</th>
               <th>🐚 瑪德蓮貝殼蛋糕 (Madeleine)</th>
               <th>🧱 費南雪金磚蛋糕 (Financier)</th>
-              <th>為什麼這樣設計？（科學原理）</th>
+              <th>為什麼這樣設計？（科學原理與白話比喻）</th>
             </tr>
           </thead>
           <tbody>
@@ -679,13 +566,13 @@
               <td><strong>1. 粉類骨架 (總粉=100%)</strong></td>
               <td><span class="badge-pct">100% 低筋麵粉</span>（純小麥澱粉與微弱麵筋）</td>
               <td><span class="badge-pct">50~58% 杏仁粉</span> + <span class="badge-pct">42~50% 低筋麵粉</span></td>
-              <td>杏仁粉含 50% 天然堅果油且零麵筋，像「自帶香油的麵筋剪刀」讓費南雪濕潤微Q</td>
+              <td>杏仁粉含 50% 天然堅果油且零麵筋，像<strong>「自帶香油的麵筋剪刀」</strong>讓費南雪濕潤微Q</td>
             </tr>
             <tr>
               <td><strong>2. 蛋的使用部位</strong></td>
               <td><strong>全蛋 (蛋白+蛋黃)</strong>，不打發</td>
               <td><strong>純蛋白 (100% Egg Whites)</strong>，不打發</td>
-              <td>瑪德蓮靠蛋黃卵磷脂乳化；費南雪純靠蛋白熱凝固與高糖粉漿鎖住油脂</td>
+              <td>瑪德蓮靠蛋黃卵磷脂化學乳化；費南雪純靠高黏度蛋白糖粉漿「物理包覆」油脂</td>
             </tr>
             <tr>
               <td><strong>3. 奶油狀態與溫度</strong></td>
@@ -697,7 +584,7 @@
               <td><strong>4. 標誌性外觀</strong></td>
               <td>背面高聳飽滿的<strong>「凸肚臍 (Bosse)」</strong></td>
               <td>表面平整、四個直角<strong>焦糖化酥脆金邊</strong></td>
-              <td>瑪德蓮加 3~4% 泡打粉並冰麵糊入爐求肚臍；傳統費南雪<strong>完全不加泡打粉</strong>！</td>
+              <td>瑪德蓮加 3~4% 泡打粉並冰麵糊入爐求肚臍；傳統費南雪<strong>完全不加泡打粉 (0%)</strong>！</td>
             </tr>
           </tbody>
         </table>
@@ -707,7 +594,7 @@
         <table class="wiki-table">
           <thead>
             <tr>
-              <th>原料項目 (Gate 1 標準化後)</th>
+              <th>原料項目 (Gate 0 標準化後)</th>
               <th>Pierre Hermé 濃郁濕潤派</th>
               <th>日本菓子學校經典蜂蜜派</th>
               <th>流派差異亮點</th>
@@ -723,7 +610,7 @@
             <tr>
               <td><strong>細砂糖 + 蜂蜜/轉化糖</strong></td>
               <td>砂糖 200g (<span class="badge-pct">100%</span>) / 蜂蜜 0%</td>
-              <td>砂糖 120g (<span class="badge-pct">80%</span>) + 蜂蜜 30g (<span class="badge-pct">20%</span>)</td>
+              <td>砂糖 120g (<span class="badge-pct">80%</span>) + <strong>蜂蜜 30g (<span class="badge-pct">20%</span>)</strong></td>
               <td>日系用 20% 蜂蜜（單醣）鎖水並加速表面金黃上色</td>
             </tr>
             <tr>
@@ -767,8 +654,8 @@
             </tr>
             <tr>
               <td><strong>純蛋白 + 焦化奶油淨重</strong></td>
-              <td>蛋白 150g (<span class="badge-pct">125%</span>) / 焦化奶油淨重 ~148g (<span class="badge-pct">123%</span>)</td>
-              <td>蛋白 130g (<span class="badge-pct">108%</span>) / 焦化奶油淨重 140g (<span class="badge-pct">117%</span>)</td>
+              <td>蛋白 150g (<span class="badge-pct">125%</span>) / 焦化奶油淨重 ~148g (<span class="badge-pct">123.3%</span>)</td>
+              <td>蛋白 130g (<span class="badge-pct">108.3%</span>) / 焦化奶油淨重 140g (<span class="badge-pct">116.7%</span>)</td>
               <td>皆在 200~210°C 高溫快烤 12~14 分鐘鎖住中心水氣</td>
             </tr>
           </tbody>
@@ -776,55 +663,55 @@
       </div>
     </section>
 
-    <!-- SLIDE 5: 科學二：澱粉水合與溫差（瑪德蓮冰入爐 vs 可麗露常溫入爐） -->
+    <!-- SLIDE 5: 原理二：澱粉水合與溫差（瑪德蓮冰入爐 vs 可麗露常溫入爐） -->
     <section class="slide" data-title="5. 靜置與入爐溫差之謎">
-      <span class="slide-tag">Slide 05 / 10 ・ 核心烘焙科學（二）：澱粉水合與熱對流</span>
-      <h2 class="slide-title">世紀謎題：為什麼瑪德蓮要「冰入爐」，可麗露卻要「回溫入爐」？</h2>
+      <span class="slide-tag">Slide 05 / 08 ・ 核心烘焙科學（二）：澱粉水合與熱對流</span>
+      <h2 class="slide-title">原理二【水合與溫差】：為什麼瑪德蓮要「冰入爐」，可麗露卻要「回溫入爐」？</h2>
       <p class="lead">
-        這兩款甜點都規定麵糊要放進 4°C 冰箱冷藏靜置 12~48 小時（為了讓乾澱粉像泡珍珠一樣吸飽水、並鬆弛麵筋）。但進烤箱那一刻，做法卻<strong>完全相反</strong>！
+        這兩款甜點都規定麵糊要放 4°C 冰箱冷藏靜置 12~48 小時（讓乾澱粉像「泡珍珠奶茶的乾珍珠」一樣吸飽水、並鬆弛麵筋）。但進烤箱那一刻，做法卻<strong>完全相反</strong>！
       </p>
 
       <div class="grid-2">
         <div class="card" style="border-top: 5px solid var(--caramel-gold);">
-          <h3>🐚 瑪德蓮：❄️ 8°C 冰麵糊進 220°C 烤箱</h3>
-          <p><strong>目標：製造極端溫差，像擠牙膏一樣炸出「凸肚臍」！</strong></p>
+          <h3>🐚 瑪德蓮：❄️ 8°C 冰麵糊直入 220°C 烤箱</h3>
+          <p><strong>💡 白話原理：像「擠冰牙膏」一樣用極端溫差炸出凸肚臍！</strong></p>
           <ul>
-            <li><strong>液粉比僅 100%~125%</strong>：冰過夜後麵糊濃稠得像冰牙膏。</li>
+            <li><strong>液粉比低 (<span class="badge-pct">100% ~ 125%</span>)</strong>：冰過夜後麵糊濃稠得像冰牙膏。</li>
             <li><strong>四周先鎖死</strong>：一進 220°C 高溫爐，外圍與底部在 3 分鐘內迅速結殼變硬（變成牙膏管壁）。</li>
-            <li><strong>中心火山噴發</strong>：正中央的冰麵糊最後才受熱跨過 60°C，雙效泡打粉瞬間釋放大量氣體，沒地方跑只能往背面正中央衝破，頂出高聳的<strong>凸肚臍 (Bosse)</strong>！</li>
+            <li><strong>中心火山噴發</strong>：正中央的冰麵糊最後才受熱跨過 60°C，雙效泡打粉瞬間釋放大量氣體，沒地方跑只能往背面中央衝破，頂出高聳的<strong>凸肚臍 (Bosse)</strong>！</li>
           </ul>
         </div>
 
         <div class="card" style="border-top: 5px solid var(--berry-red);">
-          <h3>🔔 可麗露：🌡️ 必回溫至 18°C 常溫才可進烤箱</h3>
-          <p><strong>目標：消除溫差與氣泡，防止麵糊「浮起來」變成白頭翁！</strong></p>
+          <h3>🔔 波爾多可麗露：🌡️ 必回溫至 18°C 常溫才可進 235°C 銅模</h3>
+          <p><strong>💡 白話原理：防止像「熱氣球浮起」腳底懸空變成白頭翁！</strong></p>
           <ul>
-            <li><strong>液粉比高達 680%（牛奶500%+蛋140%+酒40%）</strong>：稀得像水一樣！</li>
+            <li><strong>液粉比極高 (<span class="badge-pct">680%</span>：牛奶500%+全蛋100%+蛋黃40%+酒40%)</strong>：稀得像水一樣！</li>
             <li><strong>什麼是「白頭 (Cul Blanc)」？</strong> 可麗露是倒扣出模的，頭頂其實是模具的<strong>最底部（腳底板）</strong>。</li>
-            <li><strong>冰麵糊入爐的災難</strong>：若 4°C 直接進 235°C 銅模，劇烈溫差與殘留氣泡會讓麵糊像熱氣球一樣<strong>往上暴衝浮起</strong>！腳底板懸空沒貼到銅模地板，隔了一層空氣烤不焦，倒扣出來頭頂就一片慘白！</li>
+            <li><strong>冰麵糊入爐的災難</strong>：若 4°C 直接進高溫銅模，劇烈溫差與殘留氣泡會讓麵糊<strong>往上暴衝浮起</strong>！腳底板懸空沒貼到銅模地板，隔了一層空氣絕緣層烤不焦，倒扣出來頭頂就一片慘白！</li>
           </ul>
         </div>
       </div>
 
-      <div class="analogy-box" style="margin-top: 1.1rem;">
+      <div class="analogy-box" style="margin-top: 1rem;">
         <strong>🎯 課堂必背口訣：「瑪德蓮沒肚臍，因為不夠冰；可麗露會白頭，因為太冰又帶氣！」</strong>
-        可麗露靜置 48 小時的頭號任務是 <strong>100% 徹底脫氣（消除所有小氣泡）</strong>，且入爐前必須退冰到 16~18°C 並輕柔把沉在鍋底的澱粉翻拌均勻！
+        可麗露靜置 48 小時的頭號任務是 <strong>100% 徹底脫氣（消除所有小氣泡）</strong>，銅模刷 6:4 蜂蠟無水奶油後須倒扣滴乾，且入爐前必須退冰到 16~18°C 並輕柔把沉底澱粉翻拌均勻！
       </div>
     </section>
 
-    <!-- SLIDE 6: 科學三：泡沫物理學與馬卡龍 -->
-    <section class="slide" data-title="6. 馬卡龍與蛋白霜物理學">
-      <span class="slide-tag">Slide 06 / 10 ・ 核心烘焙科學（三）：泡沫物理學與蒸氣力學</span>
-      <h2 class="slide-title">馬卡龍 (Macaron)：法式 vs 義式蛋白霜與「蕾絲裙邊」的誕生</h2>
+    <!-- SLIDE 6: 原理三：泡沫物理學與馬卡龍 -->
+    <section class="slide" data-title="6. 馬卡龍與泡沫物理學">
+      <span class="slide-tag">Slide 06 / 08 ・ 核心烘焙科學（三）：泡沫物理學與蒸氣力學</span>
+      <h2 class="slide-title">原理三【泡沫物理學】：馬卡龍的「法式 vs 118°C 義式蛋白霜」與蕾絲裙邊</h2>
       <p class="lead">
         馬卡龍完全不加麵粉與泡打粉（以 <strong>100% 純杏仁粉 : 100% 純糖粉 = TPT</strong> 為骨架），全靠打發蛋白霜裡的微米級氣泡撐起結構！
       </p>
 
       <div class="analogy-box">
-        <strong>💡 給初學者的原理白話文：「生肥皂泡 vs 118°C 燙熟的防彈泡泡」＋「結皮壓力鍋」</strong>
+        <strong>💡 初學者白話比喻：「生肥皂泡 vs 118°C 燙熟的防彈糖泡」＋「結皮壓力鍋」</strong>
         <ul>
           <li><strong>為什麼義式馬卡龍不容易失敗？</strong> 法式蛋白霜是用生蛋白加糖冷打，像脆弱的「生肥皂泡」，拌杏仁粉時多刮兩刀就破光化水；而 <strong>Pierre Hermé 的義式蛋白霜</strong> 是把糖水煮到 <strong>118°C</strong> 沖進蛋白裡，直接把泡泡壁「燙熟加固」穿上防彈衣！</li>
-          <li><strong>蕾絲裙邊 (Pied) 怎麼長出來的？</strong> 擠好圓餅後吹乾「結皮」，就像<strong>把壓力鍋的屋頂鎖死</strong>。進烤箱受熱時，裡面的水蒸氣衝不破屋頂，只好從<strong>最底下沒結皮的牆角縫隙</strong>往外擠出來並烤乾，就變成了超美的蕾絲裙邊！</li>
+          <li><strong>蕾絲裙邊 (Pied) 怎麼長出來的？</strong> 擠好圓餅後晾乾「結皮（指腹摸不黏手）」，就像<strong>把壓力鍋的屋頂鎖死</strong>。進烤箱受熱時，內部水蒸氣衝不破屋頂，只好從<strong>最底下沒結皮的牆角縫隙</strong>往外擠出來並烤乾，就變成了超美的蕾絲裙邊！</li>
         </ul>
       </div>
 
@@ -841,7 +728,7 @@
           <tr>
             <td><strong>配方結構</strong></td>
             <td>TPT (杏仁粉 <span class="badge-pct">100%</span> + 糖粉 <span class="badge-pct">100%</span>)<br/>老化蛋白 <span class="badge-pct">80%</span> + 細砂糖 <span class="badge-pct">80%</span></td>
-            <td>TPT (<span class="badge-pct">100% : 100%</span>) + 生蛋白 <span class="badge-pct">37%</span> (拌成杏仁膏)<br/>打發蛋白 <span class="badge-pct">37%</span> + <strong>118°C 糖漿 (糖 <span class="badge-pct">100%</span> + 水 <span class="badge-pct">25%</span>)</strong></td>
+            <td>TPT (<span class="badge-pct">100% : 100%</span>) + 生蛋白 <span class="badge-pct">37%</span> (拌成杏仁膏)<br/>打發蛋白 <span class="badge-pct">37%</span> (總蛋白 <span class="badge-pct">74%</span>) + <strong>118°C 糖漿 (糖 <span class="badge-pct">100%</span> + 水 <span class="badge-pct">25%</span>)</strong></td>
             <td rowspan="3">
               <strong>🎀 緞帶滑落檢核 (Ribbon Stage)：</strong><br/>
               用刮刀貼盆壁擠壓掉大氣泡，舀起麵糊寫「8」字，落下的緞帶須在 <strong>10~15 秒內緩慢融入盆內</strong>。<br/>
@@ -855,18 +742,18 @@
             <td>極強韌，台灣潮濕氣候救星，僅需風乾 <strong>10~15 分鐘</strong></td>
           </tr>
           <tr>
-            <td><strong>成品口感風格</strong></td>
-            <td>外殼極薄酥脆、入口即化、裙邊略外展</td>
-            <td>外殼平滑飽滿如陶瓷、裙邊垂直挺立、內裡微Q</td>
+            <td><strong>成品口感與烤溫</strong></td>
+            <td>150°C 烤 14m / 外殼極薄酥脆、入口即化</td>
+            <td>155°C 烤 13m / 外殼平滑飽滿如陶瓷、內裡微Q</td>
           </tr>
         </tbody>
       </table>
     </section>
 
-    <!-- SLIDE 7: 科學四：乳化與酵素（卡士達與甘納許） -->
+    <!-- SLIDE 7: 原理四：酵素與乳化（卡士達與甘納許） -->
     <section class="slide" data-title="7. 卡士達酵素與甘納許乳化">
-      <span class="slide-tag">Slide 07 / 10 ・ 核心烘焙科學（四）：酵素滅活與流體乳化</span>
-      <h2 class="slide-title">兩大靈魂內餡：為什麼卡士達會化水？甘納許會油水分離？</h2>
+      <span class="slide-tag">Slide 07 / 08 ・ 核心烘焙科學（四）：酵素滅活與流體乳化</span>
+      <h2 class="slide-title">原理四【酵素與乳化】：為什麼卡士達會化水？甘納許會油水分離？</h2>
       <p class="lead">
         學會了餅殼與蛋糕體，內餡卻在隔天「流湯出水」或「浮油結粒」？這兩個翻車現場背後各有一隻看不見的科學怪獸！
       </p>
@@ -874,142 +761,91 @@
       <div class="grid-2">
         <div class="card" style="border-left: 5px solid var(--amber-accent);">
           <h3>🍮 卡士達醬 (Crème Pâtissière) 的化水真兇</h3>
-          <p><strong>怪獸名稱：生蛋黃裡的「α-澱粉酶 (Alpha-Amylase)」！</strong></p>
+          <p><strong>💡 白話原理：生蛋黃裡住著「α-澱粉酶」剪刀手小怪獸！</strong></p>
           <ul>
-            <li><strong>80°C 的假象</strong>：卡士達（牛奶 500g + 蛋黃 80~100g + 糖 90~100g + 澱粉 45g）煮到 <strong>78~82°C</strong> 時澱粉就已經吸水糊化變得很濃稠了。新手怕燒焦急著關火，結果隔天整鍋變成水！</li>
-            <li><strong>為什麼？</strong> 因為生蛋黃自帶「α-澱粉酶」，這把剪刀在 75~85°C 時最活躍，會在冰箱裡把澱粉網全部剪斷！</li>
-            <li><strong>✅ 唯一解法</strong>：看到變稠後<strong>絕對不能停</strong>！必須繼續快速刷鍋底加熱到 <strong>冒出大泡泡沸騰（≥ 95°C）並維持沸騰攪拌 90 秒</strong>，才能把澱粉酶徹底燙死！</li>
+            <li><strong>配方比例 (總重100%)</strong>：牛奶 500g (<span class="badge-pct">62.9%</span>) + 蛋黃 100g (<span class="badge-pct">12.6%</span> / 對牛奶 <span class="badge-pct">20%</span>) + 砂糖 100g (<span class="badge-pct">12.6%</span>) + 玉米澱粉 45g (<span class="badge-pct">5.7%</span> / 對牛奶 <span class="badge-pct">9%</span>) + 奶油 50g (<span class="badge-pct">6.3%</span>)。</li>
+            <li><strong>80°C 的假象</strong>：煮到 78~82°C 時澱粉就已吸水糊化變稠了，但此時生蛋黃自帶的「α-澱粉酶」正好最活躍！若這時關火，隔天在冰箱裡澱粉網會被剪斷變成一灘水！</li>
+            <li><strong>✅ 唯一解法</strong>：變稠後<strong>絕對不能停</strong>！必須繼續快速刷鍋底煮到 <strong>冒大泡泡沸騰（≥ 95°C）並維持 90 秒</strong>，才能把澱粉酶徹底燙死！</li>
           </ul>
         </div>
 
         <div class="card" style="border-left: 5px solid var(--caramel-dark);">
           <h3>🍫 巧克力甘納許 (Ganache) 的中心摩擦乳化法</h3>
-          <p><strong>物理挑戰：把疏水可可脂 (油) 與鮮奶油 (60%是水) 牽在一起！</strong></p>
+          <p><strong>💡 白話原理：像「在舞池中央先讓三個人手牽手站穩」！</strong></p>
           <ul>
-            <li><strong>為什麼不能一次全倒亂攪？</strong> 一次倒入滾燙鮮奶油並大範圍亂攪，水相無法包住油滴，會直接變成粗糙暗沉、浮一層油的「油水分離豆花狀」。</li>
-            <li><strong>✅ 法芙娜中心同心圓乳化法 (35°C~45°C)</strong>：
-              <ol style="padding-left:1.2rem; margin-top:0.3rem;">
-                <li>將 80°C 鮮奶油<strong>分 3 次</strong>倒入半融巧克力中。</li>
-                <li>用刮刀在<strong>盆底正中央直徑 5cm 處快速畫小圈摩擦</strong>。</li>
-                <li>當中心從粗糙泥狀突然變成<strong>「烏黑發亮有彈性的乳化核」</strong>後，才慢慢把圓圈擴大捲入周圍液體！</li>
-              </ol>
-            </li>
+            <li><strong>配方比例</strong>：馬卡龍夾餡用 <strong>巧鮮比 1 : 1</strong>（70%黑巧 <span class="badge-pct">46.5%</span> + 鮮奶油 <span class="badge-pct">46.5%</span> + 奶油 <span class="badge-pct">7%</span>）；鏡面淋面用 <strong>1 : 1.5</strong>（黑巧 <span class="badge-pct">38.1%</span> + 鮮奶油 <span class="badge-pct">57.1%</span> + 轉化糖漿 <span class="badge-pct">4.8%</span>）。</li>
+            <li><strong>為什麼不能一次全倒亂攪？</strong> 可可脂（油）與鮮奶油（60%是水）天生互斥！一次全倒大範圍亂攪會直接油水分離。</li>
+            <li><strong>✅ 法芙娜中心同心圓乳化法 (35°C~45°C)</strong>：將 80°C 鮮奶油<strong>分 3 次</strong>加入，用刮刀在<strong>盆底正中央直徑 5cm 處快速畫小圈摩擦</strong>，先建立「烏黑發亮有彈性的乳化核」，再慢慢擴大畫圈！</li>
           </ul>
         </div>
       </div>
     </section>
 
-    <!-- SLIDE 8: 互動式診斷室：五大經典翻車現場 -->
-    <section class="slide" data-title="8. 互動式翻車診斷室">
-      <span class="slide-tag">Slide 08 / 10 ・ 課堂實作排錯（點擊下方 5 大翻車症狀查看科學處方箋）</span>
-      <h2 class="slide-title">🔍 烘焙科學診斷室：一秒抓出你的甜點失敗真兇！</h2>
-      <p class="lead">
-        點擊下方任一翻車現場，立即從 Wiki 的 <code>troubleshooting/common-baking-failures.md</code> 調出科學病因與急救對策：
-      </p>
+    <!-- SLIDE 8: 總結與互動驗收：五大翻車診斷室 & 隨堂小測驗 (2 Tabs) -->
+    <section class="slide" data-title="8. 互動翻車診斷與隨堂測驗">
+      <span class="slide-tag">Slide 08 / 08 ・ 課堂實作排錯與學習成效驗收（點擊下方分頁切換）</span>
+      <h2 class="slide-title">🎓 總結與互動驗收：五大翻車現場診斷室 ＆ 隨堂小測驗</h2>
 
-      <div class="trouble-grid">
-        <button class="trouble-btn active" onclick="showTrouble(0)">🐚 1. 瑪德蓮<br/>平坦沒肚臍</button>
-        <button class="trouble-btn" onclick="showTrouble(1)">🧱 2. 費南雪<br/>不香又滲油</button>
-        <button class="trouble-btn" onclick="showTrouble(2)">🔔 3. 可麗露<br/>白頭像蘑菇</button>
-        <button class="trouble-btn" onclick="showTrouble(3)">🍬 4. 馬卡龍<br/>大空心/炸裂</button>
-        <button class="trouble-btn" onclick="showTrouble(4)">🍮 5. 卡士達出水<br/>甘納許浮油</button>
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchFinalTab('trouble')">🔍 互動模式 A：五大經典翻車現場診斷室</button>
+        <button class="tab-btn" onclick="switchFinalTab('quiz')">✍️ 互動模式 B：3 題隨堂小測驗（即時批改）</button>
       </div>
 
-      <div class="trouble-detail" id="troubleBox">
-        <!-- Dynamically rendered by JS -->
+      <!-- Mode A: Troubleshooting -->
+      <div id="final-trouble">
+        <p style="font-size:0.95rem; color:var(--text-muted); margin-bottom:0.8rem;">
+          點擊下方任一翻車現場，立即從 Wiki 的 <code>troubleshooting/common-baking-failures.md</code> 調出科學真兇與標準處方箋：
+        </p>
+        <div class="trouble-grid">
+          <button class="trouble-btn active" onclick="showTrouble(0)">🐚 1. 瑪德蓮<br/>平坦沒肚臍</button>
+          <button class="trouble-btn" onclick="showTrouble(1)">🧱 2. 費南雪<br/>不香又滲油</button>
+          <button class="trouble-btn" onclick="showTrouble(2)">🔔 3. 可麗露<br/>白頭像蘑菇</button>
+          <button class="trouble-btn" onclick="showTrouble(3)">🍬 4. 馬卡龍<br/>大空心/炸裂</button>
+          <button class="trouble-btn" onclick="showTrouble(4)">🍮 5. 卡士達出水<br/>甘納許浮油</button>
+        </div>
+        <div class="trouble-detail" id="troubleBox"></div>
       </div>
-    </section>
 
-    <!-- SLIDE 9: 作業重點展示：LLM Wiki Loop / Graph 與檢查前移 (Shift-Left) -->
-    <section class="slide" data-title="9. LLM Wiki Loop & 檢查設計">
-      <span class="slide-tag">Slide 09 / 10 ・ 作業系統架構揭秘：Loop / Graph 設計與檢查前移反思</span>
-      <h2 class="slide-title">這份簡報是如何誕生的？LLM Wiki 雙迴圈與 Shift-Left 檢查設計</h2>
-      <p class="lead">
-        不同於傳統 RAG 每次重讀原始檔，本系統透過 <code>AGENTS.md</code> 定義了 <strong>雙迴圈圖譜（Dual-Loop Graph）</strong>，將 5 篇原始文獻編譯為 16 個互連 Wiki 頁面，再轉化為本簡報：
-      </p>
-
-      <div class="flow-container">
-        <div class="flow-row">
-          <strong>🔄 Loop 1 (Ingest 編譯迴圈)：</strong>
-          <span class="flow-node">1. 讀取 raw/ 原始文獻</span>
-          <span class="flow-arrow">→</span>
-          <span class="flow-node shift-left">🛡️ Gate 1: 單位標準化與百分比驗算 (檢查前移點!)</span>
-          <span class="flow-arrow">→</span>
-          <span class="flow-node">2. 跨頁網狀更新 (1篇觸發7~8頁)</span>
-          <span class="flow-arrow">→</span>
-          <span class="flow-node gate">🛡️ Gate 2: 雙向連結與結構 Lint</span>
-          <span class="flow-arrow">→</span>
-          <span class="flow-node">3. 寫入 index.md &amp; log.md</span>
+      <!-- Mode B: Quiz -->
+      <div id="final-quiz" style="display:none;">
+        <div class="quiz-item">
+          <strong>Q1. 煮費南雪的「焦化奶油 (Beurre Noisette)」時，為什麼剛開始霹哩啪啦大聲冒泡時絕對不能關火？</strong>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="checkQuiz(1, false, this)">A. 因為奶油還沒完全融化成液體</button>
+            <button class="quiz-opt" onclick="checkQuiz(1, true, this)">B. 因為那 16% 的水還在沸騰（鎖在 100°C），要等聲音變安靜水乾了，溫度才會衝上 145°C 發生梅納反應變香！</button>
+            <button class="quiz-opt" onclick="checkQuiz(1, false, this)">C. 因為要把所有的乳脂肪蒸發掉</button>
+          </div>
+          <div class="quiz-feedback" id="qfb-1"></div>
         </div>
 
-        <div class="flow-row">
-          <strong>🖥️ Loop 2 (Query 簡報迴圈)：</strong>
-          <span class="flow-node">4. 檢索 index.md 與跨頁矩陣</span>
-          <span class="flow-arrow">→</span>
-          <span class="flow-node">5. 萃取初學者白話比喻與對比表</span>
-          <span class="flow-arrow">→</span>
-          <span class="flow-node gate">🛡️ Gate 3: 認知負荷與數據 100% 核對</span>
-          <span class="flow-arrow">→</span>
-          <span class="flow-node">6. 沉澱教案並生成 HTML 簡報</span>
+        <div class="quiz-item">
+          <strong>Q2. 瑪德蓮與可麗露的麵糊都要冷藏靜置過夜，但進烤箱前「入爐溫度」有何關鍵差別？</strong>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="checkQuiz(2, true, this)">A. 瑪德蓮要 8°C 冰麵糊入爐（製造溫差擠出凸肚臍）；可麗露必須回溫到 18°C 常溫入爐（防止溫差暴衝離底變成白頭）！</button>
+            <button class="quiz-opt" onclick="checkQuiz(2, false, this)">B. 兩者都要冰冰的直接進烤箱才會有脆殼</button>
+            <button class="quiz-opt" onclick="checkQuiz(2, false, this)">C. 可麗露要冰入爐，瑪德蓮要退冰入爐</button>
+          </div>
+          <div class="quiz-feedback" id="qfb-2"></div>
+        </div>
+
+        <div class="quiz-item">
+          <strong>Q3. 為什麼煮卡士達醬時，明明在 80°C 已經變得很濃稠了，還一定要繼續煮到 95°C 冒大泡泡沸騰 1 分鐘以上？</strong>
+          <div class="quiz-options">
+            <button class="quiz-opt" onclick="checkQuiz(3, false, this)">A. 為了讓牛奶產生焦糖色</button>
+            <button class="quiz-opt" onclick="checkQuiz(3, false, this)">B. 因為玉米澱粉要 100°C 才開始吸水</button>
+            <button class="quiz-opt" onclick="checkQuiz(3, true, this)">C. 為了徹底燙死生蛋黃裡的「α-澱粉酶（剪刀手）」，否則冷藏後澱粉網會被剪斷變成一鍋稀水！</button>
+          </div>
+          <div class="quiz-feedback" id="qfb-3"></div>
         </div>
       </div>
 
-      <div class="warn-box" style="margin-top: 1.1rem;">
-        <strong>💡 實作反思：哪個節點最常出錯？我們如何把檢查「往前移（Shift-Left）」？</strong>
-        <ul style="padding-left:1.2rem; margin-top:0.35rem; font-size:0.95rem; line-height:1.6;">
-          <li><strong>最常出錯的節點</strong>：原始食譜單位混亂！例如 <code>raw/01</code> 寫「全蛋 4 顆、泡打粉 1.5 小匙」，<code>raw/03</code> 寫「牛奶 2 杯」，<code>raw/02</code> 混用「焦化前生奶油重 180g vs 焦化後淨重 140g」，<code>raw/05</code> 則是無粉類的卡士達與甘納許（若除以總粉量會除以零錯誤！）。</li>
-          <li><strong>把檢查往前移到哪裡？</strong> 原本在最後「生成簡報對照表」時才發現不同流派單位無法並排、百分比加總錯誤；我們因此修改了 Workflow，在 <strong>Ingest 寫入 Wiki 之前新增了 <code>Gate 1: 單位標準化與百分比驗算</code></strong>（強制換算全蛋=50g、蛋黃=20g、1杯=250g、生奶油×0.82=焦化淨重，並區分總粉百分比 vs 總重百分比），從源頭確保進入 Wiki 的數據 100% 乾淨可比對！</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- SLIDE 10: 互動隨堂測驗與總結口訣 -->
-    <section class="slide" data-title="10. 隨堂小測驗與總結">
-      <span class="slide-tag">Slide 10 / 10 ・ 學習成效驗收（點擊選項立即批改）</span>
-      <h2 class="slide-title">🎓 甜點科學隨堂小測驗 &amp; 四大黃金口訣</h2>
-
-      <div class="quiz-item">
-        <strong>Q1. 煮費南雪的「焦化奶油 (Beurre Noisette)」時，為什麼剛開始霹哩啪啦大聲冒泡時絕對不能關火？</strong>
-        <div class="quiz-options">
-          <button class="quiz-opt" onclick="checkQuiz(1, false, this)">A. 因為奶油還沒完全融化成液體</button>
-          <button class="quiz-opt" onclick="checkQuiz(1, true, this)">B. 因為那 16% 的水還在沸騰（鎖在 100°C），要等聲音變安靜水乾了，溫度才會衝上 140°C 發生梅納反應變香！</button>
-          <button class="quiz-opt" onclick="checkQuiz(1, false, this)">C. 因為要把所有的乳脂肪蒸發掉</button>
-        </div>
-        <div class="quiz-feedback" id="qfb-1"></div>
-      </div>
-
-      <div class="quiz-item">
-        <strong>Q2. 瑪德蓮與可麗露的麵糊都要冷藏靜置過夜，但進烤箱前「入爐溫度」有何關鍵差別？</strong>
-        <div class="quiz-options">
-          <button class="quiz-opt" onclick="checkQuiz(2, true, this)">A. 瑪德蓮要 8°C 冰麵糊入爐（製造溫差擠出凸肚臍）；可麗露必須回溫到 18°C 常溫入爐（防止溫差暴衝離底變成白頭）！</button>
-          <button class="quiz-opt" onclick="checkQuiz(2, false, this)">B. 兩者都要冰冰的直接進烤箱才會有脆殼</button>
-          <button class="quiz-opt" onclick="checkQuiz(2, false, this)">C. 可麗露要冰入爐，瑪德蓮要退冰入爐</button>
-        </div>
-        <div class="quiz-feedback" id="qfb-2"></div>
-      </div>
-
-      <div class="quiz-item">
-        <strong>Q3. 為什麼煮卡士達醬時，明明在 80°C 已經變得很濃稠了，還一定要繼續煮到 95°C 冒大泡泡沸騰 1 分鐘以上？</strong>
-        <div class="quiz-options">
-          <button class="quiz-opt" onclick="checkQuiz(3, false, this)">A. 為了讓牛奶產生焦糖色</button>
-          <button class="quiz-opt" onclick="checkQuiz(3, false, this)">B. 因為玉米澱粉要 100°C 才開始吸水</button>
-          <button class="quiz-opt" onclick="checkQuiz(3, true, this)">C. 為了徹底燙死生蛋黃裡的「α-澱粉酶（剪刀手）」，否則冷藏後澱粉網會被剪斷變成一鍋稀水！</button>
-        </div>
-        <div class="quiz-feedback" id="qfb-3"></div>
-      </div>
-
-      <div class="gate-box" style="margin-top: 0.8rem;">
-        <strong>🏆 恭喜完成《法式甜點科學 101》互動課程！</strong>
-        你可以隨時回到 <code>wiki/index.md</code> 查閱完整的 16 篇跨流派配方矩陣與排錯細節。
-      </div>
     </section>
 
   </main>
 
-  <!-- Footer Navigation -->
   <footer class="controls">
     <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← 上一頁 (Prev)</button>
-    <span class="page-indicator" id="pageIndicator">第 1 / 10 頁</span>
+    <span class="page-indicator" id="pageIndicator">第 1 / 8 頁</span>
     <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">下一頁 (Next) →</button>
   </footer>
 
@@ -1022,7 +858,6 @@
     const nextBtn = document.getElementById('nextBtn');
     let currentIndex = 0;
 
-    // Initialize top navigation buttons
     slides.forEach((slide, idx) => {
       const btn = document.createElement('button');
       btn.className = 'dot-btn' + (idx === 0 ? ' active' : '');
@@ -1062,19 +897,25 @@
       }
     });
 
-    // Slide 4: Tab Switcher
     function switchCompareTab(tabName) {
       const tabs = ['vs', 'madeleine', 'financier'];
       tabs.forEach(t => {
         document.getElementById('tab-' + t).style.display = (t === tabName) ? 'block' : 'none';
       });
-      const btns = document.querySelectorAll('.tab-bar .tab-btn');
+      const btns = slides[3].querySelectorAll('.tab-bar .tab-btn');
       btns.forEach((b, i) => {
         b.classList.toggle('active', tabs[i] === tabName);
       });
     }
 
-    // Slide 8: Troubleshooting Interactive Data (Compiled from wiki/troubleshooting/common-baking-failures.md)
+    function switchFinalTab(mode) {
+      document.getElementById('final-trouble').style.display = (mode === 'trouble') ? 'block' : 'none';
+      document.getElementById('final-quiz').style.display = (mode === 'quiz') ? 'block' : 'none';
+      const btns = slides[7].querySelectorAll('.tab-bar .tab-btn');
+      btns[0].classList.toggle('active', mode === 'trouble');
+      btns[1].classList.toggle('active', mode === 'quiz');
+    }
+
     const troubleData = [
       {
         title: "🐚 診斷案例 1：瑪德蓮背面平坦、完全沒有「凸肚臍 (Bosse)」",
@@ -1099,7 +940,7 @@
       {
         title: "🍮 診斷案例 5：卡士達醬冷藏隔天「出水變稀」；甘納許粗糙浮油結粒",
         cause: "<strong>科學真兇（α-澱粉酶未滅活 & 水包油相變失敗）</strong>：<br/>• <strong>卡士達化水</strong>：在 80°C 變稠時就關火，生蛋黃裡的「α-澱粉酶」正好在最活躍溫度，冷藏時把澱粉凝膠網全部剪斷！<br/>• <strong>甘納許油水分離</strong>：把滾燙鮮奶油一次全倒進巧克力並大範圍亂攪，可可脂與水直接排斥分離。",
-        fix: "<strong>✅ Wiki 標準處方箋</strong>：<br/>1. 卡士達變稠後必須繼續刷鍋底加熱至 <strong>95°C 冒出大泡泡沸騰，並維持沸騰攪拌 90 秒</strong>徹底燙死澱粉酶！<br/>2. 甘納許將 80°C 鮮奶油分 3 次加入，用刮刀在<strong>盆底正中央快速畫小同心圓摩擦</strong>建立烏黑發亮的乳化核，再慢慢擴大畫圈。"
+        fix: "<strong>✅ Wiki 標準處方箋</strong>：<br/>1. 卡士達變稠後必須繼續刷鍋底加熱至 <strong>95°C 冒出大泡泡沸騰，並維持沸騰攪拌 90 秒</strong>徹底燙死澱粉酶！<br/>2. 甘納許將 80°C 鮮奶油分 3 次加入，用刮刀在<strong>盆底正中央快速畫小同心圓摩擦</strong>建立烏黑發亮的乳化核，再慢慢擴大畫圈（若已分離，回溫至 38°C 補 15g 溫牛奶重新從中心摩擦即可救回）。"
       }
     ];
 
@@ -1108,14 +949,13 @@
       btns.forEach((b, i) => b.classList.toggle('active', i === idx));
       const d = troubleData[idx];
       document.getElementById('troubleBox').innerHTML = `
-        <h3 style="color:var(--caramel-dark); font-size:1.2rem; margin-bottom:0.6rem;">${d.title}</h3>
-        <p style="margin-bottom:0.8rem; line-height:1.6; color:var(--berry-red); background:var(--berry-bg); padding:0.75rem 1rem; border-radius:8px;">${d.cause}</p>
-        <p style="line-height:1.65; background:var(--pistachio-bg); padding:0.85rem 1rem; border-radius:8px; color:var(--text-main);">${d.fix}</p>
+        <h3 style="color:var(--caramel-dark); font-size:1.15rem; margin-bottom:0.5rem;">${d.title}</h3>
+        <p style="margin-bottom:0.7rem; line-height:1.55; color:var(--berry-red); background:var(--berry-bg); padding:0.7rem 0.95rem; border-radius:8px; font-size:0.93rem;">${d.cause}</p>
+        <p style="line-height:1.6; background:var(--pistachio-bg); padding:0.75rem 0.95rem; border-radius:8px; color:var(--text-main); font-size:0.93rem;">${d.fix}</p>
       `;
     }
     showTrouble(0);
 
-    // Slide 10: Quiz Handler
     function checkQuiz(qNum, isCorrect, btnEl) {
       const fb = document.getElementById('qfb-' + qNum);
       fb.style.display = 'block';
@@ -1128,11 +968,10 @@
       } else {
         fb.style.background = 'var(--berry-bg)';
         fb.style.color = 'var(--berry-red)';
-        fb.textContent = '❌ 再想一下喔！提示：回想一下我們在簡報裡提到的溫度守門員與酵素剪刀手！';
+        fb.textContent = '❌ 再想一下喔！提示：回想一下我們在簡報裡提到的 100°C 水分守門員、溫差熱氣球與 95°C 酵素剪刀手！';
       }
     }
 
-    // Initialize first slide state
     goToSlide(0);
   </script>
 </body>

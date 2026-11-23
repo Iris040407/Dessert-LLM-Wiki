@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Loop / Graph 流程設計與實作反思專頁 — 法式甜點科學 LLM Wiki</title>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true, theme: 'base', themeVariables: {
+      primaryColor: '#fef3c7', primaryTextColor: '#2c1e16', primaryBorderColor: '#c87d32',
+      lineColor: '#8b5a2b', secondaryColor: '#e8f5e9', tertiaryColor: '#fde8e8'
+    }});
+  </script>
+  <style>
+    :root {
+      --bg-cream: #fdf8f2; --bg-card: #ffffff; --bg-warm: #f5ebe0;
+      --caramel-dark: #4a2c18; --caramel-mid: #8b5a2b; --caramel-gold: #c87d32;
+      --amber-accent: #d97706; --berry-red: #9e2a2b; --pistachio-green: #2d6a4f;
+      --pistachio-bg: #e8f5e9; --berry-bg: #fde8e8; --amber-bg: #fef3c7;
+      --text-main: #2c1e16; --text-muted: #6e5a4f; --border-soft: #e6d5c3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      background: var(--bg-cream); color: var(--text-main); line-height: 1.7;
+    }
+    header.topbar {
+      background: var(--caramel-dark); color: #fff; padding: 0.85rem 2rem;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.8rem;
+      position: sticky; top: 0; z-index: 30; box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+    }
+    .brand { font-weight: 800; font-size: 1.1rem; display: flex; align-items: center; gap: 0.6rem; }
+    .nav-btns { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+    .nav-btns a {
+      color: #fff; text-decoration: none; font-size: 0.88rem; font-weight: 700;
+      background: rgba(255,255,255,0.16); padding: 0.4rem 0.9rem; border-radius: 8px; transition: 0.2s;
+    }
+    .nav-btns a:hover { background: var(--amber-accent); }
+    .nav-btns a.primary { background: var(--amber-accent); }
+
+    section.hero {
+      background: linear-gradient(135deg, #4a2c18 0%, #7c4722 100%);
+      color: #fff; padding: 2.6rem 2rem; text-align: center;
+    }
+    section.hero h1 { font-size: 2.15rem; margin-bottom: 0.6rem; }
+    section.hero p { max-width: 860px; margin: 0 auto; color: #f5ebe0; font-size: 1.05rem; }
+
+    main.container { max-width: 1140px; margin: 0 auto; padding: 2.2rem 1.8rem 4rem; }
+    .card-section {
+      background: var(--bg-card); border: 1px solid var(--border-soft);
+      border-radius: 18px; padding: 2rem 2.3rem; margin-bottom: 2rem;
+      box-shadow: 0 10px 28px rgba(74,44,24,0.06);
+    }
+    .sec-badge {
+      display: inline-block; background: var(--amber-bg); color: var(--caramel-dark);
+      font-weight: 800; font-size: 0.82rem; padding: 0.25rem 0.8rem; border-radius: 999px;
+      margin-bottom: 0.6rem; border: 1px solid var(--caramel-gold);
+    }
+    h2 {
+      font-size: 1.55rem; color: var(--caramel-dark); margin-bottom: 1rem;
+      padding-bottom: 0.5rem; border-bottom: 2px solid var(--bg-warm);
+    }
+    h3 { font-size: 1.18rem; color: var(--caramel-dark); margin: 1.1rem 0 0.5rem; }
+
+    .mermaid-box {
+      background: #fff; border: 2px solid var(--border-soft); border-radius: 14px;
+      padding: 1.5rem; margin: 1.2rem 0; overflow-x: auto; text-align: center;
+    }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.3rem; margin-top: 1rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; margin-top: 1rem; }
+
+    .info-card {
+      background: var(--bg-cream); border: 1px solid var(--border-soft);
+      border-radius: 14px; padding: 1.25rem 1.4rem;
+    }
+    .info-card h4 { font-size: 1.08rem; color: var(--caramel-dark); margin-bottom: 0.5rem; }
+    .info-card ul { padding-left: 1.2rem; font-size: 0.94rem; }
+    .info-card li { margin-bottom: 0.4rem; }
+
+    .callout-green {
+      background: var(--pistachio-bg); border-left: 5px solid var(--pistachio-green);
+      padding: 1.1rem 1.4rem; border-radius: 0 12px 12px 0; margin: 1rem 0;
+    }
+    .callout-red {
+      background: var(--berry-bg); border-left: 5px solid var(--berry-red);
+      padding: 1.1rem 1.4rem; border-radius: 0 12px 12px 0; margin: 1rem 0;
+    }
+    .callout-amber {
+      background: var(--amber-bg); border-left: 5px solid var(--amber-accent);
+      padding: 1.1rem 1.4rem; border-radius: 0 12px 12px 0; margin: 1rem 0;
+    }
+
+    table.audit-table {
+      width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.92rem;
+    }
+    table.audit-table th {
+      background: var(--caramel-dark); color: #fff; text-align: left; padding: 0.75rem 1rem;
+    }
+    table.audit-table td {
+      padding: 0.75rem 1rem; border-bottom: 1px solid var(--border-soft); vertical-align: top;
+    }
+    table.audit-table tr:nth-child(even) { background: var(--bg-cream); }
+
+    footer {
+      text-align: center; padding: 2rem; background: var(--bg-warm);
+      color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid var(--border-soft);
+    }
+
+    @media (max-width: 860px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="brand">🔄 作業步驟三 &amp; 四專頁：LLM Wiki Loop / Graph 流程設計與實作反思</div>
+    <div class="nav-btns">
+      <a href="index.html">🏠 返回 Wiki 總入口</a>
+      <a href="slides/index.html" class="primary">📊 開啟《法式甜點科學 101》綜合教學簡報 (8頁)</a>
+      <a href="https://github.com/Iris040407/Dessert-LLM-Wiki/blob/main/HOMEWORK_REPORT.md" target="_blank">📜 GitHub 作業報告原文</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1>我們的 Loop / Graph 是怎麼設計的？</h1>
+    <p>
+      資訊如何從 5 篇混亂的原始食譜（<code>raw/</code>）被取得、標準化檢查、編譯進 16 頁 <code>wiki/</code>，再經過「大綱確認 → 逐頁腳本審核 → HTML 渲染」三階段圖譜產生成教學簡報？本專頁完整呈現架構圖、實際檢查紀錄與 Shift-Left 反思。
+    </p>
+  </section>
+
+  <main class="container">
+
+    <!-- Section 1: End-to-End Graph Diagram -->
+    <div class="card-section">
+      <span class="sec-badge">步驟三：說明你的 Loop / Graph 設計</span>
+      <h2>一、雙迴圈＋三階段簡報生成圖譜 (End-to-End Staged Graph with 4 Verification Gates)</h2>
+      <p>
+        我們將整個系統拆解為兩大部份：前半部是 <strong>「Loop A：Wiki 知識擷取與編譯迴圈（處理 5 篇 Raw 資料）」</strong>，後半部是 <strong>「Graph B：三階段教學簡報生成圖譜（先大綱 → 後逐頁內容 → 最終 HTML 投影片）」</strong>，並在每個階段設置強制檢查節點（Gate 0 ~ Gate 3）與退回修正迴圈（Feedback Loops）：
+      </p>
+
+      <div class="mermaid-box">
+        <pre class="mermaid">
+flowchart TD
+    subgraph LoopA["🔄 Loop A：知識擷取與編譯迴圈 (每匯入 1 篇 Raw 重複執行，共執行 5 輪)"]
+        R["📥 1. 取得原始資料\n(raw/01 ~ 05.md)"] --> E["🔍 2. 萃取配方、工序、原理與排錯"]
+        E --> G0{"🛡️ Gate 0: 單位標準化與百分比驗算\n(Shift-Left 資料層檢查前移點!)"}
+        G0 -- "❌ 未通過: 含顆/杯/小匙\n或百分比分母基準不一致" --> FIX0["🔧 自動標準化換算\n(全蛋50g/蛋黃20g/1杯250g)\n並重算烘焙百分比/總重百分比"]
+        FIX0 --> G0
+        G0 -- "✅ 通過" --> W["📝 3. 跨頁網狀寫入/更新 Wiki\n(單篇連動更新 7~8 個跨分類頁面)"]
+        W --> G0B{"🛡️ Wiki 結構與雙向連結 Lint"}
+        G0B -- "❌ 漏連結或缺白話區塊" --> W
+        G0B -- "✅ 通過" --> WIKI[("📚 持久化 LLM Wiki 知識庫\n(index.md + 16 篇結構化頁面 + log.md)")]
+    end
+
+    subgraph GraphB["🖥️ Graph B：三階段教學 HTML 簡報生成圖譜 (大綱 → 逐頁內容 → HTML 投影片)"]
+        WIKI --> S1["🧠 Stage 1: 檢索 index.md\n規劃 8 頁教學簡報大綱 (Outline)"]
+        S1 --> G1{"🛡️ Gate 1: 大綱邏輯與人工確認\n(學習動線檢查 + Human-in-the-Loop)"}
+        G1 -- "❌ 概念順序跳躍 / 主題過雜\n或使用者要求調整架構" --> S1
+
+        G1 -- "✅ 大綱拍板確認" --> S2["📝 Stage 2: 依大綱向 Wiki 抽取知識\n撰寫「投影片逐頁詳細內容腳本」"]
+        S2 --> G2{"🛡️ Gate 2: 逐頁內容雙重檢查\n(1. 數據與 Wiki 100% 一致\n2. 初學者白話比喻 & 單頁字數密度)"}
+        G2 -- "❌ 數據不符 / 專有名詞無白話比喻\n或單頁表格過多易破版" --> FIX2["🔧 重新核對 Wiki 表格修正數據\n補齊生活比喻、或規劃 Tabs 分頁收納"]
+        FIX2 --> S2
+
+        G2 -- "✅ 逐頁內容確認通過" --> S3["🎨 Stage 3: 套入視覺模板與互動元件\n渲染生成 HTML 教學簡報 (slides/index.html)"]
+        S3 --> G3{"🛡️ Gate 3: 版面、互動與連結檢查\n(翻頁鍵盤控制、Tabs切換、隨堂測驗)"}
+        G3 -- "❌ 畫面破版或按鈕失效" --> S3
+        G3 -- "✅ 完美通過" --> OUT(["🎉 最終產出：可互動瀏覽的教學 HTML 簡報"])
+    end
+        </pre>
+      </div>
+
+      <div class="grid-3">
+        <div class="info-card">
+          <h4>🔁 1. 哪些步驟會重複執行？</h4>
+          <ul>
+            <li><strong>Loop A（Ingest 編譯迴圈）</strong>：每丟入一篇新文獻就完整重複執行一次（共執行 5 輪）。且每輪不是只寫 1 頁，而是<strong>網狀更新 7~8 個既有 Wiki 頁面</strong>，讓跨品項比較（如瑪德蓮 vs 可麗露）持續累積深化。</li>
+            <li><strong>Gate 退回迴圈</strong>：在 Gate 0、Gate 1、Gate 2、Gate 3 只要檢查未通過，就會觸發虛線箭頭退回上一節點重新換算或重新生成。</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h4>🛡️ 2. 哪些地方需要檢查或重新生成？</h4>
+          <ul>
+            <li><strong>Gate 0（寫入 Wiki 前）</strong>：檢查食譜單位（顆/杯→克）與百分比分母基準（總粉=100% vs 總重=100%）。</li>
+            <li><strong>Gate 1（大綱階段）</strong>：檢查學習曲線（必須先教烘焙百分比，後面才能放流派百分比表）並與使用者確認架構。</li>
+            <li><strong>Gate 2（逐頁腳本階段）</strong>：檢查數據與 Wiki 是否 100% 一致、每個法文/化學術語是否都有「初學者白話比喻」、單頁字數是否會導致投影片太擠。</li>
+            <li><strong>Gate 3（HTML 階段）</strong>：檢查 RWD 版面、Tabs 切換與隨堂測驗互動功能。</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h4>💡 3. 為什麼這樣設計？</h4>
+          <ul>
+            <li><strong>關注點分離（Separation of Concerns）</strong>：將「數據清洗（Gate 0）」、「教學架構（Gate 1）」、「內容正確性與白話轉譯（Gate 2）」與「前端 HTML/CSS 排版（Gate 3）」徹底拆開。</li>
+            <li>當最後一步要生成 HTML 投影片時，文字與數據早已在 Stage 2 驗證完畢並鎖定，AI 只需專注把版面與互動做好，<strong>完全不會發生一邊寫 HTML 一邊算錯烘焙百分比或漏寫白話解釋的問題</strong>！</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Execution & Gate Audit Log -->
+    <div class="card-section">
+      <span class="sec-badge">一次實際執行的結果或檢查紀錄</span>
+      <h2>二、實際執行結果與四道 Gate 檢查攔截紀錄表</h2>
+      <p>以下為本專案實際執行 5 篇 Ingest（Loop A）與三階段簡報生成（Graph B）時，各檢查點真實攔截並修正的紀錄（完整時間軸見 <code>wiki/log.md</code>）：</p>
+
+      <table class="audit-table">
+        <thead>
+          <tr>
+            <th>檢查節點 (Gate)</th>
+            <th>實際執行時發現並攔截的問題 (What Failed)</th>
+            <th>觸發的修正與重新生成動作 (How It Was Fixed)</th>
+            <th>對應產出檔案</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>🛡️ Gate 0<br/>(Ingest #1 &amp; #3)<br/>非標準單位攔截</strong></td>
+            <td>❌ <code>raw/01</code> 瑪德蓮 PH 配方寫「全蛋 4 顆、泡打粉 1.5 tsp」；<code>raw/03</code> 可麗露傳統派寫「牛奶 2 杯、全蛋 2 顆、蛋黃 2 顆」，無法與其他流派並排計算百分比。</td>
+            <td>🔧 依 <code>AGENTS.md</code> 標準係數強制換算為公制克數（<code>全蛋=50g</code>、<code>蛋黃=20g</code>、<code>1杯=250g</code>、<code>1tsp=4g</code>），成功算出 PH 瑪德蓮總液粉比 <code>125%</code> 與可麗露超高液粉比 <code>680%</code>。</td>
+            <td><code>wiki/recipes/madeleine.md</code><br/><code>wiki/recipes/canele.md</code></td>
+          </tr>
+          <tr>
+            <td><strong>🛡️ Gate 0<br/>(Ingest #2, #4, #5)<br/>百分比分母基準衝突</strong></td>
+            <td>❌ 1. 費南雪含「低粉60g+杏仁粉60g」，單以低粉為基準會使糖油比暴增至 250%，且流派 A 寫「焦化前生奶油 180g」vs 流派 B「焦化後淨重 140g」；<br/>2. 甘納許完全無粉（總粉=0g），套用烘焙百分比會<strong>除以零錯誤</strong>！</td>
+            <td>🔧 1. 費南雪確立以<strong>總粉量（低粉+杏仁粉=120g=100%）</strong>為基準，並扣除 16% 蒸發水分將生奶油 180g 標準化為 <code>焦化淨重 ~148g (123.3%)</code>；<br/>2. 無粉內餡自動切換為<strong>「總重百分比（Total Weight = 100%）」</strong>並列巧鮮比（1:1 vs 1:1.5）。</td>
+            <td><code>wiki/recipes/financier.md</code><br/><code>wiki/recipes/creme-patissiere-and-ganache.md</code></td>
+          </tr>
+          <tr>
+            <td><strong>🛡️ Gate 1<br/>(Stage 1 大綱檢查)<br/>教學焦點與認知順序</strong></td>
+            <td>❌ 初版 10 頁簡報大綱把「AI 系統的 Loop/Graph 作業說明」混在甜點教學簡報第 9 頁，對想學甜點的初學者來說會跳戲，且頁數偏長。</td>
+            <td>🔧 經 Gate 1 人機討論確認，將教學簡報收斂為<strong>純粹連貫的 8 頁甜點科學課</strong>（先教烘焙百分比 → 四大科學原理 → 互動翻車診斷與測驗），並將 Loop/Graph 獨立為本專頁（<code>workflow.html</code>）由首頁點擊查看！</td>
+            <td><code>wiki/courses/french-pastry-science-101.md</code><br/><code>workflow.html</code></td>
+          </tr>
+          <tr>
+            <td><strong>🛡️ Gate 2<br/>(Stage 2 逐頁內容檢查)<br/>單頁資訊密度與白話比喻</strong></td>
+            <td>❌ 在撰寫 Slide 4（瑪德蓮 vs 費南雪）與 Slide 8（五大翻車排錯＋三題隨堂測驗）的逐頁內容時，發現若把 3 張跨流派矩陣表格或 5 個排錯案例同時攤開在一頁，字數超過 600 字，做成投影片必定字太小或破版。</td>
+            <td>🔧 在進入 Stage 3 寫 HTML 之前，先於 Stage 2 腳本中將 Slide 4 改為<strong>「3 個點擊切換分頁 (Interactive Tabs)」</strong>，將 Slide 8 改為<strong>「上半部 5 顆症狀按鈕切換診斷卡 ＋ 下半部 3 題精簡互動測驗」</strong>，並確認所有專有名詞皆附有白話比喻。</td>
+            <td><code>slides/index.html</code> (Slide 4 &amp; Slide 8)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Section 3: Step 4 Reflection -->
+    <div class="card-section">
+      <span class="sec-badge">步驟四：進行反思 (Reflection)</span>
+      <h2>三、實作反思：哪個節點最常出錯？如何把檢查往前移（Shift-Left）？</h2>
+
+      <div class="callout-red">
+        <h3>❓ 1. 哪一個節點最常出錯？</h3>
+        <p>在實際執行過程中，有<strong>兩個節點</strong>最容易出錯：</p>
+        <ul style="padding-left:1.3rem; margin-top:0.4rem;">
+          <li><strong>資料層最常出錯的節點 —「跨來源食譜的單位換算與百分比基準對齊」</strong>：不同原始食譜混用「顆、杯、小匙」與「公克」，或是混淆「焦化前生奶油重（含 16% 水分）vs 焦化後淨重」，以及「有粉蛋糕 vs 無粉內餡（除以零）」的分母衝突。</li>
+          <li><strong>簡報生成層最常出錯的節點 —「直接從 Wiki 一步跳到 HTML 程式碼生成」</strong>：如果沒有先拆出「大綱確認」與「逐頁內容腳本檢查」，直接讓 AI 生成 HTML 投影片，AI 會同時忙著寫 CSS/JS 又忙著塞資料，極易發生<strong>「單頁塞入過多大表格導致畫面破版」</strong>、<strong>「專有名詞忘了寫初學者白話比喻」</strong>，或是<strong>「發現大綱方向不對時，必須整份幾千行 HTML 打掉重寫」</strong>的嚴重返工。</li>
+        </ul>
+      </div>
+
+      <div class="callout-amber">
+        <h3>⏪ 2. 你發現問題後，把檢查往前移到了哪一個步驟？（Shift-Left Validation）</h3>
+        <p>我們實施了<strong>雙重「檢查前移（Shift-Left）」</strong>：</p>
+        <ul style="padding-left:1.3rem; margin-top:0.4rem;">
+          <li><strong>第一次前移（從「做簡報時」前移到「Ingest 寫入 Wiki 之前」的 <code>Gate 0</code>）</strong>：規定任何原始食譜在寫入 <code>wiki/recipes/</code> 之前，必須先在 Gate 0 完成公制克數換算、蒸發水分補償與烘焙百分比驗算。確保寫入 Wiki 的每一張表格都是 100% 可直接並排比較的乾淨數據。</li>
+          <li><strong>第二次前移（從「HTML 渲染後」前移到「Stage 1 大綱確認 <code>Gate 1</code>」與「Stage 2 逐頁純文字腳本審核 <code>Gate 2</code>」）</strong>：在動手寫任何一行 HTML 之前，先在 <code>Gate 1</code> 確認 8 頁大綱與學習順序，接著在 <code>Gate 2</code> 對純文字的「逐頁內容腳本」進行<strong>數據一致性核對、初學者白話比喻檢查，以及單頁容量預判（提前決定哪裡要用 Tabs 收納）</strong>。</li>
+        </ul>
+      </div>
+
+      <div class="callout-green">
+        <h3>🔧 3. 你有沒有因此修改 workflow / graph？為什麼？</h3>
+        <p><strong>有的！我們因此將原本單純的線性流程，修改為上方看到的「Dual-Loop + 三階段 Staged Graph（含 Gate 0 ~ Gate 3 四道檢查閘門）」：</strong></p>
+        <ul style="padding-left:1.3rem; margin-top:0.4rem;">
+          <li><strong>為什麼要這樣修改？</strong> 因為在沒有拆分階段與前移檢查前，「資料錯誤」、「教學順序錯誤」與「HTML 排版錯誤」會全部糾纏在最後一個節點爆發（除錯成本最高）。</li>
+          <li>修改 Graph 之後，每個節點各司其職：<strong><code>Gate 0</code> 保證 Wiki 數據零矛盾 → <code>Gate 1</code> 保證簡報大綱符合初學者認知動線 → <code>Gate 2</code> 保證逐頁文字有白話比喻且單頁容量適中 → <code>Gate 3</code> 只需專心把 HTML 視覺與互動做好</strong>。這不僅讓最終產出的教學簡報品質大幅提升，每次修改也只需要退回對應的小階段，真正發揮了 Agent Graph 工作流的工程價值！</li>
+        </ul>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    法式甜點科學與跨流派教學 LLM Wiki ・ Loop / Graph 架構設計與實作反思專頁
+  </footer>
+
+</body>
+</html>
