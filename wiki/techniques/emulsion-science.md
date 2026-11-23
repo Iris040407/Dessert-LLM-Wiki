@@ -17,7 +17,7 @@ last_updated: "2026-11-22"
 
 | 乳化系統類型 | 代表甜點品項 | 水相 (Water Phase) | 油相 (Oil Phase) | 乳化橋樑 (Emulsifier / 穩定機制) | 最佳乳化溫度區間 |
 | :--- | :--- | :--- | :--- | :--- | :---: |
-| **1. 卵磷脂化學乳化系** | [瑪德蓮](../recipes/madeleine.md)、[卡士達醬](../recipes/creme-patissiere-and-ganache.md) | 全蛋水分、牛奶 | 融化發酵奶油 | **蛋黃卵磷脂 (Lecithin)**：一端親水、一端親油，手牽手包住微小油滴 | **奶油 45°C~50°C / 蛋液 25°C~36°C** |
+| **1. 卵磷脂化學乳化系** | [瑪德蓮](../recipes/madeleine.md)、[卡士達醬](../recipes/creme-patissiere-and-ganache.md)、[閃電泡芙](../recipes/eclair-choux-pastry.md) | 全蛋水分、牛奶、燙麵水 | 融化發酵奶油 | **蛋黃卵磷脂 (Lecithin)** + 糊化澱粉網：一端親水、一端親油，手牽手包住微小油滴（泡芙須在燙麵降溫至 45~50°C 後分次加蛋乳化至 V 字倒三角形） | **奶油/燙麵團 45°C~50°C / 蛋液 25°C~36°C** |
 | **2. 高黏度澱粉蛋白物理懸浮系** | [費南雪](../recipes/financier.md) | 純蛋白 (88% 水分) | 焦化奶油、杏仁油脂 | 無蛋黃卵磷脂！靠**高糖+麵粉+杏仁粉形成高黏度漿體**，把油滴物理性鎖死在網格中 | **焦化奶油降溫至 50°C~60°C 分次沖入** |
 | **3. 可可脂水包油 (O/W) 摩擦乳化系** | [巧克力甘納許 (Ganache)](../recipes/creme-patissiere-and-ganache.md) | 鮮奶油中的水 (約 60%) | 可可脂 (Cocoa Butter) + 乳脂 | **酪蛋白 (Casein) + 大豆卵磷脂** + **中心同心圓機械剪切力** | **核心溫度 35°C~45°C** |
 

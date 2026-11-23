@@ -18,9 +18,11 @@ last_updated: "2026-11-22"
 | **Crème Pâtissière** | Pastry Cream / Custard | クレーム・パティシエール (カスタード) | **卡士達醬**（帕蒂斯里奶油醬 / 克林姆餡） | 由牛奶、蛋黃、砂糖與玉米澱粉/低粉煮沸至 **≥95°C 滅活 α-澱粉酶**而成的基礎內餡（見[內餡專頁](recipes/creme-patissiere-and-ganache.md)） |
 | **Croûtage** | Skinning / Drying | 乾燥 (ピエを作るための乾燥) | **結皮**（馬卡龍表面風乾） | [馬卡龍](recipes/macaron.md)入爐前靜置風乾使表層結出不黏手薄膜，強迫水蒸氣從底部邊緣擠出形成「裙邊」 |
 | **Cul Blanc** | White Bottom / Pale Top | 白頭 (カヌレの焼き色不良) | **白頭**（可麗露頂部不焦黑） | [可麗露](recipes/canele.md)因氣泡或冰麵糊溫差暴衝浮起，導致模底隔了一層空氣未接觸銅模導熱的失敗現象（見[排錯總表](troubleshooting/common-baking-failures.md)） |
+| **Éclair** | Eclair | エクレア | **閃電泡芙** | 以長條形[泡芙派皮](recipes/eclair-choux-pastry.md)烘烤出中空腔體，內部灌入[卡士達醬](recipes/creme-patissiere-and-ganache.md)並於頂部沾裹巧克力甘納許的經典法式甜點 |
 | **Ganache** | Chocolate Ganache | ガナッシュ | **甘納許**（巧克力鮮奶油乳化醬） | 巧克力（可可脂）與鮮奶油（水相）透過 35~45°C [中心同心圓摩擦乳化法](techniques/emulsion-science.md)形成的水包油（O/W）絲滑結構 |
 | **Macaronage** | Macaronage (Folding & Deflating) | マカロナージュ | **壓拌**（馬卡龍消泡刮拌手法） | 將蛋白霜與杏仁糖粉混合後，用刮刀貼盆壁擠壓破除大氣泡，直至麵糊呈緞帶狀（Ribbon Stage）滑落（見[蛋白霜專頁](techniques/meringue-aerating-systems.md)） |
 | **Meringue Française / Italienne** | French / Italian Meringue | フレンチ / イタリアン・メレンゲ | **法式蛋白霜 / 義式蛋白霜** | 法式為生蛋白加糖冷打；義式為將 **118°C 熱糖漿**沖入蛋白燙熟加固，抗潮與耐壓拌度極高（見[馬卡龍](recipes/macaron.md)） |
+| **Panade / Pâte à Choux** | Choux Paste / Pre-gelatinized Dough | パナード / シュー生地 | **泡芙燙麵團 / 泡芙派皮** | 將水與奶油煮沸至 100°C 後一次性倒入中筋麵粉拌炒至鍋底結薄膜（[澱粉預糊化](techniques/starch-gelatinization-and-resting.md)），降溫至 50°C 後分次加蛋乳化至倒三角形 V 字狀態 |
 | **Pied** | Foot / Ruffles | ピエ (裙邊) | **裙邊 / 蕾絲裙邊** | [馬卡龍](recipes/macaron.md)頂部結皮鎖死後，底部受熱蒸氣往外推擠溢出的多孔蕾絲狀邊緣 |
 | **Tant Pour Tant (TPT)** | Equal Parts (1:1 Almond & Icing Sugar) | タン・プール・タン | **TPT 等量杏仁糖粉** | 法式甜點中「[細杏仁粉](ingredients/flours-and-nut-powders.md) 100% : [純糖粉](ingredients/sugars-and-invert-syrup.md) 100%」的 1:1 混合基底 |
 | **Trimoline** | Invert Sugar Syrup | トリモリン (転化糖) | **轉化糖漿**（可用百花蜂蜜替代） | 蔗糖水解而成的「50% 葡萄糖 + 50% 果糖」單醣漿，具極強吸濕鎖水防老化與促進上色能力（見[糖類科學](ingredients/sugars-and-invert-syrup.md)） |

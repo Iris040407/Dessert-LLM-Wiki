@@ -405,6 +405,7 @@
       <a href="03-canele.html" style="color:#fff; text-decoration:none; font-size:0.76rem; background:rgba(255,255,255,0.18); padding:0.24rem 0.5rem; border-radius:6px;">03 可麗露</a>
       <a href="04-macaron.html" style="color:#fff; text-decoration:none; font-size:0.76rem; background:rgba(255,255,255,0.18); padding:0.24rem 0.5rem; border-radius:6px;">04 馬卡龍</a>
       <a href="05-creams-and-ganache.html" style="color:#fff; text-decoration:none; font-size:0.76rem; background:rgba(255,255,255,0.18); padding:0.24rem 0.5rem; border-radius:6px;">05 內餡</a>
+      <a href="06-eclair.html" style="color:#fff; text-decoration:none; font-size:0.76rem; background:rgba(255,255,255,0.18); padding:0.24rem 0.5rem; border-radius:6px;">06 閃電泡芙</a>
     </div>
     <div class="slide-Jump" id="dotContainer"></div>
   </header>
@@ -796,12 +797,13 @@
         <p style="font-size:0.95rem; color:var(--text-muted); margin-bottom:0.8rem;">
           點擊下方任一翻車現場，立即從 Wiki 的 <code>troubleshooting/common-baking-failures.md</code> 調出科學真兇與標準處方箋：
         </p>
-        <div class="trouble-grid">
+        <div class="trouble-grid" style="grid-template-columns: repeat(6, 1fr);">
           <button class="trouble-btn active" onclick="showTrouble(0)">🐚 1. 瑪德蓮<br/>平坦沒肚臍</button>
           <button class="trouble-btn" onclick="showTrouble(1)">🧱 2. 費南雪<br/>不香又滲油</button>
           <button class="trouble-btn" onclick="showTrouble(2)">🔔 3. 可麗露<br/>白頭像蘑菇</button>
           <button class="trouble-btn" onclick="showTrouble(3)">🍬 4. 馬卡龍<br/>大空心/炸裂</button>
           <button class="trouble-btn" onclick="showTrouble(4)">🍮 5. 卡士達出水<br/>甘納許浮油</button>
+          <button class="trouble-btn" onclick="showTrouble(5)">⚡ 6. 閃電泡芙<br/>扁塌/無空心</button>
         </div>
         <div class="trouble-detail" id="troubleBox"></div>
       </div>
@@ -941,6 +943,11 @@
         title: "🍮 診斷案例 5：卡士達醬冷藏隔天「出水變稀」；甘納許粗糙浮油結粒",
         cause: "<strong>科學真兇（α-澱粉酶未滅活 & 水包油相變失敗）</strong>：<br/>• <strong>卡士達化水</strong>：在 80°C 變稠時就關火，生蛋黃裡的「α-澱粉酶」正好在最活躍溫度，冷藏時把澱粉凝膠網全部剪斷！<br/>• <strong>甘納許油水分離</strong>：把滾燙鮮奶油一次全倒進巧克力並大範圍亂攪，可可脂與水直接排斥分離。",
         fix: "<strong>✅ Wiki 標準處方箋</strong>：<br/>1. 卡士達變稠後必須繼續刷鍋底加熱至 <strong>95°C 冒出大泡泡沸騰，並維持沸騰攪拌 90 秒</strong>徹底燙死澱粉酶！<br/>2. 甘納許將 80°C 鮮奶油分 3 次加入，用刮刀在<strong>盆底正中央快速畫小同心圓摩擦</strong>建立烏黑發亮的乳化核，再慢慢擴大畫圈（若已分離，回溫至 38°C 補 15g 溫牛奶重新從中心摩擦即可救回）。"
+      },
+      {
+        title: "⚡ 診斷案例 6：閃電泡芙 (Éclair) 入爐完全不膨脹無空心，或出爐後瞬間凹陷軟塌",
+        cause: "<strong>科學真兇（燙麵預糊化失敗 & 水蒸氣失壓回軟）</strong>：<br/>• <strong>完全不膨脹</strong>：水與奶油未達 100°C 大滾就下粉（澱粉未糊化鎖不住 348% 水分），或燙麵團還超過 65°C 就加蛋把雞蛋燙熟失去氣球皮延展力。<br/>• <strong>出爐瞬間凹陷</strong>：烘烤前 20 分鐘偷開烤箱門讓冷風灌入失壓；或 175°C 烘乾不足（裂縫處還是白色的）且出爐未戳洞排氣，內部殘留水氣把外殼悶軟！",
+        fix: "<strong>✅ Wiki 標準處方箋（來自 One Sweet Tooth / raw/06）</strong>：<br/>1. 水與奶油 100°C 大滾後<strong>中筋麵粉一次全下</strong>快速拌炒至鍋底結出一層白色澱粉薄膜（Panade），降溫至 <strong>45~50°C</strong> 分次加室溫蛋液至刮刀呈現 <strong>3~4cm 光滑倒三角形 (V字)</strong>。<br/>2. 200°C 烤 10m 吹起大空心後，轉 <strong>175°C 烤足 20~25m</strong> 烤乾硬殼；<strong>出爐立刻在底部戳 2~3 個小洞釋放熱蒸氣</strong>，冷卻後灌入卡士達醬並淋上甘納許！"
       }
     ];
 

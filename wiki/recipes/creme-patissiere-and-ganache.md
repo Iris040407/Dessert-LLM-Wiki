@@ -78,7 +78,7 @@ last_updated: "2026-11-22"
 ---
 
 ## 🔗 關聯知識節點
-- **應用甜點**：[法式馬卡龍 (Macaron)](macaron.md)（甘納許夾餡）、[波爾多可麗露 (Canelé)](canele.md)（同屬牛奶蛋黃澱粉體系）
+- **應用甜點**：[法式閃電泡芙與泡芙派皮 (Éclair & Pâte à Choux)](eclair-choux-pastry.md)（卡士達灌餡＋甘納許頂部鏡面淋面的最經典組合！）、[法式馬卡龍 (Macaron)](macaron.md)（甘納許夾餡）、[波爾多可麗露 (Canelé)](canele.md)（同屬牛奶蛋黃澱粉體系）
 - **核心技法**：[澱粉糊化與 α-澱粉酶滅活科學](../techniques/starch-gelatinization-and-resting.md)、[乳化科學（甘納許中心乳化法）](../techniques/emulsion-science.md)
 - **關鍵原料**：[奶油與油脂科學](../ingredients/butter-and-fats.md)、[麵粉與玉米澱粉科學](../ingredients/flours-and-nut-powders.md)、[糖與轉化糖漿](../ingredients/sugars-and-invert-syrup.md)
 - **排錯指南**：[法式甜點五大經典翻車排錯總表（卡士達出水與甘納許油水分離）](../troubleshooting/common-baking-failures.md)

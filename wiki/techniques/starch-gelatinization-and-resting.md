@@ -2,14 +2,14 @@
 title: "澱粉糊化、α-澱粉酶滅活與麵糊冷藏靜置科學 (Starch Gelatinization & Resting)"
 aliases: ["Starch Gelatinization", "澱粉糊化", "α-澱粉酶", "麵糊靜置", "水合作用"]
 category: "technique"
-tags: ["烘焙物理化學", "澱粉糊化", "麵糊靜置", "可麗露", "瑪德蓮", "卡士達"]
-sources_count: 3
-last_updated: "2026-11-22"
+tags: ["烘焙物理化學", "澱粉糊化", "麵糊靜置", "可麗露", "瑪德蓮", "卡士達", "閃電泡芙燙麵"]
+sources_count: 4
+last_updated: "2026-11-23"
 ---
 
 # 澱粉糊化、α-澱粉酶滅活與麵糊冷藏靜置科學 (Starch Gelatinization & Resting)
 
-在烘焙科學中，**「時間」與「溫度」是最容易被初學者忽略的隱形原料**。為什麼[瑪德蓮](../recipes/madeleine.md)跟[可麗露](../recipes/canele.md)都要求冷藏靜置 12~48 小時，但進烤箱前一個要**冰冰的進爐**、另一個卻**必須回溫到 18°C 才能進爐**？為什麼[卡士達醬](../recipes/creme-patissiere-and-ganache.md)煮到 80°C 已經很稠了，隔天卻變成一鍋稀水？這一切都歸結於**澱粉水合糊化（Starch Hydration & Gelatinization）**與**酵素動力學**。
+在烘焙科學中，**「時間」與「溫度」是最容易被初學者忽略的隱形原料**。為什麼[瑪德蓮](../recipes/madeleine.md)跟[可麗露](../recipes/canele.md)都要求冷藏靜置 12~48 小時，但進烤箱前一個要**冰冰的進爐**、另一個卻**必須回溫到 18°C 才能進爐**？為什麼[法式閃電泡芙](../recipes/eclair-choux-pastry.md)要先在爐上用 100°C 滾水把麵粉「燙熟炒成團（*Panade*）」才能加蛋？為什麼[卡士達醬](../recipes/creme-patissiere-and-ganache.md)煮到 80°C 已經很稠了，隔天卻變成一鍋稀水？這一切都歸結於**澱粉水合糊化（Starch Hydration & Gelatinization）**與**酵素動力學**。
 
 ---
 
@@ -40,6 +40,14 @@ last_updated: "2026-11-22"
 
 ---
 
+## 🔥 三、閃電泡芙燙麵 (*Panade*) 的「預糊化 (Pre-gelatinization)」科學
+
+在[法式閃電泡芙 (Éclair & Pâte à Choux)](../recipes/eclair-choux-pastry.md) 中，總液體量（水 188.8% + 全蛋 160% = **348.8%**）高達麵粉的 3.5 倍！若直接冷拌只會變成稀水，為什麼泡芙卻能擠出立體花紋並在烤箱裡吹出大空心？
+1. **100°C 沸水一次下粉（瞬間預糊化）**：將水與奶油煮至 100°C 大滾後**一次性倒入全部中筋麵粉**快速拌炒，讓澱粉在鍋內提前完成 **75~80°C 糊化（鍋底結出白色澱粉薄膜）**。糊化後的澱粉吸水量暴增數倍，把高達 348% 的水分與 90% 的奶油緊緊鎖在麻糬般的彈性網格中。
+2. **200°C 入爐二次加熱（水蒸氣膨脹 1600 倍）**：入爐後內部大量水分瞬間化為水蒸氣，被預糊化澱粉與中筋麵筋構成的「彈性氣球皮」包住衝不破，遂將泡芙中心撐出巨大的中空腔體！
+
+---
+
 ## 🎓 教學備課專區 (Teaching Module)
 
 ### 💡 給初學者的原理白話文
@@ -52,11 +60,12 @@ last_updated: "2026-11-22"
 - [ ] **卡士達 95°C 冒泡計時檢核**：在課堂上規定學員「看到第一顆大泡泡冒出表面時開始讀秒 60~90 秒」，期間打蛋器快速刷遍鍋底每個角落，確保酵素 100% 滅活。
 
 ## 🔗 關聯知識節點
-- **應用甜點**：[瑪德蓮貝殼蛋糕](../recipes/madeleine.md)、[波爾多可麗露](../recipes/canele.md)、[卡士達醬與甘納許](../recipes/creme-patissiere-and-ganache.md)
+- **應用甜點**：[瑪德蓮貝殼蛋糕](../recipes/madeleine.md)、[波爾多可麗露](../recipes/canele.md)、[卡士達醬與甘納許](../recipes/creme-patissiere-and-ganache.md)、[法式閃電泡芙與泡芙派皮](../recipes/eclair-choux-pastry.md)
 - **關鍵原料**：[麵粉、玉米澱粉與堅果粉科學](../ingredients/flours-and-nut-powders.md)
-- **排錯指南**：[法式甜點五大經典翻車排錯總表](../troubleshooting/common-baking-failures.md)
+- **排錯指南**：[法式甜點六大經典翻車排錯總表](../troubleshooting/common-baking-failures.md)
 
 ## 📚 知識來源 (Compiled from Raw Sources)
 - [raw/01-madeleine-ph-vs-classic.md](../../raw/01-madeleine-ph-vs-classic.md)
 - [raw/03-canele-bordeaux-starch-gelatinization.md](../../raw/03-canele-bordeaux-starch-gelatinization.md)
 - [raw/05-creme-patissiere-ganache-emulsion.md](../../raw/05-creme-patissiere-ganache-emulsion.md)
+- [raw/06-eclair-choux-pastry-onesweettooth.md](../../raw/06-eclair-choux-pastry-onesweettooth.md)

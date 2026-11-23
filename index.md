@@ -14,6 +14,7 @@
   3. 🔔 **[簡報 03：波爾多可麗露 (Canelé) 專題 (`slides/03-canele.html`)](https://iris040407.github.io/Dessert-LLM-Wiki/slides/03-canele.html)** — 680% 超高液粉比澱粉糊化、蜂蠟銅模導熱、靜置 48 小時脫氣與「18°C 回溫入爐防白頭（*Cul Blanc*）」科學。
   4. 🍬 **[簡報 04：法式馬卡龍 (Macaron) 專題 (`slides/04-macaron.html`)](https://iris040407.github.io/Dessert-LLM-Wiki/slides/04-macaron.html)** — Ladurée 法式生蛋白泡 vs Pierre Hermé 118°C 義式防彈糖泡、壓拌（*Macaronage*）緞帶檢核與結皮裙邊力學。
   5. 🍮 **[簡報 05：卡士達醬與甘納許內餡專題 (`slides/05-creams-and-ganache.html`)](https://iris040407.github.io/Dessert-LLM-Wiki/slides/05-creams-and-ganache.html)** — 生蛋黃 α-澱粉酶化水危機（必煮至 95°C 冒泡滅活）與法芙娜 35~45°C 中心同心圓摩擦乳化法。
+  6. ⚡ **[簡報 06：法式閃電泡芙 (Éclair & Pâte à Choux) 專題 (`slides/06-eclair.html`)](https://iris040407.github.io/Dessert-LLM-Wiki/slides/06-eclair.html)** — One Sweet Tooth 純水脆皮派 vs Ferrandi 牛奶派、100°C 爐上燙麵預糊化（*Panade*）、倒三角形 V 字檢核與 1600 倍水蒸氣膨脹力學。
 
 ---
 
@@ -24,6 +25,7 @@
 3. **[波爾多可麗露 (Canelé de Bordeaux)](wiki/recipes/canele.md)** — 波爾多傳統紅銅模蜂蠟派 vs 家用鑄鋁模（85% 低粉+15% 高粉）改良派。 `(Compiled from: raw/03)`
 4. **[法式馬卡龍 (Macaron Parisien)](wiki/recipes/macaron.md)** — Ladurée 法式冷打蛋白霜派 vs Pierre Hermé 118°C 義式蛋白霜派（杏仁粉=100%）。 `(Compiled from: raw/04)`
 5. **[卡士達醬與巧克力甘納許 (Crème Pâtissière & Ganache)](wiki/recipes/creme-patissiere-and-ganache.md)** — Ferrandi 醇厚派 vs 現代輕盈塔餡派，以及 1:1 vs 1:1.5 甘納許總重百分比矩陣。 `(Compiled from: raw/05)`
+6. **[法式閃電泡芙與泡芙派皮 (Éclair & Pâte à Choux)](wiki/recipes/eclair-choux-pastry.md)** — One Sweet Tooth 美式純水派（液粉比 348.8%）vs 法國 Ferrandi 牛奶水對半派，解析兩次加熱與蒸氣膨脹科學。 `(Compiled from: raw/06)`
 
 ---
 

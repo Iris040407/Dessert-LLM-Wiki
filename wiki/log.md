@@ -57,3 +57,18 @@
 - **產出成果**：
   1. 沉澱教案頁面：[`wiki/courses/french-pastry-science-101.md`](courses/french-pastry-science-101.md)
   2. 生成互動式 HTML 簡報：[`slides/index.html`](../slides/index.html)
+
+## [2026-11-23] ingest | Raw 06: 法式閃電泡芙 (Éclair) 與泡芙派皮 (Pâte à Choux) 燙麵糊化與蒸氣膨脹科學
+- **原始來源**：[`raw/06-eclair-choux-pastry-onesweettooth.md`](../raw/06-eclair-choux-pastry-onesweettooth.md)（擷取自甜牙齒 One Sweet Tooth 部落格：https://onesweettooth.com/eclair/ ）
+- **🛡️ Gate 0 檢查攔截與修正紀錄（Shift-Left Validation）**：
+  - ❌ **攔截異常**：原始網站配方混合美式量杯、條、湯匙、茶匙、顆與華氏溫度：`水 1 量杯 (236ml)`、`無鹽奶油 1 條 (1/2 量杯 = 8 湯匙 = 113g)`、`鹽 1/2 茶匙`、`中筋麵粉 1 量杯 (約 125g)`、`雞蛋 4 顆`、`烤溫 400°F (10m) → 350°F (20~25m)`。
+  - 🔧 **自動換算修正**：以 **中筋麵粉 `125g = 100.0%`** 為烘焙百分比基準，換算為公制克數與百分比：`水 236g (188.8%)`、`無鹽奶油 113g (90.4%)`、`鹽 3g (2.4%)`、`全蛋 200g (160.0%)`，得出 **348.8% 高液粉比**；烤溫統一轉為攝氏 **`200°C (10m) → 175°C (20~25m)`**，並與法國 Ferrandi 牛奶水對半派（水 83.3% + 牛奶 83.3%、全蛋 160%）並排建立對照矩陣。
+- **跨頁網狀連動新建/更新 (12 個檔案同步更新)**：
+  1. 新建食譜專頁：[`recipes/eclair-choux-pastry.md`](recipes/eclair-choux-pastry.md)
+  2. 更新內餡專頁：[`recipes/creme-patissiere-and-ganache.md`](recipes/creme-patissiere-and-ganache.md)（雙向連結至閃電泡芙灌餡與淋面）
+  3. 更新糊化科學頁：[`techniques/starch-gelatinization-and-resting.md`](techniques/starch-gelatinization-and-resting.md)（新增第三節：泡芙爐上滾水燙麵 *Panade* 預糊化與 1600 倍水蒸氣氣球力學）
+  4. 更新乳化科學頁：[`techniques/emulsion-science.md`](techniques/emulsion-science.md)（新增燙麵降溫 50°C 加蛋乳化與倒三角形 V 字檢核）
+  5. 更新粉類科學頁：[`ingredients/flours-and-nut-powders.md`](ingredients/flours-and-nut-powders.md)（新增中筋麵粉 All-Purpose / T55 高延展氣球薄膜骨架）
+  6. 更新排錯總表頁：[`troubleshooting/common-baking-failures.md`](troubleshooting/common-baking-failures.md)（新增第 6 大翻車：閃電泡芙扁塌無空心與出爐瞬間凹陷）
+  7. 更新多語術語表：[`glossary.md`](glossary.md)（新增 *Éclair*、*Pâte à Choux*、*Panade*）
+  8. 新建第 6 份單元教學 HTML 簡報：[`slides/06-eclair.html`](../slides/06-eclair.html)，並同步更新 [`index.html`](../index.html)、[`slides/index.html`](../slides/index.html)、[`workflow.html`](../workflow.html) 與全局索引。

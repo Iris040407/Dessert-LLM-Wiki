@@ -12,6 +12,7 @@
 3. **[波爾多可麗露 (Canelé de Bordeaux)](recipes/canele.md)** — 對比傳統紅銅模蜂蠟公會派與現代家用鑄鋁模（85% 低粉+15% 高粉）改良派，揭開 680% 超高液粉比、48 小時靜置脫氣與「必回溫至 18°C 入爐防白頭」的物理學。 `(Sources: 2)`
 4. **[法式馬卡龍 (Macaron Parisien)](recipes/macaron.md)** — 對比 Ladurée 法式冷打蛋白霜派（薄脆輕盈）與 Pierre Hermé 118°C 義式熱糖漿蛋白霜派（飽滿抗潮），詳解 TPT、壓拌（*Macaronage*）緞帶狀態與結皮裙邊力學。 `(Sources: 2)`
 5. **[法式兩大靈魂內餡：卡士達醬與巧克力甘納許 (Crème Pâtissière & Ganache)](recipes/creme-patissiere-and-ganache.md)** — 建立無粉/液態系統之「總重百分比矩陣」，解析卡士達 95°C 沸騰滅活 α-澱粉酶防化水機制，以及甘納許 1:1 vs 1:1.5 巧鮮比與中心同心圓摩擦乳化法。 `(Sources: 2)`
+6. **[法式閃電泡芙與泡芙派皮 (Éclair & Pâte à Choux)](recipes/eclair-choux-pastry.md)** — 對比 One Sweet Tooth 純水脆皮派（液粉比 348.8%）與法國 Ferrandi 牛奶水對半派，解析 100°C 爐上燙麵預糊化（*Panade*）、50°C 加蛋倒三角形 V 字檢核與 200°C 水蒸氣膨脹 1600 倍吹出大空心的力學。 `(Sources: 2)`
 
 ---
 

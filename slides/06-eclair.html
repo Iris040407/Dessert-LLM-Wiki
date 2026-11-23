@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>簡報 06：法式閃電泡芙 (Éclair & Pâte à Choux) 專題 — LLM Wiki 教學簡報</title>
+  <style>
+    :root {
+      --bg-cream: #fdf8f2; --bg-card: #ffffff; --bg-warm: #f5ebe0;
+      --caramel-dark: #4a2c18; --caramel-mid: #8b5a2b; --caramel-gold: #c87d32;
+      --amber-accent: #d97706; --berry-red: #9e2a2b; --pistachio-green: #2d6a4f;
+      --pistachio-bg: #e8f5e9; --berry-bg: #fde8e8; --amber-bg: #fef3c7;
+      --text-main: #2c1e16; --text-muted: #6e5a4f; --border-soft: #e6d5c3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      background: var(--bg-cream); color: var(--text-main);
+      height: 100vh; overflow: hidden; display: flex; flex-direction: column;
+    }
+    header.topbar {
+      background: var(--caramel-dark); color: #fff; padding: 0.65rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;
+    }
+    .nav-links { display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap; }
+    .nav-links a {
+      color: #fff; text-decoration: none; font-size: 0.8rem; font-weight: 600;
+      background: rgba(255,255,255,0.15); padding: 0.28rem 0.65rem; border-radius: 6px; transition: 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.current { background: var(--amber-accent); }
+    .progress-track { height: 5px; background: var(--border-soft); width: 100%; }
+    .progress-fill { height: 100%; background: var(--caramel-gold); width: 20%; transition: width 0.3s; }
+    main.stage {
+      flex: 1; overflow-y: auto; padding: 1.8rem 2.5rem;
+      display: flex; justify-content: center; align-items: flex-start;
+    }
+    .slide {
+      display: none; width: 100%; max-width: 1080px; background: var(--bg-card);
+      border: 1px solid var(--border-soft); border-radius: 18px; padding: 2.2rem 2.6rem;
+      box-shadow: 0 10px 30px rgba(74,44,24,0.08); animation: fadeIn 0.3s ease;
+    }
+    .slide.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .slide-tag {
+      display: inline-block; background: var(--bg-warm); color: var(--caramel-mid);
+      font-weight: 700; font-size: 0.85rem; padding: 0.25rem 0.8rem; border-radius: 999px; margin-bottom: 0.8rem;
+    }
+    h1 { font-size: 2.1rem; color: var(--caramel-dark); margin-bottom: 0.9rem; line-height: 1.3; }
+    h2 { font-size: 1.65rem; color: var(--caramel-dark); margin-bottom: 0.7rem; border-bottom: 2px solid var(--bg-warm); padding-bottom: 0.5rem; }
+    p.lead { font-size: 1.05rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 1.2rem; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.3rem; margin-top: 1rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; margin-top: 1rem; }
+    .card { background: var(--bg-cream); border: 1px solid var(--border-soft); border-radius: 12px; padding: 1.2rem; }
+    .card h3 { font-size: 1.1rem; color: var(--caramel-dark); margin-bottom: 0.5rem; }
+    .card p, .card li { font-size: 0.95rem; line-height: 1.6; }
+    .card ul { padding-left: 1.2rem; margin-top: 0.4rem; }
+    .analogy-box {
+      background: var(--amber-bg); border-left: 5px solid var(--amber-accent);
+      padding: 1rem 1.3rem; border-radius: 0 10px 10px 0; margin: 1rem 0; line-height: 1.6;
+    }
+    .gate-box {
+      background: var(--pistachio-bg); border-left: 5px solid var(--pistachio-green);
+      padding: 1rem 1.3rem; border-radius: 0 10px 10px 0; margin: 1rem 0; line-height: 1.6;
+    }
+    .warn-box {
+      background: var(--berry-bg); border-left: 5px solid var(--berry-red);
+      padding: 1rem 1.3rem; border-radius: 0 10px 10px 0; margin: 1rem 0; line-height: 1.6;
+    }
+    table.wiki-table { width: 100%; border-collapse: collapse; margin-top: 0.8rem; font-size: 0.92rem; }
+    table.wiki-table th { background: var(--caramel-dark); color: #fff; text-align: left; padding: 0.7rem 0.9rem; }
+    table.wiki-table td { padding: 0.65rem 0.9rem; border-bottom: 1px solid var(--border-soft); }
+    table.wiki-table tr:nth-child(even) { background: var(--bg-cream); }
+    .badge-pct { background: var(--amber-bg); color: var(--caramel-dark); font-weight: 700; padding: 0.1rem 0.45rem; border-radius: 5px; font-family: monospace; }
+    footer.controls {
+      background: #fff; border-top: 1px solid var(--border-soft); padding: 0.7rem 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .nav-btn {
+      background: var(--caramel-dark); color: #fff; border: none; padding: 0.5rem 1.2rem;
+      border-radius: 8px; font-weight: 700; cursor: pointer;
+    }
+    .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div style="font-weight:700;">⚡ 單元簡報 06：法式閃電泡芙 (Éclair &amp; Pâte à Choux) 專題</div>
+    <nav class="nav-links">
+      <a href="../index.html">🏠 返回 Wiki 總入口</a>
+      <a href="01-madeleine.html">01 瑪德蓮</a>
+      <a href="02-financier.html">02 費南雪</a>
+      <a href="03-canele.html">03 可麗露</a>
+      <a href="04-macaron.html">04 馬卡龍</a>
+      <a href="05-creams-and-ganache.html">05 卡士達&amp;甘納許</a>
+      <a href="06-eclair.html" class="current">06 閃電泡芙</a>
+      <a href="index.html">📊 綜合總論</a>
+    </nav>
+  </header>
+  <div class="progress-track"><div class="progress-fill" id="progressBar"></div></div>
+
+  <main class="stage">
+    <!-- Slide 1 -->
+    <section class="slide active">
+      <span class="slide-tag">閃電泡芙專題 1 / 5 ・ 知識來源：raw/06 (One Sweet Tooth) → wiki/recipes/eclair-choux-pastry.md</span>
+      <h1>⚡ 法式閃電泡芙 (Éclair) 與泡芙派皮 (Pâte à Choux)<br/>爐上滾水燙麵預糊化與 1600 倍水蒸氣膨脹科學</h1>
+      <p class="lead">
+        為什麼泡芙完全不加泡打粉、也不打發蛋白，卻能在烤箱裡自己鼓出一個巨大的「大空心肚子」，用來灌滿卡士達醬並淋上巧克力甘納許？本簡報萃取自最新 Ingest 的 <code>raw/06-eclair-choux-pastry-onesweettooth.md</code>（甜牙齒 One Sweet Tooth 食譜），帶你破解「兩次加熱」的泡芙物理學！
+      </p>
+      <div class="gate-box">
+        <strong>🛡️ Gate 0 單位標準化攔截紀錄（Shift-Left Validation 真實案例）：</strong><br/>
+        原始網站（<code>https://onesweettooth.com/eclair/</code>）配方混用了美式量杯、條、茶匙、顆與華氏溫度：<code>水 1 量杯 (236ml)</code>、<code>無鹽奶油 1 條 (1/2杯=8湯匙=113g)</code>、<code>鹽 1/2 茶匙</code>、<code>中筋麵粉 1 量杯 (125g)</code>、<code>雞蛋 4 顆</code>、<code>烤溫 400°F → 350°F</code>。<br/>
+        經 <strong>Gate 0</strong> 自動攔截並以 <strong>中筋麵粉 125g = 100%</strong> 換算為公制烘焙百分比：<code>水 236g (188.8%)</code>、<code>奶油 113g (90.4%)</code>、<code>鹽 3g (2.4%)</code>、<code>全蛋 200g (160.0%)</code>、<code>200°C(10m)→175°C(22m)</code>，算出驚人的 <strong>348.8% 總液粉比</strong>！
+      </div>
+      <div class="grid-3">
+        <div class="card"><h3>🔥 1. 第一次加熱：爐上燙麵</h3><p>100°C 沸水與奶油中一次倒入全部中筋麵粉炒出鍋底薄膜（澱粉預糊化 Panade），鎖住 3.5 倍水分！</p></div>
+        <div class="card"><h3>📐 2. 降溫加蛋：倒三角形檢核</h3><p>燙麵降溫至 50°C 後分次加蛋乳化，直到刮刀提起呈現「3~4cm 光滑倒三角形 (V字形)」滑落。</p></div>
+        <div class="card"><h3>🎈 3. 第二次加熱：蒸氣吹氣球</h3><p>200°C 高溫讓內部水分瞬間化為水蒸氣（體積膨脹 1600 倍），把彈性燙麵皮撐成巨大中空腔體！</p></div>
+      </div>
+    </section>
+
+    <!-- Slide 2 -->
+    <section class="slide">
+      <span class="slide-tag">閃電泡芙專題 2 / 5 ・ 跨流派烘焙百分比矩陣</span>
+      <h2>📊 One Sweet Tooth 美式純水脆皮派 vs 法國 Ferrandi 牛奶水對半派</h2>
+      <p class="lead">以 <strong>中筋麵粉 (All-Purpose / T55) = 100%</strong> 為基準，並排比較純水派與牛奶派的科學差異：</p>
+      <table class="wiki-table">
+        <thead>
+          <tr>
+            <th>原料項目 / 參數</th>
+            <th>流派 A：One Sweet Tooth 純水脆皮派</th>
+            <th>流派 B：法國 Ferrandi 牛奶水對半派</th>
+            <th>跨流派科學差異解析</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>中筋麵粉 (基準=100%)</strong></td>
+            <td>125g (<span class="badge-pct">100.0%</span>) <em>*原 1 量杯</em></td>
+            <td>150g (<span class="badge-pct">100.0%</span>) <em>*法國 T55</em></td>
+            <td>中筋蛋白質 (10~11%) 提供高延展性氣球薄膜，吹大不破裂</td>
+          </tr>
+          <tr>
+            <td><strong>水 (Water) + 全脂牛奶</strong></td>
+            <td>純水 236g (<span class="badge-pct">188.8%</span>) / 牛奶 0g</td>
+            <td>水 125g (<span class="badge-pct">83.3%</span>) + <strong>牛奶 125g (<span class="badge-pct">83.3%</span>)</strong></td>
+            <td><strong>關鍵差異</strong>：純水派烤出外殼最乾爽酥脆；加牛奶派因含乳糖與乳蛋白，梅納上色更金黃且帶奶香</td>
+          </tr>
+          <tr>
+            <td><strong>無鹽奶油 (Butter)</strong></td>
+            <td>113g (<span class="badge-pct">90.4%</span>) <em>*原 1 條 / 8 tbsp</em></td>
+            <td>110g (<span class="badge-pct">73.3%</span>)</td>
+            <td>高比例油脂在燙麵時被糊化澱粉包覆，讓泡芙殼酥鬆不乾硬</td>
+          </tr>
+          <tr>
+            <td><strong>室溫全蛋液 (Whole Eggs)</strong></td>
+            <td>200g (<span class="badge-pct">160.0%</span>) <em>*原 4 顆</em></td>
+            <td>240g (<span class="badge-pct">160.0%</span>) <em>*約 4.8 顆</em></td>
+            <td><strong>兩派蛋粉比完全一致皆為 160%！</strong> 提供蒸氣水源、卵磷脂乳化與熱凝固硬殼</td>
+          </tr>
+          <tr>
+            <td><strong>總液粉比 (水+奶+蛋)</strong></td>
+            <td>436g 液體 (<span class="badge-pct">348.8%</span>)</td>
+            <td>490g 液體 (<span class="badge-pct">326.6%</span>)</td>
+            <td>液體是麵粉的 <strong>3.3~3.5 倍</strong>！全靠燙麵預糊化才能鎖住不流散</td>
+          </tr>
+          <tr>
+            <td><strong>烤溫曲線</strong></td>
+            <td><strong>200°C 烤 10m → 降溫 175°C 烤 22m</strong><br/><em>*(原 400°F → 350°F)*</em></td>
+            <td><strong>200°C 烤 15m → 降溫 170°C 烤 22m</strong></td>
+            <td>前段 200°C 高溫衝擊吹出空心，後段 175°C 慢烤將外殼水分徹底烘乾定型</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Slide 3 -->
+    <section class="slide">
+      <span class="slide-tag">閃電泡芙專題 3 / 5 ・ 燙麵預糊化與蒸氣氣球力學</span>
+      <h2>🎈 為什麼泡芙不用泡打粉就能膨脹？「麻糬氣球＋1600 倍水蒸氣」！</h2>
+      <div class="analogy-box">
+        <strong>💡 給初學者的原理白話文：「先把麵粉燙成超有彈性的麻糬皮，再用蒸氣把它吹成大氣球！」</strong>
+        如果你把 1 杯麵粉直接加進 3.5 倍的冷水跟蛋液裡，只會得到一鍋稀稀的麵粉水；但泡芙先把水跟奶油煮到 <strong>100°C 大滾</strong>，再把麵粉<strong>一口氣全倒進去燙熟（燙麵 Panade）</strong>——這就像先把麵粉煮成一塊「超有彈性又超會吸水的麻糬皮」！進 200°C 烤箱後，關在麻糬裡面的大量水分瞬間沸騰變成水蒸氣（體積暴增 1600 倍），水蒸氣想往外衝卻衝不破有彈性的麻糬皮，就把泡芙肚子像吹氣球一樣吹出一個大空心！
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h3>🍳 關鍵檢核一：爐上燙麵的「鍋底白膜」</h3>
+          <ul>
+            <li>水與奶油必須煮到<strong>完全融化且 100°C 大滾</strong>（若還沒滾就下粉，澱粉無法糊化；若滾太久才下粉，水分會蒸發過多）。</li>
+            <li><strong>麵粉一次性全部倒入</strong>，快速拌炒成團後，開中小火繼續翻炒 60~90 秒，直到<strong>不鏽鋼鍋底結出一層薄薄的白色澱粉糊薄膜（約 78~80°C）</strong>才算預糊化完成！</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>📐 關鍵檢核二：加蛋乳化的「倒三角形 V 字」</h3>
+          <ul>
+            <li>燙麵團必須先散熱至 <strong>45°C~50°C（微溫不燙手）</strong>，再分 3~4 次加入室溫蛋液（太燙加蛋會變成蛋花湯！）。</li>
+            <li><strong>切勿死背「4 顆蛋」</strong>！最後 1 顆蛋要打散一匙一匙加，直到提起刮刀麵糊滑落後，刮刀邊緣懸掛著<strong>「3~4 公分長、光滑尖端微彎的倒三角形（V 字形）」</strong>即立刻停手！</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 4 -->
+    <section class="slide">
+      <span class="slide-tag">閃電泡芙專題 4 / 5 ・ 擠花塑形、烘烤鐵律與經典組裝</span>
+      <h2>⚡ 閃電泡芙的星形擠花、烘烤禁忌與「卡士達＋甘納許」完美合體</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>⭐ 1. 為什麼要用 1.5cm「星形擠花嘴」？</h3>
+          <ul>
+            <li>參考 One Sweet Tooth 實作技巧：使用開口約 <strong>1.5 公分（1/2 吋）的星形擠花嘴</strong>，在烘焙紙上擠出 <strong>12~13 公分長條</strong>。</li>
+            <li><strong>物理作用</strong>：星形擠花嘴在泡芙表面刮出的直線齒紋，能平均分散高溫膨脹時的表面張力，讓閃電泡芙膨得筆直圓潤、不會從側面亂爆裂！</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>🍫 2. 與 Wiki 內餡專頁 (Raw 05) 的完美組裝</h3>
+          <ul>
+            <li><strong>出爐立刻戳洞排氣</strong>：出爐後馬上在泡芙底部戳 2~3 個小孔讓熱蒸氣散出，避免水氣把脆殼悶軟。</li>
+            <li><strong>灌餡與淋面</strong>：冷卻後從底部小孔擠入冰涼滑順的 <strong><a href="05-creams-and-ganache.html" style="color:var(--caramel-dark);">香草卡士達醬 (Crème Pâtissière)</a></strong>，再將頂部沾裹一層 38°C 鏡面 <strong><a href="05-creams-and-ganache.html" style="color:var(--caramel-dark);">巧克力甘納許 (Ganache)</a></strong>！</li>
+          </ul>
+        </div>
+      </div>
+      <div class="warn-box" style="margin-top:1.1rem;">
+        <strong>🚫 烤箱絕對禁忌：前 20 分鐘「絕對不能打開烤箱門」！</strong><br/>
+        泡芙在 200°C 剛吹起大氣球時，外殼的蛋白質與澱粉還是軟的、還沒烤乾定型。如果這時偷開烤箱門，冷空氣灌入會讓泡芙內部的水蒸氣瞬間降溫凝結失壓，整盤泡芙會在 3 秒內像洩氣皮球一樣永久扁塌！
+      </div>
+    </section>
+
+    <!-- Slide 5 -->
+    <section class="slide">
+      <span class="slide-tag">閃電泡芙專題 5 / 5 ・ 課堂翻車排錯總結</span>
+      <h2>🔍 閃電泡芙三大翻車診斷表 &amp; 跨頁知識連結</h2>
+      <table class="wiki-table">
+        <thead>
+          <tr>
+            <th>翻車徵兆</th>
+            <th>底層科學真兇</th>
+            <th>Wiki 標準修正處方箋</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. 入爐完全不膨脹、烤成扁平硬棒子（無空心）</strong></td>
+            <td>水與奶油未達 100°C 大滾就下粉（澱粉未糊化鎖水）；或燙麵團還超過 65°C 就加蛋把雞蛋燙熟失去延展力</td>
+            <td>確保水與奶油大滾後<strong>麵粉一次全下</strong>炒出鍋底白膜；燙麵團<strong>降溫至 45~50°C</strong> 再分次加室溫蛋液</td>
+          </tr>
+          <tr>
+            <td><strong>2. 在烤箱裡澎得很大，一出爐 5 分鐘內全部凹陷軟塌</strong></td>
+            <td>前 20 分鐘偷開烤箱門；或 175°C 烘乾時間不足（外黃內濕，裂縫處還是白色的），出爐後被內部殘留水氣悶軟</td>
+            <td>200°C 烤 10m 後轉 <strong>175°C 烤足 20~25m</strong> 至裂縫處也呈金黃乾燥色；<strong>出爐立刻在底部戳小洞排蒸氣</strong>（或關火後烤箱門夾木匙開小縫烘 5m）</td>
+          </tr>
+          <tr>
+            <td><strong>3. 擠花時麵糊攤成一片流湯，無法維持長條立體紋路</strong></td>
+            <td>蛋液加太多（超過倒三角形 V 字臨界點），麵糊黏度過低</td>
+            <td>最後 1 顆蛋務必分次慢加，一出現 <strong>3~4cm 光滑倒三角形 (V字)</strong> 立即停止加蛋</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="analogy-box" style="margin-top:1.2rem;">
+        <strong>🔗 跨頁學習完美閉環：</strong> 閃電泡芙的靈魂內餡正是我們在 <strong><a href="05-creams-and-ganache.html" style="color:var(--caramel-dark);">【05 卡士達醬與甘納許專題】</a></strong> 學過的兩大基底！你也可以點右上角回到 <strong><a href="../index.html" style="color:var(--caramel-dark);">【🏠 最外層 Wiki 總入口】</a></strong> 查看全部 6 份單元簡報與綜合總論！
+      </div>
+    </section>
+  </main>
+
+  <footer class="controls">
+    <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← 上一頁</button>
+    <span id="pageIndicator" style="font-weight:700; color:var(--caramel-mid);">第 1 / 5 頁</span>
+    <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">下一頁 →</button>
+  </footer>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    let idx = 0;
+    function show(n) {
+      if (n < 0 || n >= slides.length) return;
+      slides[idx].classList.remove('active');
+      idx = n;
+      slides[idx].classList.add('active');
+      document.getElementById('progressBar').style.width = ((idx + 1) / slides.length * 100) + '%';
+      document.getElementById('pageIndicator').textContent = `第 ${idx + 1} / ${slides.length} 頁`;
+      document.getElementById('prevBtn').disabled = idx === 0;
+      document.getElementById('nextBtn').disabled = idx === slides.length - 1;
+    }
+    function changeSlide(d) { show(idx + d); }
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight' || e.key === ' ') changeSlide(1);
+      if (e.key === 'ArrowLeft') changeSlide(-1);
+    });
+    show(0);
+  </script>
+</body>
+</html>
