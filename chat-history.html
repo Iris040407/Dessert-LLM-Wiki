@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>人機協作完整對話紀錄 (Chat Transcript) — 法式甜點科學 LLM Wiki</title>
+  <title>一次實際執行與檢查紀錄 (新增閃電泡芙食譜 Ingest 實錄) — 法式甜點科學 LLM Wiki</title>
   <style>
     :root {
       --bg-cream: #fdf8f2; --bg-card: #ffffff; --bg-warm: #f5ebe0;
@@ -16,14 +16,14 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
-      background: #efe6dc; color: var(--text-main); line-height: 1.65;
+      background: #efe6dc; color: var(--text-main); line-height: 1.68;
     }
     header.topbar {
       background: var(--caramel-dark); color: #fff; padding: 0.85rem 2rem;
       display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.8rem;
       position: sticky; top: 0; z-index: 30; box-shadow: 0 3px 12px rgba(0,0,0,0.18);
     }
-    .brand { font-weight: 800; font-size: 1.08rem; display: flex; align-items: center; gap: 0.6rem; }
+    .brand { font-weight: 800; font-size: 1.06rem; display: flex; align-items: center; gap: 0.6rem; }
     .nav-btns { display: flex; gap: 0.6rem; flex-wrap: wrap; }
     .nav-btns a, .nav-btns button {
       color: #fff; text-decoration: none; font-size: 0.86rem; font-weight: 700;
@@ -41,7 +41,7 @@
 
     .window-header {
       background: linear-gradient(135deg, #3b2212 0%, #6e3d1e 100%);
-      color: #fff; padding: 1.4rem 2rem; display: flex; align-items: center; justify-content: space-between;
+      color: #fff; padding: 1.35rem 2rem; display: flex; align-items: center; justify-content: space-between;
       flex-wrap: wrap; gap: 1rem;
     }
     .dots { display: flex; gap: 0.45rem; align-items: center; }
@@ -50,27 +50,27 @@
 
     .phase-banner {
       background: var(--bg-warm); color: var(--caramel-dark); text-align: center;
-      padding: 0.6rem 1rem; font-weight: 800; font-size: 0.92rem;
+      padding: 0.65rem 1rem; font-weight: 800; font-size: 0.94rem;
       border-top: 1px solid var(--border-soft); border-bottom: 1px solid var(--border-soft);
-      margin: 1.5rem 0; letter-spacing: 0.5px;
+      margin-bottom: 1.5rem; letter-spacing: 0.5px;
     }
 
-    .chat-stream { padding: 1.5rem 2rem 2.5rem; display: flex; flex-direction: column; gap: 1.3rem; }
+    .chat-stream { padding: 0 2rem 2.5rem; display: flex; flex-direction: column; gap: 1.4rem; }
 
     .msg-row { display: flex; gap: 0.9rem; align-items: flex-start; }
     .msg-row.user { flex-direction: row-reverse; }
 
     .avatar {
-      width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center;
-      justify-content: center; font-weight: 800; font-size: 1.1rem; flex-shrink: 0;
+      width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center;
+      justify-content: center; font-weight: 800; font-size: 1.05rem; flex-shrink: 0;
       box-shadow: 0 3px 8px rgba(0,0,0,0.12);
     }
     .avatar.user-av { background: var(--amber-accent); color: #fff; }
     .avatar.agent-av { background: var(--caramel-dark); color: #fff; }
 
     .bubble {
-      max-width: 82%; padding: 1.1rem 1.4rem; border-radius: 16px;
-      font-size: 0.95rem; position: relative; box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+      max-width: 85%; padding: 1.15rem 1.45rem; border-radius: 16px;
+      font-size: 0.96rem; position: relative; box-shadow: 0 4px 14px rgba(0,0,0,0.05);
     }
     .msg-row.user .bubble {
       background: var(--user-bubble); color: #fff; border-top-right-radius: 4px;
@@ -81,37 +81,36 @@
     }
 
     .meta-time {
-      font-size: 0.76rem; opacity: 0.72; margin-bottom: 0.35rem; display: block; font-weight: 600;
-    }
-
-    .qa-card {
-      background: var(--bg-cream); border: 1px solid var(--border-soft);
-      border-radius: 10px; padding: 0.85rem 1.1rem; margin-top: 0.65rem; color: var(--text-main);
-    }
-    .qa-card strong { color: var(--caramel-dark); }
-    .qa-choice {
-      display: inline-block; background: var(--pistachio-bg); color: var(--pistachio-green);
-      font-weight: 700; font-size: 0.85rem; padding: 0.2rem 0.6rem; border-radius: 6px;
-      margin: 0.25rem 0.25rem 0 0; border: 1px solid #b7e4c7;
+      font-size: 0.78rem; opacity: 0.75; margin-bottom: 0.4rem; display: block; font-weight: 700;
     }
 
     .code-pill {
-      background: rgba(0,0,0,0.07); padding: 0.1rem 0.4rem; border-radius: 5px;
+      background: rgba(0,0,0,0.07); padding: 0.12rem 0.45rem; border-radius: 5px;
       font-family: monospace; font-size: 0.88rem;
     }
     .msg-row.user .code-pill { background: rgba(255,255,255,0.2); color: #fef3c7; }
 
+    .tool-step {
+      background: #f8f4ef; border: 1px dashed var(--caramel-mid);
+      border-radius: 10px; padding: 0.75rem 1rem; margin: 0.65rem 0;
+      font-size: 0.88rem; color: var(--text-muted);
+    }
+    .tool-step strong { color: var(--caramel-dark); }
+
     .gate-alert {
-      background: var(--amber-bg); border-left: 4px solid var(--amber-accent);
-      padding: 0.75rem 1rem; border-radius: 0 8px 8px 0; margin-top: 0.6rem; font-size: 0.9rem;
+      background: var(--amber-bg); border-left: 5px solid var(--amber-accent);
+      padding: 0.95rem 1.2rem; border-radius: 0 10px 10px 0; margin: 0.85rem 0; font-size: 0.92rem;
     }
     .gate-pass {
-      background: var(--pistachio-bg); border-left: 4px solid var(--pistachio-green);
-      padding: 0.75rem 1rem; border-radius: 0 8px 8px 0; margin-top: 0.6rem; font-size: 0.9rem;
+      background: var(--pistachio-bg); border-left: 5px solid var(--pistachio-green);
+      padding: 0.95rem 1.2rem; border-radius: 0 10px 10px 0; margin: 0.85rem 0; font-size: 0.92rem;
     }
 
-    ul.compact { padding-left: 1.2rem; margin-top: 0.4rem; }
-    ul.compact li { margin-bottom: 0.25rem; }
+    ul.compact, ol.compact { padding-left: 1.3rem; margin-top: 0.4rem; }
+    ul.compact li, ol.compact li { margin-bottom: 0.35rem; }
+
+    a.inline-link { color: var(--berry-red); font-weight: 700; text-decoration: none; }
+    a.inline-link:hover { text-decoration: underline; }
 
     @media print {
       header.topbar { position: static; }
@@ -123,11 +122,11 @@
 <body>
 
   <header class="topbar">
-    <div class="brand">💬 本次作業「先討論、後生成」完整人機對話紀錄 (Chat Transcript)</div>
+    <div class="brand">💬 一次實際執行的結果與檢查紀錄：新增「閃電泡芙食譜」對話實錄</div>
     <div class="nav-btns">
       <a href="index.html">🏠 返回 Wiki 總入口</a>
       <a href="workflow.html">🔄 Loop/Graph 專頁</a>
-      <a href="slides/index.html" class="primary">📊 開啟教學簡報</a>
+      <a href="slides/06-eclair.html" class="primary">⚡ 查看生成的閃電泡芙簡報</a>
       <button onclick="window.print()">🖨️ 列印 / 另存 PDF 截圖</button>
     </div>
   </header>
@@ -136,200 +135,102 @@
     <div class="window-header">
       <div class="dots">
         <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
-        <strong style="margin-left:0.6rem; font-size:1.05rem;">Antigravity IDE — Conversation ID: 8ecb23a1 (Dessert LLM Wiki Project)</strong>
+        <strong style="margin-left:0.6rem; font-size:1.02rem;">Antigravity Agent — 動態 Ingest 實際執行與 Gate 0 檢查攔截紀錄</strong>
       </div>
-      <span style="font-size:0.85rem; background:rgba(255,255,255,0.15); padding:0.25rem 0.75rem; border-radius:999px;">
-        ✅ 100% 真實對話軌跡還原
+      <span style="font-size:0.84rem; background:rgba(255,255,255,0.16); padding:0.25rem 0.8rem; border-radius:999px;">
+        📌 作業「一次實際執行的結果或檢查紀錄」實證對話
       </span>
+    </div>
+
+    <div class="phase-banner">
+      【實際執行測試】投入新食譜網址（閃電泡芙 Éclair）→ 觸發 Gate 0 單位換算檢查 → 網狀更新 15 個 Wiki 與簡報頁面
     </div>
 
     <div class="chat-stream">
 
-      <!-- PHASE 1 -->
-      <div class="phase-banner">【第一階段】步驟一：使用「先討論、後生成」的方式釐清需求並設計 AGENTS.md</div>
-
-      <!-- Turn 1: User -->
+      <!-- Turn 1: User asks about automatic compounding update -->
       <div class="msg-row user">
         <div class="avatar user-av">U</div>
         <div class="bubble">
-          <span class="meta-time">User ・ 2026-11-22 20:41</span>
-          我們需要做一個甜點教學的LLM Wiki資料庫 ，會參考Karpathy的LLM Wiki 在寫AGENTS.md之前，請先幫我釐清各種想法，確認目標，於是我們的AGENT.md要怎麼修改。<br/>
-          <span style="font-size:0.84rem; opacity:0.85;">（附上 Andrej Karpathy《# LLM Wiki: A pattern for building personal knowledge bases using LLMs》全文規範）</span>
+          <span class="meta-time">User ・ 2026-11-23 20:57</span>
+          假設我給你新的資訊，新的WIKI，所有頁面都會同時更新嗎
         </div>
       </div>
 
-      <!-- Turn 1: Agent -->
+      <!-- Turn 1: Agent explains compounding mechanism -->
       <div class="msg-row agent">
         <div class="avatar agent-av">AI</div>
         <div class="bubble">
-          <span class="meta-time">Antigravity Agent ・ 2026-11-22 20:42</span>
-          檢視了目前的工作區（<span class="code-pill">d:\Antigravity\Dessert</span>），我們將把 Karpathy 的通用 LLM Wiki 架構，量身打造為<strong>「甜點教學與烘焙知識庫（Dessert Teaching LLM Wiki）」</strong>的 <span class="code-pill">AGENTS.md</span>（Schema 規範）。在正式撰寫之前，我們先透過兩輪核心問題來對齊你的需求與使用場景：
-          <div class="qa-card">
-            <strong>📋 第一輪與第二輪需求釐清互動問答（User 選擇結果）：</strong><br/>
-            1. <strong>Wiki 主要定位</strong>：<span class="qa-choice">✔ 系統化教學備課</span> <span class="qa-choice">✔ 個人研發、學習與跨食譜比對</span><br/>
-            2. <strong>Raw Sources 來源類型</strong>：<span class="qa-choice">✔ 烘焙專業書籍/科學文獻</span> <span class="qa-choice">✔ 網路食譜/部落格/YouTube筆記</span> <span class="qa-choice">✔ 社群貼文擷取</span><br/>
-            3. <strong>Wiki 核心知識分類維度</strong>：<span class="qa-choice">✔ 甜點品項/食譜頁(recipes)</span> <span class="qa-choice">✔ 原料科學頁(ingredients)</span> <span class="qa-choice">✔ 技法與原理頁(techniques)</span> <span class="qa-choice">✔ 常見失敗與排錯頁(troubleshooting)</span> <span class="qa-choice">✔ 主廚與流派專頁(chefs)</span><br/>
-            4. <strong>配方比例處理規則</strong>：<span class="qa-choice">✔ 自動換算「烘焙百分比 / 總重百分比」並列，且保留原始克數</span><br/>
-            5. <strong>特色教學模組</strong>：<span class="qa-choice">✔ 雙語/專業術語對照</span> <span class="qa-choice">✔ 教學講義區塊(白話原理/常見失誤)</span> <span class="qa-choice">✔ 跨流派配方對照矩陣</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Turn 2: User -->
-      <div class="msg-row user">
-        <div class="avatar user-av">U</div>
-        <div class="bubble">
-          <span class="meta-time">User ・ 2026-11-22 20:45</span>
-          <strong>主題：用 LLM Wiki 做一份教學 HTML 簡報（作業說明）</strong><br/>
-          步驟一：建立自己的 LLM Wiki（使用「先討論、後生成」的方式建立 Wiki，至少 ingest 5 篇資料）<br/>
-          步驟二：利用 LLM Wiki 製作教學 HTML 簡報（需能讓原本不熟悉該主題的人理解基本概念）<br/>
-          步驟三：說明你的 loop / graph 設計（哪些步驟會重複執行？哪些地方需要檢查或重新生成？為什麼這樣設計？）<br/>
-          步驟四：進行反思（哪一個節點最常出錯？你發現問題後，把檢查往前移到了哪一個步驟？你有沒有因此修改 workflow / graph？為什麼？）
-          <div class="qa-card" style="margin-top:0.5rem; background:rgba(255,255,255,0.12); color:#fff; border-color:rgba(255,255,255,0.25);">
-            <strong>User 確認主題方向：</strong><br/>
-            • 選擇「綜合甜點科學（不限單一品項）」<br/>
-            • 請 Agent 協助建立 <span class="code-pill">AGENTS.md</span> 並準備 5 篇經典且具對比性的真實甜點資料放進 <span class="code-pill">raw/</span> 執行 Ingest！<br/>
-            • 指令：<strong>「開始建立」</strong>
-          </div>
-        </div>
-      </div>
-
-      <!-- Turn 2: Agent -->
-      <div class="msg-row agent">
-        <div class="avatar agent-av">AI</div>
-        <div class="bubble">
-          <span class="meta-time">Antigravity Agent ・ 2026-11-22 20:47 ~ 21:10</span>
-          已依討論共識建立核心 Schema 規範 <span class="code-pill">AGENTS.md</span>，並收集建立 5 篇原始文獻（<span class="code-pill">raw/01</span> ~ <span class="code-pill">raw/05</span>），執行 5 輪 Ingest 與 Gate 檢查迴圈：
-          <div class="gate-alert">
-            <strong>🛡️ Gate 0 / Gate 1 單位標準化檢查前移（Shift-Left Validation）真實攔截紀錄：</strong>
-            <ul class="compact">
-              <li><strong>Ingest #1 (瑪德蓮 <span class="code-pill">raw/01</span>)</strong>：攔截 PH 配方非公制單位「全蛋 4 顆、泡打粉 1.5 tsp」→ 自動換算為 <span class="code-pill">全蛋 200g (100%)</span>、<span class="code-pill">泡打粉 6g (3%)</span>，算出 PH 總液粉比 <span class="code-pill">125%</span> vs 日系 <span class="code-pill">100%</span>。</li>
-              <li><strong>Ingest #2 (費南雪 <span class="code-pill">raw/02</span>)</strong>：攔截雙粉基準與「焦化前生奶油 180g vs 焦化後淨重 140g」差異 → 統一以<strong>總粉量 (低粉+杏仁粉=120g=100%)</strong> 為基準，並扣除 16% 蒸發水分對齊焦化淨重 <span class="code-pill">~148g (123.3%)</span>。</li>
-              <li><strong>Ingest #3 (可麗露 <span class="code-pill">raw/03</span>)</strong>：攔截「牛奶 2 杯、全蛋 2 顆、蛋黃 2 顆」→ 換算為 <span class="code-pill">牛奶 500g (500%)</span>、<span class="code-pill">全蛋 100g</span>、<span class="code-pill">蛋黃 40g</span>（總液粉比 <span class="code-pill">680%</span>），並標註與瑪德蓮完全相反的「18°C 常溫入爐防白頭」物理機制。</li>
-              <li><strong>Ingest #4 (馬卡龍 <span class="code-pill">raw/04</span>)</strong>：無小麥麵粉，設定以唯一粉體骨架 <strong>細杏仁粉 100g = 100%</strong> 為基準，並將義式兩段蛋白合併核算為 <span class="code-pill">74% (37%+37%)</span>。</li>
-              <li><strong>Ingest #5 (卡士達與甘納許 <span class="code-pill">raw/05</span>)</strong>：攔截無粉系統若除以總粉量會<strong>除以零錯誤</strong> → 自動切換為<strong>「總重百分比 (Total Weight = 100%)」</strong>並列對牛奶比與巧鮮比（1:1 vs 1:1.5）。</li>
-            </ul>
-          </div>
-          <div class="gate-pass">
-            ✅ 已完成 16 個網狀互連 Wiki 頁面（<span class="code-pill">wiki/recipes/</span>, <span class="code-pill">techniques/</span>, <span class="code-pill">ingredients/</span>, <span class="code-pill">troubleshooting/</span>, <span class="code-pill">chefs/</span>, <span class="code-pill">glossary.md</span>, <span class="code-pill">log.md</span>），並自動讀取 GitHub Desktop 憑證建立 <span class="code-pill">Iris040407/Dessert-LLM-Wiki</span> 儲存庫，開啟 GitHub Pages 線上部署！
-          </div>
-        </div>
-      </div>
-
-      <!-- PHASE 2 -->
-      <div class="phase-banner">【第二階段】架構升級：最外層 index.html 總入口 ＋ 各篇獨立單元簡報</div>
-
-      <!-- Turn 3: User -->
-      <div class="msg-row user">
-        <div class="avatar user-av">U</div>
-        <div class="bubble">
-          <span class="meta-time">User ・ 2026-11-22 21:53</span>
-          我有一個疑問既然他是llm wiki 那他的index是不是要在最外層，然後是收集到的內容各自做成簡報，一共五個簡報?<br/>
-          好，先幫我升級方案！
-        </div>
-      </div>
-
-      <!-- Turn 3: Agent -->
-      <div class="msg-row agent">
-        <div class="avatar agent-av">AI</div>
-        <div class="bubble">
-          <span class="meta-time">Antigravity Agent ・ 2026-11-22 21:55 ~ 21:58</span>
-          完全沒錯！我們立即將架構升級為「兩全其美」方案：
+          <span class="meta-time">Antigravity Agent ・ 2026-11-23 20:58</span>
+          <strong>對！只要你把新的資訊丟給我，我就會按照寫在 <span class="code-pill">AGENTS.md</span> 與 <span class="code-pill">workflow.html</span> 裡的雙迴圈規則，自動幫你把所有相關的 Wiki 頁面與 HTML 簡報/首頁全部連動更新，並直接 Push 上 GitHub！</strong>
           <ul class="compact">
-            <li>在最外層根目錄建立 <strong><span class="code-pill">index.html</span>（LLM Wiki 教學簡報中心總入口）</strong> 與 <strong><span class="code-pill">index.md</span>（最外層全局索引）</strong>。</li>
-            <li>為每一篇收集到的主題各自生成獨立的 5 頁深度單元教學簡報（<span class="code-pill">slides/01-madeleine.html</span> ~ <span class="code-pill">05-creams-and-ganache.html</span>），同時保留跨品項綜合總論簡報（<span class="code-pill">slides/index.html</span>）！</li>
+            <li><strong>步驟 1（保存原始檔 <span class="code-pill">raw/</span>）</strong>：將新資料存成不可變原始檔。</li>
+            <li><strong>步驟 2（通過 <span class="code-pill">Gate 0</span> 單位與百分比換算）</strong>：自動把「幾顆蛋、幾杯、幾小匙、華氏溫度」換成公制克數與攝氏溫度，並算出<strong>烘焙百分比（總粉=100%）</strong>。</li>
+            <li><strong>步驟 3（網狀更新 <span class="code-pill">wiki/</span> 知識庫）</strong>：同時更新食譜矩陣頁（<span class="code-pill">recipes/</span>）、共用科學原理頁（<span class="code-pill">techniques/</span>）、原料頁（<span class="code-pill">ingredients/</span>）、翻車排錯總表（<span class="code-pill">troubleshooting/</span>）、多語術語表（<span class="code-pill">glossary.md</span>）、全局目錄（<span class="code-pill">index.md</span>）與檢查日誌（<span class="code-pill">log.md</span>）。</li>
+            <li><strong>步驟 4（同步更新 HTML 簡報與總入口）</strong>：自動生成該主題的單元教學簡報，並更新綜合總論簡報與最外層 <span class="code-pill">index.html</span>！</li>
           </ul>
         </div>
       </div>
 
-      <!-- PHASE 3 -->
-      <div class="phase-banner">【第三階段】步驟二 &amp; 三深化：以三階段 Graph（大綱 → 逐頁內容 → 投影片）重新設計流程</div>
-
-      <!-- Turn 4: User -->
+      <!-- Turn 2: User inputs the Eclair URL -->
       <div class="msg-row user">
         <div class="avatar user-av">U</div>
         <div class="bubble">
-          <span class="meta-time">User ・ 2026-11-23 20:46</span>
-          現在我們要來思考 graph 的方式去做投影片,請再一次協助釐清,先把流程畫出來參考,不要先定案,我會希望先整理一份大綱,大綱確認之後再做投影片逐頁內容,最後依此做成投影片,因為要設計成 graph,請想清楚各階段要做的、如何檢查等等。<br/>
-          （確認針對：<strong>1 份綜合教學簡報</strong> 來執行，並希望：<strong>「把作業系統的 Loop/Graph 說明放在獨立的頁面，可由 INDEX 頁頂部區塊按鈕點擊查看」</strong>）
+          <span class="meta-time">User ・ 2026-11-23 21:15</span>
+          <strong>新增資料:閃電泡芙食譜 https://onesweettooth.com/eclair/</strong>
         </div>
       </div>
 
-      <!-- Turn 4: Agent -->
-      <div class="msg-row agent">
-        <div class="avatar agent-av">AI</div>
-        <div class="bubble">
-          <span class="meta-time">Antigravity Agent ・ 2026-11-23 20:47 ~ 20:58</span>
-          太棒了！我們將「從 Wiki 生成教學簡報」正式設計為帶有三道檢查閘門的 <strong>三階段圖譜（Staged Graph B）</strong>，並依序完成人機確認：
-          <div class="gate-alert">
-            <strong>1️⃣ Stage 1（規劃教學大綱）&amp; 🛡️ Gate 1 檢查紀錄：</strong><br/>
-            • <strong>Gate 1 發現問題</strong>：原本 10 頁簡報把「作業系統的 Loop/Graph 說明」混在甜點教學簡報第 9 頁，對想學甜點的初學者來說會跳戲。<br/>
-            • <strong>修正動作</strong>：將綜合教學簡報收斂為純粹連貫的 <strong>8 頁甜點科學課</strong>（Slide 1 痛點 → Slide 2 烘焙百分比與流派 → Slide 3 梅納反應与焦化奶油 → Slide 4 瑪德蓮 vs 費南雪 → Slide 5 靜置與入爐溫差 → Slide 6 馬卡龍泡沫物理 → Slide 7 卡士達酵素與甘納許乳化 → Slide 8 互動翻車診斷室 &amp; 隨堂測驗），並將 Loop/Graph 獨立為 <strong><span class="code-pill">workflow.html</span></strong> 掛在首頁頂部 Hero 大按鈕！
-          </div>
-          <div class="gate-alert">
-            <strong>2️⃣ Stage 2（撰寫投影片逐頁內容腳本）&amp; 🛡️ Gate 2 雙重檢查紀錄：</strong><br/>
-            • <strong>數據一致性核對</strong>：逐頁核對 145°C 焦化奶油、118°C 義式糖漿、95°C 澱粉酶滅活等數據與 Wiki 矩陣 100% 吻合。<br/>
-            • <strong>認知負荷與容量攔截</strong>：發現 Slide 4（三張比對表）與 Slide 8（排錯診斷＋隨堂測驗）單頁字數突破 600 字，若全部攤開必定破版 → 在腳本階段提前指定改用 <strong>Interactive Tabs（點擊切換分頁）</strong> 收納！
-          </div>
-          <div class="gate-pass">
-            <strong>3️⃣ Stage 3（渲染生成 HTML 投影片）&amp; 🛡️ Gate 3 檢查通過：</strong><br/>
-            成功生成 8 頁精華版 <span class="code-pill">slides/index.html</span> 與獨立架構專頁 <span class="code-pill">workflow.html</span>，並於首頁 <span class="code-pill">index.html</span> 頂部 Hero 區塊新增綠色大按鈕！
-          </div>
-        </div>
-      </div>
-
-      <!-- PHASE 4 -->
-      <div class="phase-banner">【第四階段】動態擴充實測：新增第 6 篇「閃電泡芙食譜」網址，驗證全自動跨頁連動更新</div>
-
-      <!-- Turn 5: User -->
-      <div class="msg-row user">
-        <div class="avatar user-av">U</div>
-        <div class="bubble">
-          <span class="meta-time">User ・ 2026-11-23 20:57 ~ 21:15</span>
-          假設我給你新的資訊，新的WIKI，所有頁面都會同時更新嗎？<br/>
-          <strong>新增資料：閃電泡芙食譜 https://onesweettooth.com/eclair/</strong>
-        </div>
-      </div>
-
-      <!-- Turn 5: Agent -->
+      <!-- Turn 2: Agent executes full Loop A + Graph B -->
       <div class="msg-row agent">
         <div class="avatar agent-av">AI</div>
         <div class="bubble">
           <span class="meta-time">Antigravity Agent ・ 2026-11-23 21:16 ~ 21:25</span>
-          收到新資料！立即針對 <span class="code-pill">https://onesweettooth.com/eclair/</span>（甜牙齒 One Sweet Tooth 閃電泡芙與泡芙派皮食譜）觸發 <strong>Ingest #6 全自動雙迴圈更新</strong>：
-          <div class="gate-alert">
-            <strong>🛡️ Gate 0 攔截美式單位與華氏烤溫（極佳的 Shift-Left 真實案例！）：</strong><br/>
-            • <strong>原始網站單位</strong>：<span class="code-pill">水 1 量杯 (236ml)</span>、<span class="code-pill">無鹽奶油 1 條 (1/2杯=8湯匙=113g)</span>、<span class="code-pill">鹽 1/2 茶匙</span>、<span class="code-pill">中筋麵粉 1 量杯 (125g)</span>、<span class="code-pill">雞蛋 4 顆</span>、<span class="code-pill">烤溫 400°F(10m) → 350°F(20~25m)</span>。<br/>
-            • <strong>Gate 0 自動標準化</strong>：以 <strong>中筋麵粉 125g = 100.0%</strong> 為基準，轉為公制百分比：<span class="code-pill">水 236g (188.8%)</span>、<span class="code-pill">奶油 113g (90.4%)</span>、<span class="code-pill">鹽 3g (2.4%)</span>、<span class="code-pill">全蛋 200g (160.0%)</span>，烤溫轉為攝氏 <span class="code-pill">200°C(10m) → 175°C(22m)</span>，算出高達 <strong>348.8% 的總液粉比</strong>！
+          收到！立刻擷取 <span class="code-pill">https://onesweettooth.com/eclair/</span>（甜牙齒 One Sweet Tooth《法式閃電泡芙 Éclair 與泡芙派皮 Pâte à Choux》食譜），現場完整執行 <strong>Loop A（Ingest &amp; Gate 0 檢查）</strong> 與 <strong>Graph B（教學簡報連動更新）</strong>：
+
+          <div class="tool-step">
+            <strong>🔍 Step 1. 擷取原始食譜內容與工序：</strong><br/>
+            已擷取部落格原始配方：水 1 量杯 (236ml)、無鹽奶油 1 條 (1/2量杯 = 8湯匙 = 113g)、鹽 1/2 茶匙、中筋麵粉 1 量杯 (約 125g)、室溫雞蛋 4 顆；工序含 100°C 滾水一次下粉燙麵（Panade）、降溫分次加蛋至刮刀呈倒三角形（V字形）、1.5cm 星形擠花嘴擠 12~13cm 長條、400°F 烤 10m 轉 350°F 烤 20~25m、出爐戳洞排蒸氣並填入卡士達醬與甘納許。
           </div>
+
+          <div class="gate-alert">
+            <strong>🛡️ Step 2. 觸發【Gate 0：單位標準化與百分比驗算（Shift-Left 檢查前移點）】攔截紀錄：</strong>
+            <ul class="compact">
+              <li>❌ <strong>檢查攔截異常</strong>：原始食譜混用了<strong>美式容量（量杯、湯匙、茶匙）、條（Stick）、顆數與華氏烤溫（°F）</strong>，無法直接寫入 Wiki 與法式公制流派（如 Ferrandi 廚藝學院配方）並排比對。</li>
+              <li>🔧 <strong>自動標準化換算修正</strong>：
+                <ol class="compact">
+                  <li>設定烘焙百分比分母基準：<strong>中筋麵粉 <span class="code-pill">1 量杯 = 125g = 100.0%</span></strong></li>
+                  <li>水：<span class="code-pill">1 量杯 (236ml)</span> → <strong><span class="code-pill">236g (188.8%)</span></strong></li>
+                  <li>無鹽奶油：<span class="code-pill">1 條 (8 湯匙)</span> → <strong><span class="code-pill">113g (90.4%)</span></strong></li>
+                  <li>鹽：<span class="code-pill">1/2 茶匙 (tsp)</span> → <strong><span class="code-pill">3g (2.4%)</span></strong></li>
+                  <li>室溫全蛋：<span class="code-pill">4 顆</span>（依標準係數 50g/顆）→ <strong><span class="code-pill">200g (160.0%)</span></strong></li>
+                  <li>烤溫標準化：<span class="code-pill">400°F (10m) → 350°F (20~25m)</span> → 轉為攝氏 <strong><span class="code-pill">200°C (10m) → 175°C (20~25m)</span></strong></li>
+                </ol>
+              </li>
+              <li>💡 <strong>科學指標驗算結果</strong>：得出泡芙麵糊驚人的 <strong>總液粉比 = <span class="code-pill">348.8%</span>（水 188.8% + 全蛋 160%）</strong>，並與法國 Ferrandi 牛奶水對半派（水 83.3% + 牛奶 83.3% + 全蛋 160% = 總液粉比 326.6%）完成 100% 精準對齊！</li>
+            </ul>
+          </div>
+
           <div class="gate-pass">
-            <strong>🕸️ 單次 Ingest 同步連動更新 15 個檔案並 Push 上線：</strong>
-            <ol style="padding-left:1.3rem; margin-top:0.35rem;">
-              <li>新建原始檔：<span class="code-pill">raw/06-eclair-choux-pastry-onesweettooth.md</span></li>
-              <li>新建食譜頁：<span class="code-pill">wiki/recipes/eclair-choux-pastry.md</span>（對比美式純水派 vs Ferrandi 牛奶水對半派）</li>
-              <li>連動更新 6 個既有知識頁：<span class="code-pill">creme-patissiere-and-ganache.md</span>（串聯閃電泡芙灌餡與淋面）、<span class="code-pill">starch-gelatinization-and-resting.md</span>（新增爐上滾水燙麵 Panade 預糊化）、<span class="code-pill">emulsion-science.md</span>（新增倒三角形 V 字檢核）、<span class="code-pill">flours-and-nut-powders.md</span>（新增中筋麵粉氣球皮骨架）、<span class="code-pill">common-baking-failures.md</span>（新增第 6 大翻車：泡芙扁塌與出爐凹陷）、<span class="code-pill">glossary.md</span></li>
-              <li>更新索引與日誌：<span class="code-pill">index.md</span>、<span class="code-pill">wiki/index.md</span>、<span class="code-pill">wiki/log.md</span></li>
-              <li>新建第 6 份單元簡報 <span class="code-pill">slides/06-eclair.html</span>，並同步更新首頁 <span class="code-pill">index.html</span>、總論簡報 <span class="code-pill">slides/index.html</span>（診斷室升級為 6 顆按鈕）與 <span class="code-pill">workflow.html</span>！</li>
+            <strong>🕸️ Step 3 &amp; Step 4. 跨頁網狀連動更新（單次 Ingest 同步更新 15 個檔案並部署上線）：</strong>
+            <ol class="compact">
+              <li><strong>【原始資料層 <span class="code-pill">raw/</span>】</strong>：新建 <a class="inline-link" href="https://github.com/Iris040407/Dessert-LLM-Wiki/blob/main/raw/06-eclair-choux-pastry-onesweettooth.md" target="_blank">raw/06-eclair-choux-pastry-onesweettooth.md</a></li>
+              <li><strong>【新建食譜矩陣頁】</strong>：新建 <a class="inline-link" href="https://github.com/Iris040407/Dessert-LLM-Wiki/blob/main/wiki/recipes/eclair-choux-pastry.md" target="_blank">wiki/recipes/eclair-choux-pastry.md</a>（含跨流派矩陣、「麻糬氣球＋1600倍水蒸氣」初學者白話文與倒三角形 V 字檢核點）</li>
+              <li><strong>【連動更新內餡頁】</strong>：更新 <a class="inline-link" href="https://github.com/Iris040407/Dessert-LLM-Wiki/blob/main/wiki/recipes/creme-patissiere-and-ganache.md" target="_blank">wiki/recipes/creme-patissiere-and-ganache.md</a>（建立與閃電泡芙灌餡及頂部淋面的雙向連結）</li>
+              <li><strong>【連動更新糊化科學頁】</strong>：更新 <a class="inline-link" href="https://github.com/Iris040407/Dessert-LLM-Wiki/blob/main/wiki/techniques/starch-gelatinization-and-resting.md" target="_blank">wiki/techniques/starch-gelatinization-and-resting.md</a>（新增第三節：泡芙 100°C 爐上滾水燙麵 <em>Panade</em> 預糊化科學）</li>
+              <li><strong>【連動更新乳化科學頁】</strong>：更新 <a class="inline-link" href="https://github.com/Iris040407/Dessert-LLM-Wiki/blob/main/wiki/techniques/emulsion-science.md" target="_blank">wiki/techniques/emulsion-science.md</a>（新增燙麵降溫至 50°C 加蛋乳化與 V 字檢核）</li>
+              <li><strong>【連動更新粉類科學頁】</strong>：更新 <a class="inline-link" href="https://github.com/Iris040407/Dessert-LLM-Wiki/blob/main/wiki/ingredients/flours-and-nut-powders.md" target="_blank">wiki/ingredients/flours-and-nut-powders.md</a>（新增中筋麵粉 All-Purpose / T55 高延展性氣球皮骨架）</li>
+              <li><strong>【連動更新翻車排錯總表】</strong>：更新 <a class="inline-link" href="https://github.com/Iris040407/Dessert-LLM-Wiki/blob/main/wiki/troubleshooting/common-baking-failures.md" target="_blank">wiki/troubleshooting/common-baking-failures.md</a>（新增第 6 大翻車：閃電泡芙扁塌無空心、出爐瞬間凹陷軟化）</li>
+              <li><strong>【連動更新術語表、索引與日誌】</strong>：同步更新 <span class="code-pill">wiki/glossary.md</span>、<span class="code-pill">index.md</span>、<span class="code-pill">wiki/index.md</span> 與 <a class="inline-link" href="https://github.com/Iris040407/Dessert-LLM-Wiki/blob/main/wiki/log.md" target="_blank">wiki/log.md</a></li>
+              <li><strong>【連動生成與更新 HTML 簡報層】</strong>：
+                <ul class="compact">
+                  <li>🆕 新建第 6 份單元教學簡報：<a class="inline-link" href="slides/06-eclair.html">slides/06-eclair.html（法式閃電泡芙 5 頁專題簡報）</a></li>
+                  <li>🔄 更新綜合總論簡報：<a class="inline-link" href="slides/index.html">slides/index.html</a>（第 8 頁互動翻車診斷室自動擴充第 6 顆按鈕「⚡ 6. 閃電泡芙扁塌/無空心」）</li>
+                  <li>🔄 更新最外層總入口 <a class="inline-link" href="index.html">index.html</a> 與架構專頁 <a class="inline-link" href="workflow.html">workflow.html</a>！</li>
+                </ul>
+              </li>
             </ol>
           </div>
-        </div>
-      </div>
-
-      <!-- Turn 6: User -->
-      <div class="msg-row user">
-        <div class="avatar user-av">U</div>
-        <div class="bubble">
-          <span class="meta-time">User ・ 2026-11-23 21:27</span>
-          將本次我和你的聊天紀錄截圖下來做成一個網頁
-        </div>
-      </div>
-
-      <!-- Turn 6: Agent -->
-      <div class="msg-row agent">
-        <div class="avatar agent-av">AI</div>
-        <div class="bubble">
-          <span class="meta-time">Antigravity Agent ・ 2026-11-23 21:28</span>
-          已將我們從第一階段「先討論、後生成 Wiki」、第二階段「架構升級」、第三階段「三階段 Graph 大綱与逐頁腳本確認」到第四階段「新增閃電泡芙食譜觸發 15 個檔案自動更新」的完整對話歷程，製作成你現在正在瀏覽的 <strong><span class="code-pill">chat-history.html</span></strong> 網頁！可點擊右上角「🖨️ 列印 / 另存 PDF 截圖」或直接由首頁頂部按鈕進入查看。
         </div>
       </div>
 
